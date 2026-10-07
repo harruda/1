@@ -53,7 +53,7 @@ docs/GUIA.md            guia de estilo e contrato dos capítulos
 O corpus é a *Obra Completa* de Machado de Assis disponibilizada pelo MEC (machado.mec.gov.br), em domínio público, na versão empacotada pelo projeto NLTK. Os nove primeiros romances (de *Ressurreição* a *Esaú e Jacó*) servem de treino; *Memorial de Aires* (1908) fica de fora, para que toda medida de previsão seja feita em texto que os modelos nunca viram.
 
 - `python3 ferramentas/preparar_corpus.py caminho/para/machado/` regenera `dados/`.
-- `python3 ferramentas/treinar_rede.py 8000` treina a rede (PyTorch, ~1 h em CPU) e exporta os pesos.
+- `python3 ferramentas/treinar_rede.py 8000` treina a rede (PyTorch, menos de 1 h em CPU) e exporta os pesos.
 - `node testes/rede.test.mjs` confere que a rede em JavaScript reproduz as probabilidades do PyTorch.
 
 ## Créditos

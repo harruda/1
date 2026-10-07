@@ -43,8 +43,9 @@
     <p>Note o que essa descrição diz: <strong>o objetivo do treino é exatamente a entropia cruzada</strong> que acabamos de definir. A rede é ajustada, literalmente, para ser cada vez menos surpreendida pelo texto. Não há outra instrução. Ninguém lhe ensinou gramática, ortografia ou estilo.</p>
     <figure class="widget" data-widget="treino"></figure>
     <p>A curva mostra a entropia cruzada da rede, medida em <i>Memorial de Aires</i>, ao longo do treino. As linhas tracejadas são o modelo de contagens com diferentes tamanhos de memória. No primeiro registro, depois de 250 passos, a rede já supera o modelo que lembra uma letra. Logo passa o de duas, depois o de quatro, e termina abaixo do melhor modelo de contagens, coisa que nenhuma contagem consegue com esses mesmos dados.</p>
+    <p>Medido no <i>Memorial de Aires</i> inteiro, as 270 mil letras, o Machadinho paga 1,80 bit por letra, contra 1,97 do modelo de contagens com cinco letras de memória. Na linguagem do <a href="#c5">capítulo 5</a>: acoplado a um codificador aritmético, ele guardaria o romance em cerca de 60 mil bytes, contra 66 mil das contagens, 97 mil do gzip e 277 mil do texto comum. Prever melhor é comprimir melhor, agora com uma rede neural.</p>
     <aside class="nota">
-      <p>O treino levou cerca de uma hora num processador comum, sem placa de vídeo. A rede e o programa que a treinou estão no repositório deste livro, em <code>ferramentas/treinar_rede.py</code>.</p>
+      <p>O treino levou menos de uma hora num processador comum, sem placa de vídeo. A rede e o programa que a treinou estão no repositório deste livro, em <code>ferramentas/treinar_rede.py</code>.</p>
     </aside>
   </section>
 

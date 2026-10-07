@@ -26,6 +26,7 @@
   user-select: none;
   touch-action: manipulation;
 }
+.at-palavra { display: inline-flex; white-space: nowrap; }
 .at-letra {
   --w: 0;
   min-width: 0.95ch;

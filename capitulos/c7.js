@@ -109,7 +109,7 @@ function treino(fig) {
     placa.definir("par", fmtInt(dados.parametros));
     const hist = dados.historico;
     const xmax = hist.at(-1).passo;
-    const g = grafico({ largura: 680, altura: 300, x: [0, xmax], y: [1.5, 3.5], rotuloX: "passos de treino", rotuloY: "bits por letra", ticksY: [1.5, 2, 2.5, 3, 3.5], fmtX: (v) => fmtInt(v), fmtY: (v) => fmt(v, 1) });
+    const g = grafico({ largura: 680, altura: 300, margem: { t: 16, r: 34, b: 44, l: 52 }, x: [0, xmax], y: [1.5, 3.5], rotuloX: "passos de treino", rotuloY: "bits por letra", ticksY: [1.5, 2, 2.5, 3, 3.5], fmtX: (v) => fmtInt(v), fmtY: (v) => fmt(v, 1) });
     for (const { o, h: hb } of ng) {
       if (hb > 3.5) continue;
       g.plot.append(
@@ -189,7 +189,7 @@ function duelo(fig) {
 function atencao(fig) {
   const { corpo } = moldura(fig, {
     titulo: "Para onde a rede olha",
-    legenda: "Escolha uma letra (toque ou passe o mouse; no teclado, use as setas). As letras anteriores ficam azuis na proporção do peso que a cabeça escolhida deu a cada uma ao ler a letra marcada. A grade mostra o padrão das dezesseis cabeças para a mesma letra; toque numa para selecioná-la. À direita, as letras que a rede, naquele ponto, esperava a seguir.",
+    legenda: "Escolha uma letra (toque ou passe o mouse; no teclado, use as setas). As letras anteriores ficam azuis na proporção do peso que a cabeça escolhida deu a cada uma ao ler a letra marcada. A grade mostra o padrão das dezesseis cabeças para a mesma letra; toque numa para selecioná-la. Por fim, as letras que a rede, naquele ponto, esperava a seguir.",
   });
   const frase = h("div.at-frase", { tabindex: "0", role: "listbox", "aria-label": "Letras da frase" });
   const grade = h("div.at-grade");
@@ -231,7 +231,18 @@ function atencao(fig) {
     atencoes = sess.atencao; // atencoes[t]: lendo a posição t (0 = espaço inicial, t = letra t−1)
     [cam, cab] = escolherCabecaInteressante();
     celulas = [h("span.at-letra.at-inicio", { "data-t": 0, title: "início" }, "·"), ...[...texto].map((c, i) => h("span.at-letra", { "data-t": i + 1, role: "option" }, c === " " ? " " : c))];
-    trocar(frase, celulas);
+    // agrupa as letras por palavra, para a quebra de linha não partir palavras
+    const palavras = [];
+    let atual = h("span.at-palavra");
+    celulas.forEach((el, t) => {
+      atual.append(el);
+      if (t > 0 && texto[t - 1] === " ") {
+        palavras.push(atual);
+        atual = h("span.at-palavra");
+      }
+    });
+    palavras.push(atual);
+    trocar(frase, palavras);
     sel = Math.min(Math.round(texto.length * 0.6), texto.length);
     // começa num fim de palavra, onde a atenção costuma ficar interessante
     while (sel < texto.length && texto[sel] !== " ") sel++;
