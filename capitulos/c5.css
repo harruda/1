@@ -1,0 +1,133 @@
+/* Capítulo 5 — Comprimir é prever */
+
+.c5-rotulo-campo { display: block; font: var(--t-0) / 1.6 var(--f-dados); color: var(--tinta-2); text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 0.3rem; }
+.c5-status { margin: 0; font-size: var(--t-1); color: var(--tinta-2); min-height: 1.5em; }
+.c5-aviso { margin: 0; font-size: var(--t-1); color: var(--tinta-2); }
+.c5-aviso.errado { color: var(--ruido); }
+.c5-exemplo { margin: 0; font-size: var(--t-1); color: var(--tinta-2); }
+
+/* exibição de bits no texto corrido */
+.c5-exibe { display: flex; flex-wrap: wrap; gap: 0.4rem 1.2rem; font-size: var(--t-1); padding: 0.7rem 0.9rem; background: var(--papel-2); border-radius: var(--raio); }
+.c5-exibe > span { white-space: nowrap; }
+.c5-exibe b { font-family: var(--f-texto); font-weight: 600; margin-right: 0.2rem; }
+
+/* SVG genérico do capítulo */
+.c5-svg { width: 100%; height: auto; display: block; }
+.c5-tick { font: 11px var(--f-dados); fill: var(--tinta-2); }
+.c5-rotulo-svg { font: 13px var(--f-texto); fill: var(--tinta); pointer-events: none; }
+.c5-aresta { stroke: var(--tinta-2); stroke-width: 1.4; fill: none; }
+.c5-tracejada { stroke-dasharray: 3 3; opacity: 0.7; }
+.c5-bit-aresta { font: 10px var(--f-dados); fill: var(--sinal); }
+.c5-no { fill: var(--tinta-2); }
+.c5-folha { fill: var(--papel); stroke: var(--sinal); stroke-width: 1.6; }
+.c5-livre { fill: none; stroke: var(--tinta-2); stroke-width: 1.2; stroke-dasharray: 3 3; }
+.c5-rotulo-folha { font: 600 14px var(--f-texto); fill: var(--tinta); }
+.c5-cod-folha { font: 10px var(--f-dados); fill: var(--tinta-2); }
+.c5-cod-livre { font-style: italic; }
+
+/* ---------- Kraft ---------- */
+.c5-kraft-lista { display: grid; grid-template-columns: repeat(auto-fill, minmax(15.5rem, 1fr)); gap: 0.4rem 1.2rem; }
+.c5-kraft-linha { display: grid; grid-template-columns: 1.8rem 2.2rem 4.2rem 2.2rem minmax(0, 1fr); align-items: center; gap: 0.35rem; }
+.c5-simbolo { font: 600 var(--t-3) / 1 var(--f-texto); text-align: center; }
+.c5-mini { padding: 0.25rem 0; width: 2.2rem; height: 2.2rem; font: 500 var(--t-2) / 1 var(--f-dados); }
+.c5-kraft-l { font: var(--t-1) var(--f-dados); text-align: center; font-variant-numeric: tabular-nums; }
+.c5-kraft-cod { font-size: var(--t-1); color: var(--sinal); }
+.c5-sem-lugar .c5-kraft-cod { color: var(--ruido); font-family: var(--f-texto); font-style: italic; letter-spacing: 0; }
+.c5-kraft-barra { max-width: 40rem; }
+.c5-orcamento { fill: var(--papel); stroke: var(--tinta-2); stroke-width: 1; }
+.c5-pedaco { fill: var(--sinal-suave); stroke: var(--sinal); stroke-width: 1; }
+.c5-estouro { fill: color-mix(in srgb, var(--ruido) 30%, transparent); stroke: var(--ruido); }
+.c5-marco { stroke: var(--tinta); stroke-width: 2; }
+.c5-kraft-arvore svg { margin-inline: auto; min-width: 300px; }
+
+/* ---------- Huffman ---------- */
+.c5-fila { display: flex; flex-wrap: wrap; gap: 0.3rem; min-height: 2.2rem; }
+.c5-ficha {
+  display: inline-flex; align-items: baseline; gap: 0.35rem;
+  border: 1px solid var(--regua); background: var(--papel); border-radius: var(--raio);
+  padding: 0.15rem 0.45rem; font-size: var(--t-1);
+}
+.c5-ficha-letras { font-family: var(--f-texto); white-space: nowrap; }
+.c5-ficha-peso { font: var(--t-0) var(--f-dados); color: var(--tinta-2); }
+.c5-ficha-proxima { border-color: var(--sinal); box-shadow: 0 0 0 1px var(--sinal); }
+.c5-huff-arvore { padding-bottom: 0.2rem; }
+.c5-huff-svg { margin-inline: auto; }
+.c5-hno, .c5-harestas { transition: opacity 0.35s ease; }
+.c5-oculto { opacity: 0; }
+.c5-hfolha { fill: var(--papel); stroke: var(--regua); stroke-width: 1.2; }
+.c5-hinterno { fill: var(--papel); stroke: var(--tinta-2); stroke-width: 1.2; }
+.c5-peso-no { font: 9px var(--f-dados); fill: var(--tinta); }
+.c5-raiz .c5-hfolha, .c5-raiz .c5-hinterno { stroke: var(--tinta); stroke-width: 1.6; }
+.c5-proximo .c5-hfolha, .c5-proximo .c5-hinterno { stroke: var(--sinal); stroke-width: 2.6; fill: var(--sinal-suave); }
+.c5-novo .c5-hinterno { fill: var(--sinal); stroke: var(--sinal); }
+.c5-novo .c5-peso-no { fill: var(--papel); }
+
+.c5-tabela { display: grid; grid-template-columns: repeat(auto-fill, minmax(8.5rem, 1fr)); gap: 0.25rem 0.8rem; }
+.c5-celula { display: flex; align-items: baseline; gap: 0.4rem; border-bottom: 1px solid var(--regua); padding: 0.1rem 0; min-width: 0; }
+.c5-celula-letra { font: 600 var(--t-2) var(--f-texto); width: 1.1rem; text-align: center; }
+.c5-celula-n { font: var(--t-0) var(--f-dados); color: var(--tinta-2); width: 2.4rem; }
+.c5-celula-cod { font-size: var(--t-1); color: var(--sinal); }
+
+.c5-codificado { display: flex; flex-wrap: wrap; gap: 0.15rem 0; }
+.c5-par { display: inline-flex; flex-direction: column; align-items: center; padding: 0.1rem 0.12rem; border-radius: 2px; }
+.c5-par.c5-impar { background: var(--sinal-suave); }
+.c5-par-letra { font: var(--t-1) / 1.2 var(--f-texto); }
+.c5-par-bits { font-size: 0.68rem; letter-spacing: 0.02em; color: var(--tinta-2); }
+.c5-mais { align-self: center; font-size: var(--t-1); color: var(--tinta-2); margin-left: 0.5rem; }
+
+/* ---------- blocos ---------- */
+.c5-grafico { max-width: 44rem; }
+.c5-blocos-cod { display: flex; flex-wrap: wrap; gap: 0.3rem; }
+.c5-blocos-cod .bits { font-size: var(--t-1); color: var(--sinal); }
+
+/* ---------- aritmética ---------- */
+.c5-arit-svg { min-width: 320px; }
+.c5-fatia { fill: var(--papel); stroke: var(--regua); stroke-width: 0.5; }
+.c5-fatia-impar { fill: color-mix(in srgb, var(--tinta) 9%, var(--papel)); }
+.c5-fatia-escolhida { fill: var(--marca); stroke: var(--marca-tinta); stroke-width: 1; }
+.c5-rotulo-escolhido { fill: var(--marca-tinta); font-weight: 600; }
+.c5-zoom { fill: color-mix(in srgb, var(--marca) 28%, transparent); stroke: none; }
+.c5-arit-letra { font: 600 17px var(--f-texto); fill: var(--tinta); }
+.c5-arit-bits { margin: 0; font-size: var(--t-1); line-height: 1.7; color: var(--sinal); }
+.c5-arit-decod { border-top: 1px solid var(--regua); padding-top: 1rem; display: flex; flex-direction: column; gap: 0.6rem; }
+.c5-arit-saida { margin: 0; font-size: var(--t-3); min-height: 1.6em; overflow-wrap: anywhere; }
+.c5-arit-saida .errado { text-decoration: underline wavy var(--ruido); text-underline-offset: 3px; }
+
+/* ---------- comparação (barras horizontais em HTML) ---------- */
+.c5-legenda { display: flex; flex-wrap: wrap; gap: 0.3rem 1.2rem; font-size: var(--t-1); color: var(--tinta-2); }
+.c5-legenda span { display: inline-flex; align-items: center; gap: 0.4rem; }
+.c5-amostra-cor { display: inline-block; width: 0.9rem; height: 0.9rem; border-radius: 2px; }
+.c5-barras { display: flex; flex-direction: column; gap: 0.35rem; }
+.c5-barra-linha { display: grid; grid-template-columns: minmax(0, 15rem) minmax(0, 1fr) 3rem; gap: 0.8rem; align-items: center; }
+.c5-barra-nome { font-size: var(--t-1); text-align: right; line-height: 1.25; }
+.c5-barra-trilho { position: relative; height: 1.15rem; }
+.c5-barra-cheia { position: absolute; left: 0; top: 0; bottom: 0; border-radius: 0 2px 2px 0; transition: width 0.4s ease; }
+.c5-barra-valor { font: 500 var(--t-1) var(--f-dados); font-variant-numeric: tabular-nums; }
+.c5-cor-fixo { background: var(--tinta-2); }
+.c5-cor-gzip { background: var(--certo); }
+.c5-cor-modelo { background: var(--sinal); }
+.c5-barra-eixo { border-top: 1px solid var(--regua); padding-top: 0.2rem; }
+.c5-barra-eixo .c5-barra-nome { font: var(--t-0) var(--f-dados); color: var(--tinta-2); text-transform: uppercase; letter-spacing: 0.06em; }
+.c5-eixo-marca { position: absolute; top: 0; transform: translateX(-50%); font: var(--t-0) var(--f-dados); color: var(--tinta-2); }
+.c5-eixo-marca:first-child { transform: none; }
+@media (max-width: 40rem) {
+  .c5-barra-linha { grid-template-columns: minmax(0, 1fr) 3rem; gap: 0.1rem 0.6rem; }
+  .c5-barra-nome { grid-column: 1 / -1; text-align: left; }
+  .c5-barra-eixo .c5-barra-nome { display: none; }
+}
+
+/* ---------- acaso ---------- */
+.c5-acaso { display: flex; flex-direction: column; gap: 0.8rem; }
+.c5-acaso-linha { display: grid; grid-template-columns: minmax(0, 15rem) minmax(0, 1fr); gap: 0.2rem 1rem; align-items: center; }
+.c5-acaso-nome { display: flex; flex-direction: column; font-size: var(--t-1); line-height: 1.3; }
+.c5-acaso-nome span { color: var(--tinta-2); font-size: var(--t-0); font-family: var(--f-dados); }
+.c5-acaso-trilho { position: relative; height: 1.15rem; background: var(--papel); border-radius: 2px; }
+.c5-acaso-cheia { position: absolute; left: 0; top: 0; bottom: 0; background: var(--certo); border-radius: 2px; }
+.c5-acaso-cheia.c5-cresceu { background: var(--ruido); }
+.c5-acaso-cem { position: absolute; top: -0.2rem; bottom: -0.2rem; width: 2px; background: var(--tinta); }
+.c5-acaso-valor { grid-column: 2; font: var(--t-0) var(--f-dados); color: var(--tinta-2); font-variant-numeric: tabular-nums; }
+.c5-amostra-acaso { margin: 0; font: var(--t-1) / 1.5 var(--f-dados); color: var(--tinta-2); overflow-wrap: anywhere; white-space: pre-wrap; }
+@media (max-width: 40rem) {
+  .c5-acaso-linha { grid-template-columns: minmax(0, 1fr); }
+  .c5-acaso-valor { grid-column: 1; }
+}
