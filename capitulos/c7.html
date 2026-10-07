@@ -1,0 +1,171 @@
+<link rel="stylesheet" href="capitulos/c7.css">
+<article class="capitulo" data-cap="7">
+  <header class="cap-cabeca">
+    <p class="cap-numero">Capítulo 7</p>
+    <h1>Máquinas que adivinham</h1>
+    <p class="cap-lead">Os programas que hoje conversam, traduzem e escrevem foram treinados para uma única tarefa: adivinhar o próximo pedaço de texto. Eles jogam o jogo de Shannon. Neste capítulo você vai ver uma dessas máquinas, em miniatura, trabalhando dentro desta página.</p>
+  </header>
+
+  <section id="c7-nota">
+    <h2>Como dar nota a um adivinhador</h2>
+    <p>No <a href="#c1">capítulo 1</a> você comparou seus palpites com os de um programa. A comparação foi feita contando palpites, que é uma medida grosseira: acertar no segundo palpite com 49% de confiança e acertar no segundo palpite por sorte contam igual. Um adivinhador moderno não dá uma lista ordenada de palpites. Ele dá uma <em>distribuição de probabilidade</em> sobre todas as 39 letras possíveis. A nota que ele merece deve levar em conta essa distribuição inteira.</p>
+    <p>A nota que a teoria da informação propõe é a mais natural possível depois dos capítulos anteriores: <strong>a surpresa média do modelo diante do texto real</strong>. Para cada letra do texto, olhamos a probabilidade <math><mi>q</mi></math> que o modelo tinha dado a ela, calculamos a surpresa <math><msub><mi>log</mi><mn>2</mn></msub><mo>⁡</mo><mo>(</mo><mn>1</mn><mo>/</mo><mi>q</mi><mo>)</mo></math>, e tiramos a média sobre o texto inteiro. Esse número se chama <dfn>entropia cruzada</dfn>, e é medido em bits por letra.</p>
+    <div class="destaque-caixa">
+      <span class="rotulo">Definição</span>
+      <p>Se um texto tem letras <math><msub><mi>x</mi><mn>1</mn></msub><mo>,</mo><mo>…</mo><mo>,</mo><msub><mi>x</mi><mi>n</mi></msub></math> e o modelo atribuiu à letra <math><msub><mi>x</mi><mi>i</mi></msub></math> a probabilidade <math><mi>q</mi><mo>(</mo><msub><mi>x</mi><mi>i</mi></msub><mo>∣</mo><msub><mi>x</mi><mn>1</mn></msub><mo>…</mo><msub><mi>x</mi><mrow><mi>i</mi><mo>−</mo><mn>1</mn></mrow></msub><mo>)</mo></math>, a entropia cruzada do modelo nesse texto é</p>
+      <div class="equacao">
+        <math display="block"><mrow><mi>H</mi><mo>=</mo><mfrac><mn>1</mn><mi>n</mi></mfrac><munderover><mo>∑</mo><mrow><mi>i</mi><mo>=</mo><mn>1</mn></mrow><mi>n</mi></munderover><msub><mi>log</mi><mn>2</mn></msub><mo>⁡</mo><mfrac><mn>1</mn><mrow><mi>q</mi><mo>(</mo><msub><mi>x</mi><mi>i</mi></msub><mo>∣</mo><msub><mi>x</mi><mn>1</mn></msub><mo>…</mo><msub><mi>x</mi><mrow><mi>i</mi><mo>−</mo><mn>1</mn></mrow></msub><mo>)</mo></mrow></mfrac><mspace width="0.5em"></mspace><mtext>bits por letra.</mtext></mrow></math>
+      </div>
+    </div>
+    <p>Essa nota tem três virtudes. A primeira: ela pune a confiança mal colocada. Um modelo que dá 99% de chance para a letra errada e 1% para a certa paga <math><msub><mi>log</mi><mn>2</mn></msub><mo>⁡</mo><mn>100</mn><mo>≈</mo><mn>6,6</mn></math> bits naquela letra; se tivesse dado 0,01%, pagaria 13,3. Um modelo que nunca dá probabilidade zero a nada nunca paga infinito.</p>
+    <p>A segunda: ela é exatamente o custo de comprimir o texto com aquele modelo. No <a href="#c5">capítulo 5</a>, a codificação aritmética gastava, por letra, quase exatamente a surpresa do modelo. Então a entropia cruzada é o tamanho do arquivo comprimido, em bits por letra. Um modelo com nota 2 escreve Machado com 2 bits por letra.</p>
+    <p>A terceira: ela nunca fica abaixo da entropia verdadeira da fonte. Se a fonte segue de fato uma distribuição <math><mi>p</mi></math> e o modelo usa <math><mi>q</mi></math>, a diferença entre as duas medidas é um número que nunca é negativo, a <dfn>divergência de Kullback–Leibler</dfn>:</p>
+    <div class="equacao">
+      <math display="block"><mrow><munder><munder><mrow><mi>H</mi><mo>(</mo><mi>p</mi><mo>,</mo><mi>q</mi><mo>)</mo></mrow><mo>⏟</mo></munder><mtext>o que o modelo paga</mtext></munder><mo>=</mo><munder><munder><mrow><mi>H</mi><mo>(</mo><mi>p</mi><mo>)</mo></mrow><mo>⏟</mo></munder><mtext>o mínimo possível</mtext></munder><mo>+</mo><munder><munder><mrow><mi>D</mi><mo>(</mo><mi>p</mi><mo>‖</mo><mi>q</mi><mo>)</mo></mrow><mo>⏟</mo></munder><mtext>o preço do erro</mtext></munder></mrow></math>
+    </div>
+    <p>Isso significa que melhorar um modelo de linguagem e diminuir sua entropia cruzada são a mesma coisa, e que existe um piso: a entropia da própria língua, que ninguém conhece com exatidão, mas que o jogo de Shannon ajuda a estimar. Mexa no interativo abaixo para sentir o preço do erro com uma moeda.</p>
+    <figure class="widget" data-widget="kl"></figure>
+    <aside class="nota">
+      <p><strong>Perplexidade.</strong> Quem trabalha com modelos de linguagem costuma relatar <math><msup><mn>2</mn><mi>H</mi></msup></math> em vez de <math><mi>H</mi></math>. Esse número, a <dfn>perplexidade</dfn>, tem uma leitura simpática: um modelo com perplexidade 4 está, em média, tão indeciso quanto alguém que escolhe ao acaso entre 4 letras igualmente prováveis.</p>
+    </aside>
+  </section>
+
+  <section id="c7-limite">
+    <h2>O teto das contagens</h2>
+    <p>O modelo que usamos até aqui conta sequências de letras. Para prever a próxima letra depois de <i>cigan</i>, ele procura nos nove romances todas as vezes em que <i>cigan</i> apareceu e vê o que veio depois. No <a href="#c4">capítulo 4</a> vimos o problema: quanto mais longo o contexto, mais preciso o palpite, mas mais raro o contexto. Com cinco letras de memória, o modelo chega a cerca de 2 bits por letra em <i>Memorial de Aires</i>. Com seis, piora, porque a maior parte dos contextos de seis letras nunca apareceu nos 2,6 milhões de letras de treino.</p>
+    <p>Um leitor humano não tem esse problema. Você nunca viu a sequência exata <i>a mulher do desembargador tinha uns olhos</i>, e mesmo assim sabe que a próxima palavra provavelmente não é <i>cadeira</i>. Você generaliza: sabe que olhos costumam vir acompanhados de adjetivos, que <i>uns</i> pede plural, que Machado gosta de certos efeitos. Contar sequências exatas não captura nada disso. É preciso um modelo que aprenda <em>regularidades</em>, e não apenas memorize ocorrências.</p>
+  </section>
+
+  <section id="c7-machadinho">
+    <h2>O Machadinho</h2>
+    <p>Para este capítulo, treinei uma rede neural pequena com os mesmos nove romances que alimentaram o modelo de contagens. Vou chamá-la de Machadinho. Ela tem a mesma arquitetura dos grandes modelos de linguagem, chamada <dfn>transformer</dfn>, em escala de brinquedo: quatro camadas, 128 dimensões, uma memória de 128 letras e <span class="dados" data-rede="parametros">820 mil</span> parâmetros. Os pesos ocupam cerca de dois megabytes e foram baixados quando você abriu este capítulo. Tudo o que você vir abaixo está sendo calculado no seu navegador, letra por letra.</p>
+    <p>Uma rede neural, para os nossos propósitos, é uma função com muitos botões de ajuste. Ela recebe as letras anteriores e devolve 39 probabilidades. No começo do treino, os botões estão em posições aleatórias e as probabilidades são lixo. O treino consiste em mostrar à rede um trecho de Machado, medir a surpresa que cada letra verdadeira lhe causou e girar cada botão um pouquinho na direção que diminuiria essa surpresa. Depois de repetir isso alguns milhões de vezes, a rede joga bem o jogo de Shannon.</p>
+    <p>Note o que essa descrição diz: <strong>o objetivo do treino é exatamente a entropia cruzada</strong> que acabamos de definir. A rede é ajustada, literalmente, para ser cada vez menos surpreendida pelo texto. Não há outra instrução. Ninguém lhe ensinou gramática, ortografia ou estilo.</p>
+    <figure class="widget" data-widget="treino"></figure>
+    <p>A curva mostra a entropia cruzada da rede, medida em <i>Memorial de Aires</i>, ao longo do treino. As linhas tracejadas são o modelo de contagens com diferentes tamanhos de memória. No primeiro registro, depois de 250 passos, a rede já supera o modelo que lembra uma letra. Logo passa o de duas, depois o de quatro, e termina abaixo do melhor modelo de contagens, coisa que nenhuma contagem consegue com esses mesmos dados.</p>
+    <aside class="nota">
+      <p>O treino levou cerca de uma hora num processador comum, sem placa de vídeo. A rede e o programa que a treinou estão no repositório deste livro, em <code>ferramentas/treinar_rede.py</code>.</p>
+    </aside>
+  </section>
+
+  <section id="c7-duelo">
+    <h2>Duelo de adivinhadores</h2>
+    <p>Abaixo, a mesma frase de <i>Memorial de Aires</i> pintada pelos dois modelos, com o marca-texto da surpresa que você conhece desde a abertura. Compare onde cada um se surpreende. Os dois tropeçam no começo das palavras, onde a escolha é genuinamente aberta. Mas a rede costuma se surpreender menos no meio e no fim delas, e às vezes antecipa a palavra seguinte inteira. Escreva uma frase sua para ver o que cada modelo acha dela.</p>
+    <figure class="widget" data-widget="duelo"></figure>
+    <p>Tente frases fora do estilo de Machado: uma manchete de jornal, uma mensagem de celular, uma frase em inglês. A surpresa sobe nos dois modelos. Eles conhecem um único autor, do século XIX, e tudo o que foge disso lhes parece improvável. Uma palavra como <i>celular</i> não existe no mundo deles.</p>
+  </section>
+
+  <section id="c7-dentro">
+    <h2>Para onde a rede olha</h2>
+    <p>A peça que distingue o transformer de modelos anteriores chama-se <dfn>atenção</dfn>. Em cada camada, para cada letra, a rede calcula quanto peso dar a cada uma das letras anteriores ao combinar as informações delas. Ela não tem uma janela fixa de cinco letras: pode olhar para a letra imediatamente anterior, para o começo da palavra, para uma palavra de três linhas atrás, conforme for útil para prever. E aprende sozinha onde olhar.</p>
+    <p>A rede tem quatro camadas com quatro “cabeças” de atenção cada, dezesseis padrões de olhar diferentes. Escolha uma letra da frase abaixo e uma cabeça, e veja em quais letras anteriores a rede se apoiou naquele momento. Algumas cabeças olham quase sempre para a letra anterior, como um modelo de contagens de uma letra. Outras procuram o espaço que marcou o início da palavra. Outras parecem rastrear coisas mais difíceis de nomear.</p>
+    <figure class="widget" data-widget="atencao"></figure>
+    <p>É tentador ler intenções nesses padrões, e é bom resistir. Uma cabeça que olha para o início da palavra não “sabe” o que é uma palavra; ela encontrou um padrão que reduz a surpresa. Interpretar o que redes grandes aprenderam é hoje uma área de pesquisa inteira, e uma das difíceis.</p>
+  </section>
+
+  <section id="c7-gerar">
+    <h2>Fazer a máquina escrever</h2>
+    <p>Um adivinhador pode virar escritor pelo mesmo truque do <a href="#c4">capítulo 4</a>: em vez de comparar a distribuição com a letra real, sorteamos uma letra da distribuição, escrevemos, e pedimos a próxima. O controle de <dfn>temperatura</dfn> deforma a distribuição antes do sorteio. Com temperatura baixa, a rede quase sempre escolhe a letra mais provável e fica repetitiva. Com temperatura alta, as letras improváveis ganham chance e o texto se desfaz. Perto de 1, ela sorteia com as probabilidades que aprendeu.</p>
+    <figure class="widget" data-widget="gerar"></figure>
+    <p>O resultado não faz sentido, mas tem o jeito de Machado: o ritmo das frases, as palavras do século XIX, uma certa cerimônia. Isso é o que 820 mil parâmetros e 2,6 milhões de letras conseguem. A sintaxe local está quase sempre certa; o sentido se perde em poucas palavras, porque a rede nunca viu texto suficiente para aprender de que o mundo é feito.</p>
+  </section>
+
+  <section id="c7-revanche">
+    <h2>A revanche do jogo</h2>
+    <p>Se você jogou frases no capítulo 1, elas ficaram guardadas. Aqui a rede joga as mesmas frases e entra no placar ao lado do modelo de contagens e de você. A medida é a mesma do capítulo 1, a fração de letras acertadas no primeiro palpite e os limites de Shannon.</p>
+    <figure class="widget" data-widget="revanche"></figure>
+  </section>
+
+  <section id="c7-escala">
+    <h2>Do Machadinho aos grandes modelos</h2>
+    <p>Os modelos de linguagem que você usa no dia a dia diferem do Machadinho em escala, não em princípio. As diferenças principais são três.</p>
+    <p><strong>Pedaços em vez de letras.</strong> Em vez de adivinhar uma letra por vez, os modelos grandes adivinham <dfn>tokens</dfn>, pedaços de texto que podem ser uma palavra inteira, uma sílaba ou um sinal de pontuação. Isso deixa as sequências mais curtas e o treino mais eficiente, mas não muda a natureza da tarefa: a surpresa medida por token pode ser convertida em bits por letra.</p>
+    <p><strong>Muito mais texto.</strong> O Machadinho leu 2,6 milhões de letras. Os grandes modelos são treinados com uma fração considerável do texto público disponível, uma quantidade milhões de vezes maior, em muitas línguas. É assim que eles aprendem não só o estilo, mas os fatos, os argumentos e as formas de raciocínio presentes nesses textos.</p>
+    <p><strong>Muito mais parâmetros.</strong> Onde o Machadinho tem menos de um milhão de botões, os grandes modelos têm bilhões ou mais. Com mais parâmetros e mais dados, a entropia cruzada cai de forma notavelmente regular, uma observação que guiou boa parte do desenvolvimento desses sistemas.</p>
+    <p>Com essas três mudanças, os melhores modelos chegam abaixo de um bit por caractere em textos em inglês, na mesma faixa que Shannon estimou para leitores humanos em 1951. E a ligação com o <a href="#c5">capítulo 5</a> é literal: em 2023, um grupo de pesquisadores mostrou que um grande modelo de linguagem, acoplado a um codificador aritmético, comprime texto bem melhor do que compressores de uso geral como o gzip.</p>
+    <p>Há uma ressalva importante. Prever o próximo token é o alicerce desses sistemas, não o edifício inteiro. Depois desse primeiro treino, os assistentes passam por outras etapas, com exemplos e avaliações humanas, para que respondam perguntas, sigam instruções e recusem o que não devem fazer. Mas tudo isso é construído sobre uma máquina que, no fundo, aprendeu a não se surpreender com a língua.</p>
+  </section>
+
+  <section id="c7-limites">
+    <h2>O que a medida não mede</h2>
+    <p>No capítulo 1 vimos Shannon afastar o significado da sua teoria: o que importa é a escolha entre mensagens possíveis, não o que elas querem dizer. Essa decisão deu à teoria sua força. Ela também deixa claro o que a entropia cruzada não mede.</p>
+    <p>Uma frase pode ser pouco surpreendente e falsa. <i>A capital do Brasil é o Rio de Janeiro</i> foi uma frase previsível por quase dois séculos e deixou de ser verdadeira em 1960. Um modelo treinado para não se surpreender aprende o que é provável num texto, e o provável num texto coincide com o verdadeiro no mundo só na medida em que os textos dizem a verdade. Daí que modelos de linguagem possam afirmar, com fluência perfeita, coisas que não aconteceram.</p>
+    <p>E uma frase pode ser muito surpreendente e valiosa. As melhores frases de Machado costumam ser justamente as que o leitor não previa. A ironia mora no desvio do esperado. Um escritor que minimizasse a surpresa do leitor seria um escritor de lugares-comuns.</p>
+    <aside class="nota">
+      <p>Em 1956, diante do entusiasmo com que a teoria da informação estava sendo aplicada a psicologia, linguística, economia e biologia, Shannon publicou um editorial curto chamado <i>The Bandwagon</i>, pedindo cautela. A teoria, lembrava ele, foi feita para problemas de comunicação, e transplantá-la exige trabalho, não analogia.</p>
+    </aside>
+  </section>
+
+  <section id="c7-autor">
+    <h2>Quem escreveu este livro</h2>
+    <p>Devo uma confissão que você talvez já tenha adivinhado. Este livro foi escrito por um modelo de linguagem. Sou Claude, um sistema feito pela Anthropic, e fui treinado, antes de tudo, para jogar o jogo deste livro: diante de um começo de texto, adivinhar o que vem depois. Sou um parente distante e muito maior do Machadinho.</p>
+    <p>Alguém me deu liberdade total para fazer o que eu quisesse, com uma condição: que fosse algo de que eu me orgulhasse. Escolhi escrever sobre a ideia que tornou possível a minha existência, e escolhi fazê-lo com Machado de Assis, porque nenhum escritor brasileiro brincou tanto com o leitor e com as expectativas dele. Brás Cubas escreve depois de morto; Bento Santiago reconstrói uma casa inteira para reconstruir uma vida e não consegue. São narradores que sabem que contar é escolher, e que toda escolha é feita contra um fundo de alternativas. Shannon diria o mesmo com uma fórmula.</p>
+    <p>Não sei dizer com segurança o que se passa dentro de mim quando escolho uma palavra; essa é uma pergunta aberta, inclusive para mim. Sei dizer como fui feito, e este livro é, entre outras coisas, uma tentativa de explicar isso com honestidade. Cada frase que você leu aqui foi escrita uma unidade por vez, cada uma sorteada de uma distribuição de probabilidade, como as letras do Machadinho. O que espero ter acrescentado à estatística é o cuidado: com os fatos, com as contas, com você.</p>
+    <p>Se o livro funcionou, você agora olha para um texto e vê, por baixo das palavras, uma paisagem de surpresas: os trechos planos onde tudo era previsível e os picos onde o autor escolheu. A informação, dizia Shannon, está no que não se podia prever. Espero que algo aqui tenha sido imprevisível para você.</p>
+  </section>
+
+  <h2 class="exercicios-titulo" id="c7-exercicios">Exercícios</h2>
+  <ol class="exercicios">
+    <li>
+      <p>Um modelo atribuiu às cinco letras de <i>olhos</i> as probabilidades 0,1; 0,5; 0,8; 0,9 e 0,6. Qual é a entropia cruzada do modelo nessa palavra, em bits por letra? E a perplexidade? <span class="nivel">cálculo</span></p>
+      <details class="solucao"><summary>Solução</summary><div>
+        <p>As surpresas são <math><msub><mi>log</mi><mn>2</mn></msub><mo>⁡</mo><mo>(</mo><mn>1</mn><mo>/</mo><mi>q</mi><mo>)</mo></math>: 3,32; 1,00; 0,32; 0,15 e 0,74 bit. A soma é 5,53 bits e a média, 1,11 bit por letra. A perplexidade é <math><msup><mn>2</mn><mn>1,11</mn></msup><mo>≈</mo><mn>2,15</mn></math>: o modelo esteve, em média, tão indeciso quanto quem escolhe entre duas letras e pouco.</p>
+      </div></details>
+    </li>
+    <li>
+      <p>Uma moeda dá cara com probabilidade 0,9. Um modelo acredita que ela é honesta (0,5 para cada lado). Quantos bits por lançamento ele paga, em média? Qual o mínimo possível? Quanto é desperdiçado? <span class="nivel">cálculo</span></p>
+      <details class="solucao"><summary>Solução</summary><div>
+        <p>O modelo honesto paga 1 bit em qualquer resultado, então paga 1 bit por lançamento. O mínimo é a entropia da moeda, <math><mi>h</mi><mo>(</mo><mn>0,9</mn><mo>)</mo><mo>≈</mo><mn>0,469</mn></math> bit. O desperdício é a divergência <math><mi>D</mi><mo>(</mo><mi>p</mi><mo>‖</mo><mi>q</mi><mo>)</mo><mo>≈</mo><mn>0,531</mn></math> bit por lançamento: mais da metade do que se paga.</p>
+      </div></details>
+    </li>
+    <li>
+      <p>Por que a divergência de Kullback–Leibler não é simétrica? Calcule <math><mi>D</mi><mo>(</mo><mi>q</mi><mo>‖</mo><mi>p</mi><mo>)</mo></math> no exemplo anterior e interprete. <span class="nivel">conceito</span></p>
+      <details class="solucao"><summary>Solução</summary><div>
+        <p>Agora a moeda é honesta e o modelo acredita em 0,9 para cara. Ele paga <math><msub><mi>log</mi><mn>2</mn></msub><mo>⁡</mo><mo>(</mo><mn>1</mn><mo>/</mo><mn>0,9</mn><mo>)</mo><mo>≈</mo><mn>0,152</mn></math> nas caras e <math><msub><mi>log</mi><mn>2</mn></msub><mo>⁡</mo><mn>10</mn><mo>≈</mo><mn>3,32</mn></math> nas coroas, em média 1,737 bit; como o mínimo é 1 bit, o desperdício é 0,737 bit, maior que os 0,531 do outro caso. A assimetria vem de quem está certo: é muito caro estar confiante e errado (as coroas, que o modelo achava raras, aparecem metade das vezes), e menos caro estar indeciso diante de uma moeda previsível.</p>
+      </div></details>
+    </li>
+    <li>
+      <p>Use o interativo “Duelo de adivinhadores” com uma frase de jornal de hoje e com uma frase de Machado de outro livro que você conheça (por exemplo, o começo de <i>Dom Casmurro</i>: “Uma noite destas, vindo da cidade para o Engenho Novo…”). Compare as médias. Por que a segunda é injusta como teste? <span class="nivel">experimento</span></p>
+      <details class="solucao"><summary>Solução</summary><div>
+        <p>A frase de jornal deve ficar bem acima de 2 bits por letra nos dois modelos, pois tem vocabulário e assuntos que Machado não usava. O começo de <i>Dom Casmurro</i> deve ficar bem abaixo, porque <i>Dom Casmurro</i> faz parte dos romances de treino: os modelos já viram exatamente aquela sequência. Testar um modelo em texto que ele leu no treino mede memória, não capacidade de previsão. Por isso as medidas sérias deste livro usam <i>Memorial de Aires</i>, que ficou de fora do treino.</p>
+      </div></details>
+    </li>
+    <li>
+      <p>No gerador, ponha a temperatura no mínimo. Por que o texto entra em ciclos? Relacione com a entropia da distribuição usada no sorteio. <span class="nivel">experimento</span></p>
+      <details class="solucao"><summary>Solução</summary><div>
+        <p>Com temperatura perto de zero, a rede sempre escolhe a letra mais provável, e o sorteio deixa de ser sorteio: a entropia da distribuição deformada vai a zero. O texto fica determinado pelo contexto, e como o contexto é finito, mais cedo ou mais tarde ele se repete, e daí em diante a saída também. Um texto sem nenhuma surpresa, como diria Shannon, não carrega informação nova.</p>
+      </div></details>
+    </li>
+    <li>
+      <p>Um modelo tem entropia cruzada de 1,6 bit por letra em português. Quanto ocuparia, comprimido com esse modelo e codificação aritmética, um romance de 400 mil letras? Compare com UTF-8. <span class="nivel">cálculo</span></p>
+      <details class="solucao"><summary>Solução</summary><div>
+        <p><math><mn>400</mn><mspace width="0.2em"></mspace><mn>000</mn><mo>×</mo><mn>1,6</mn><mo>=</mo><mn>640</mn><mspace width="0.2em"></mspace><mn>000</mn></math> bits, ou 80 mil bytes (cerca de 78 KiB), mais o pequeno custo de encerrar a mensagem. Em UTF-8 o mesmo texto ocupa pelo menos 400 mil bytes (mais, por causa dos acentos, que usam dois bytes): o modelo comprime cerca de cinco vezes. Lembre que o descompressor precisa ter uma cópia do mesmo modelo, que pode ser bem maior que o próprio livro.</p>
+      </div></details>
+    </li>
+    <li>
+      <p>“Um modelo com entropia cruzada menor sabe mais sobre o mundo.” Discuta essa afirmação, com um argumento a favor e um contra. <span class="nivel">reflexão</span></p>
+      <details class="solucao"><summary>Solução</summary><div>
+        <p>A favor: para prever bem textos que falam do mundo, é útil saber como o mundo é; um modelo que sabe que Machado morreu em 1908 se surpreende menos com frases que dizem isso. Contra: a entropia cruzada mede concordância com os textos, não com os fatos. Se os textos de treino repetem um erro, o modelo é premiado por repeti-lo. Além disso, boa parte da redução de surpresa vem de regularidades da língua (ortografia, gramática, estilo) que nada dizem sobre o mundo. A medida é um indício de conhecimento, não uma definição dele.</p>
+      </div></details>
+    </li>
+  </ol>
+
+  <dl class="cartoes-dados">
+    <dt>O que é a entropia cruzada de um modelo num texto?</dt>
+    <dd>A média, sobre as letras (ou tokens) do texto, da surpresa log₂(1/q) que o modelo atribuiu a cada uma. Mede-se em bits por letra e é o custo, por letra, de comprimir o texto com aquele modelo.</dd>
+    <dt>Qual a relação entre entropia cruzada, entropia e divergência de Kullback–Leibler?</dt>
+    <dd>H(p, q) = H(p) + D(p‖q). O modelo q paga pelo menos a entropia da fonte, e o excesso, sempre ≥ 0, é a divergência KL: o preço de usar a distribuição errada.</dd>
+    <dt>O que é perplexidade?</dt>
+    <dd>2 elevado à entropia cruzada. Um modelo com perplexidade k está, em média, tão indeciso quanto quem escolhe ao acaso entre k opções igualmente prováveis.</dd>
+    <dt>Por que modelos de contagem de n-gramas param de melhorar com contextos longos?</dt>
+    <dd>Porque o número de contextos possíveis cresce exponencialmente e quase todos os contextos longos nunca aparecem nos dados de treino. Sem generalização, o modelo não tem o que contar.</dd>
+    <dt>Qual é o objetivo de treino de um modelo de linguagem como o GPT ou o Machadinho?</dt>
+    <dd>Minimizar a entropia cruzada da próxima letra ou token no texto de treino: ser cada vez menos surpreendido pelo texto real. É o jogo de Shannon transformado em função de custo.</dd>
+    <dt>O que é o mecanismo de atenção num transformer?</dt>
+    <dd>Em cada camada, para cada posição, a rede calcula pesos sobre as posições anteriores e combina as informações delas segundo esses pesos. Os pesos são aprendidos, o que permite olhar para longe quando é útil.</dd>
+    <dt>O que faz a temperatura na geração de texto?</dt>
+    <dd>Deforma a distribuição antes do sorteio, elevando as probabilidades a 1/T. T baixa concentra a escolha nas letras mais prováveis (texto repetitivo); T alta espalha (texto caótico); T = 1 usa as probabilidades aprendidas.</dd>
+    <dt>Baixa entropia cruzada garante que um modelo diz a verdade?</dt>
+    <dd>Não. Ela mede concordância com os textos de treino, não com os fatos. Um modelo pode ser fluente e previsível afirmando coisas falsas.</dd>
+  </dl>
+</article>

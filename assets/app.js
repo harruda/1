@@ -92,7 +92,7 @@ async function navegar() {
     document.title = pagina === "inicio" ? "A Medida da Surpresa" : `${NOMES[pagina]} · A Medida da Surpresa`;
     try {
       if (pagina === "inicio") desmontar = abertura();
-      else if (pagina.startsWith("c")) desmontar = await carregarCapitulo(pagina);
+      else if (/^c\d+$/.test(pagina)) desmontar = await carregarCapitulo(pagina);
       else desmontar = await carregarApendice(pagina);
     } catch (err) {
       console.error(err);

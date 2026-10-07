@@ -1,0 +1,47 @@
+<link rel="stylesheet" href="paginas/paginas.css">
+<article class="pagina">
+  <header class="cap-cabeca">
+    <p class="cap-numero">Apêndice</p>
+    <h1>Referências e créditos</h1>
+    <p class="cap-lead">Onde ler mais, de onde vieram os dados e como este livro foi feito.</p>
+  </header>
+
+  <section id="referencias-ler">
+    <h2>Para continuar</h2>
+    <ul class="ref-lista">
+      <li><strong>James Gleick, <i>A informação: uma história, uma teoria, uma enxurrada</i></strong> (Companhia das Letras, 2013; original de 2011). A história da ideia de informação, dos tambores africanos à genética, com Shannon no centro. A melhor leitura de acompanhamento para este livro, sem matemática.</li>
+      <li><strong>Jimmy Soni e Rob Goodman, <i>A Mind at Play: How Claude Shannon Invented the Information Age</i></strong> (Simon &amp; Schuster, 2017). A biografia de Shannon: o engenheiro, o malabarista, o construtor de máquinas inúteis.</li>
+      <li><strong>David MacKay, <i>Information Theory, Inference, and Learning Algorithms</i></strong> (Cambridge University Press, 2003). Um livro-texto generoso e cheio de exercícios, que liga teoria da informação, compressão, códigos e aprendizado de máquina. O autor o deixou disponível gratuitamente na internet.</li>
+      <li><strong>Thomas Cover e Joy Thomas, <i>Elements of Information Theory</i></strong> (Wiley, 2.ª ed., 2006). O livro-texto padrão de pós-graduação. Para quem quer as demonstrações completas.</li>
+    </ul>
+  </section>
+
+  <section id="referencias-fontes">
+    <h2>Os trabalhos citados</h2>
+    <ul class="ref-lista">
+      <li>R. V. L. Hartley, “Transmission of Information”, <i>Bell System Technical Journal</i> 7 (1928). <span class="onde">Capítulo 2.</span></li>
+      <li>C. E. Shannon, “A Mathematical Theory of Communication”, <i>Bell System Technical Journal</i> 27 (1948), em duas partes, julho e outubro. O artigo que fundou a área. <span class="onde">Todos os capítulos.</span></li>
+      <li>C. E. Shannon, “Prediction and Entropy of Printed English”, <i>Bell System Technical Journal</i> 30 (1951). O jogo de adivinhação. <span class="onde">Capítulos 1, 4 e 7.</span></li>
+      <li>C. E. Shannon, “The Bandwagon”, <i>IRE Transactions on Information Theory</i> 2 (1956). <span class="onde">Capítulo 7.</span></li>
+      <li>A. A. Markov, estudo estatístico de <i>Eugênio Onêguin</i>, de Púchkin, apresentado em 1913. <span class="onde">Capítulo 4.</span></li>
+      <li>R. W. Hamming, “Error Detecting and Error Correcting Codes”, <i>Bell System Technical Journal</i> 29 (1950). <span class="onde">Capítulo 6.</span></li>
+      <li>D. A. Huffman, “A Method for the Construction of Minimum-Redundancy Codes”, <i>Proceedings of the IRE</i> 40 (1952). <span class="onde">Capítulo 5.</span></li>
+      <li>A. Vaswani e outros, “Attention Is All You Need”, 2017. O artigo que introduziu o transformer. <span class="onde">Capítulo 7.</span></li>
+      <li>G. Delétang e outros, “Language Modeling Is Compression”, 2023. Modelos de linguagem usados como compressores. <span class="onde">Capítulo 7.</span></li>
+    </ul>
+  </section>
+
+  <section id="referencias-dados">
+    <h2>Os dados</h2>
+    <p>Os textos de Machado de Assis vêm da <i>Obra Completa</i> publicada pelo Ministério da Educação no portal <i>machado.mec.gov.br</i>, em domínio público, na versão reunida pelo projeto NLTK como corpus <code>machado</code>. Para os experimentos, cada romance foi reduzido a um alfabeto de 39 símbolos: o espaço, as 26 letras e as letras acentuadas á, à, â, ã, é, ê, í, ó, ô, õ, ú e ç. Maiúsculas viraram minúsculas; pontuação e algarismos foram removidos.</p>
+    <p>Nove romances, de <i>Ressurreição</i> (1872) a <i>Esaú e Jacó</i> (1904), somam 2,6 milhões de letras e servem de treino. <i>Memorial de Aires</i> (1908), com 270 mil letras, ficou de fora de todo treino e é usado em todas as medições e no jogo do capítulo 1.</p>
+  </section>
+
+  <section id="referencias-feito">
+    <h2>Como este livro foi feito</h2>
+    <p>Este livro foi escrito e programado por Claude, um modelo de linguagem da Anthropic, em outubro de 2026, numa única sessão de trabalho. A pessoa que abriu a sessão não sugeriu tema nem formato; pediu apenas que o resultado fosse algo de que o autor se orgulhasse.</p>
+    <p>A arquitetura do livro, o núcleo de programação, os capítulos 1 e 7, a abertura e os apêndices foram feitos diretamente. Os capítulos 2 a 6 foram redigidos em paralelo por cinco instâncias auxiliares do mesmo modelo, a partir de um guia de estilo comum, e depois revisados e integrados. A rede neural do capítulo 7 foi treinada durante a sessão, num processador comum, e reimplementada à mão em JavaScript; um teste automático confere que as duas versões dão as mesmas probabilidades.</p>
+    <p>Tudo roda no seu navegador. Nada do que você digita nos interativos sai do seu computador; o progresso no jogo e nos cartões fica guardado apenas no armazenamento local do navegador.</p>
+    <p>Tipografia: Old Standard TT (títulos), Literata (texto) e Martian Mono (números e dados), todas de licença aberta. A fita perfurada no alto de cada capítulo escreve o título dele no código telegráfico de cinco bits apresentado no capítulo 2.</p>
+  </section>
+</article>

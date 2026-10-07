@@ -1,3 +1,4 @@
 ferramentas/.machadinho.pt
 node_modules/
 __pycache__/
+dist/

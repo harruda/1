@@ -1,0 +1,11 @@
+/* Apêndices */
+.rev-cartao { background: var(--papel); border: 1px solid var(--regua); border-radius: var(--raio); padding: 1.4rem 1.5rem; min-height: 11rem; display: flex; flex-direction: column; gap: 0.8rem; }
+.rev-pergunta { font: 400 var(--t-3) / 1.4 var(--f-titulo); }
+.rev-resposta { border-top: 1px solid var(--regua); padding-top: 0.8rem; color: var(--tinta); }
+.rev-meta { margin: 0; font: var(--t-0) / 1.5 var(--f-dados); color: var(--tinta-2); text-transform: uppercase; letter-spacing: 0.08em; }
+.rev-caixas { display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 0.4rem; }
+.rev-caixa { display: flex; flex-direction: column; align-items: center; padding: 0.5rem 0.2rem; border: 1px solid var(--regua); border-radius: var(--raio); font: var(--t-0) var(--f-dados); color: var(--tinta-2); }
+.rev-caixa-n { font-size: var(--t-3); color: var(--tinta); }
+.ref-lista { padding-left: 1.2rem; }
+.ref-lista li { margin-bottom: 0.8rem; }
+.ref-lista .onde { color: var(--tinta-2); font-size: var(--t-1); }

@@ -2,13 +2,14 @@
 
 É a mesma arquitetura dos grandes modelos de linguagem (GPT), em escala de brinquedo:
 4 camadas, 4 cabeças de atenção, vetores de 128 dimensões, contexto de 128 letras.
-Os pesos são exportados em float16 para dados/machadinho.bin e o navegador roda a rede
+Os pesos são exportados em float16 (base64) para dados/machadinho-pesos.txt e o navegador roda a rede
 (ver assets/nucleo/rede.js). A verificação numérica entre as duas implementações está em
 dados/machadinho-verificacao.json.
 
 Uso (requer PyTorch):
     python3 ferramentas/treinar_rede.py [passos]
 """
+import base64
 import json
 import math
 import sys
@@ -96,7 +97,9 @@ def bits_por_letra(modelo, dados, n=40000):
 
 
 def exportar(modelo, caminho):
-    """Formato: cabeçalho JSON (tamanho em uint32) + tensores float16 na ordem listada."""
+    """Formato: cabeçalho JSON (tamanho em uint32) + tensores float16 na ordem listada,
+    tudo codificado em base64 num arquivo de texto (hospedagens de páginas servem texto
+    com mais boa vontade do que binário)."""
     tensores = []
     for nome, p in modelo.state_dict().items():
         tensores.append((nome, p.detach().cpu().numpy().astype(np.float16)))
@@ -106,11 +109,9 @@ def exportar(modelo, caminho):
     }
     b = json.dumps(cab, ensure_ascii=False).encode("utf-8")
     b += b" " * ((-len(b) - 4) % 8)  # alinha os dados em 8 bytes
-    with open(caminho, "wb") as f:
-        f.write(np.uint32(len(b)).tobytes())
-        f.write(b)
-        for _, a in tensores:
-            f.write(a.tobytes())
+    bruto = np.uint32(len(b)).tobytes() + b + b"".join(a.tobytes() for _, a in tensores)
+    with open(caminho, "w") as f:
+        f.write(base64.b64encode(bruto).decode("ascii"))
 
 
 def main():
@@ -145,7 +146,7 @@ def main():
 
     final = bits_por_letra(modelo, teste, len(teste) - 1)
     print(f"final (Memorial de Aires inteiro): {final:.4f} bits/letra", flush=True)
-    exportar(modelo, RAIZ / "dados/machadinho.bin")
+    exportar(modelo, RAIZ / "dados/machadinho-pesos.txt")
 
     # verificação: probabilidades da rede para uma frase, para conferir a implementação em JS
     frase = "capitu tinha olhos de cigana obliqua e dissimulada"

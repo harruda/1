@@ -336,7 +336,7 @@ math[display="block"] { margin: 1.2rem 0; overflow-x: auto; overflow-y: hidden; 
 .botao.discreto { border-color: transparent; background: none; color: var(--sinal); padding-inline: 0.3rem; }
 .botao:disabled { opacity: 0.45; cursor: default; }
 
-.seletor { display: inline-flex; border: 1px solid var(--regua); border-radius: var(--raio); overflow: hidden; flex-wrap: wrap; }
+.seletor { align-self: flex-start; display: inline-flex; border: 1px solid var(--regua); border-radius: var(--raio); overflow: hidden; flex-wrap: wrap; }
 .seletor button {
   font: var(--t-1) / 1.2 var(--f-texto);
   padding: 0.45rem 0.8rem;
