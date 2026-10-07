@@ -104,13 +104,20 @@ function jogo(fig) {
         cel.classList.add("jogo-oculta");
         cel.append(h("span.jogo-letra", " "), h("span.jogo-num", " "));
       }
+      if (i >= pos && !acabou) {
+        // casas ainda ocultas não se agrupam por palavra: a quebra de linha não pode revelar onde ficam os espaços
+        if (palavra.childNodes.length) filhos.push(palavra);
+        palavra = h("span.jogo-palavra");
+        filhos.push(cel);
+        continue;
+      }
       palavra.append(cel);
       if (c === " ") {
         filhos.push(palavra);
         palavra = h("span.jogo-palavra");
       }
     }
-    filhos.push(palavra);
+    if (palavra.childNodes.length) filhos.push(palavra);
     trocar(linhaTexto, filhos);
   }
 

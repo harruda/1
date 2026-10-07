@@ -3,6 +3,7 @@
   display: flex;
   flex-wrap: wrap;
   row-gap: 0.5rem;
+  column-gap: 1px;
   font-size: var(--t-3);
   min-height: 3.5rem;
 }
@@ -18,12 +19,12 @@
   border-radius: 2px;
 }
 .jogo-num[data-n="1"] { color: color-mix(in srgb, var(--tinta-2) 55%, transparent); }
-.jogo-num:not([data-n="1"]):not(:empty) { background: color-mix(in srgb, var(--marca) 55%, transparent); color: var(--marca-tinta); }
+.jogo-num[data-n]:not([data-n="1"]) { background: color-mix(in srgb, var(--marca) 55%, transparent); color: var(--marca-tinta); }
 .jogo-espaco .jogo-letra { width: 0.6em; border-bottom: 1px dotted var(--regua); }
 .jogo-oculta .jogo-letra { width: 0.62em; border-bottom: 1px solid var(--regua); margin-inline: 0.04em; }
 .jogo-cursor .jogo-letra { width: 0.62em; border-bottom: 2px solid var(--sinal); margin-inline: 0.04em; animation: piscar 1s steps(2) infinite; }
 @keyframes piscar { 50% { border-bottom-color: transparent; } }
-.jogo-maquina .jogo-num:not([data-n="1"]):not(:empty) { background: var(--sinal-suave); color: var(--tinta); }
+.jogo-maquina .jogo-num[data-n]:not([data-n="1"]) { background: var(--sinal-suave); color: var(--tinta); }
 .jogo-controles { gap: 0.6rem 1rem; }
 .jogo-entrada { width: 7rem !important; font-family: var(--f-dados) !important; font-size: var(--t-1) !important; }
 .jogo-tentadas { margin: 0; font: var(--t-1) var(--f-dados); color: var(--ruido); text-decoration: line-through; }
@@ -47,7 +48,10 @@
 .tecla:disabled { opacity: 0.3; text-decoration: line-through; cursor: default; }
 .tecla.espaco { min-width: 12rem; font: var(--t-0) var(--f-dados); text-transform: uppercase; letter-spacing: 0.1em; }
 @media (max-width: 30rem) {
-  .tecla { min-width: 1.85rem; height: 2.3rem; font-size: var(--t-1); padding: 0; }
+  .teclado { align-items: stretch; }
+  .teclado-fileira { flex-wrap: nowrap; gap: 2px; }
+  .tecla { min-width: 0; flex: 1 1 0; max-width: 2.15rem; height: 2.4rem; font-size: var(--t-1); padding: 0; }
+  .tecla.espaco { max-width: none; flex: 0 1 12rem; }
 }
 
 .rotulo-campo { display: block; font: var(--t-0) / 1.6 var(--f-dados); color: var(--tinta-2); text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 0.3rem; }
