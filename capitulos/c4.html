@@ -1,0 +1,242 @@
+<link rel="stylesheet" href="capitulos/c4.css">
+<article class="capitulo" data-cap="4">
+  <header class="cap-cabeca">
+    <p class="cap-numero">Capítulo 4</p>
+    <h1>O português previsível</h1>
+    <p class="cap-lead">Quanto de um romance de Machado de Assis já está escrito antes de ser escrito? Para responder, vamos fabricar um Machado de mentira, letra por letra, só com estatística. Depois vamos medir quanto custa cada letra a quem já leu as anteriores, e descobrir que a maior parte do que escrevemos poderia ser adivinhada.</p>
+  </header>
+
+  <section id="c4-livro">
+    <h2>Um livro aberto ao acaso</h2>
+    <p>No artigo de 1948, antes de qualquer teorema, Shannon fez uma pergunta de aparência ingênua. Como seria um texto em inglês produzido por alguém que conhecesse apenas as estatísticas da língua, sem saber o que as palavras querem dizer? Ele não tinha um computador à mão para isso. Tinha livros.</p>
+    <p>O procedimento era este. Abria um livro numa página qualquer e escolhia uma letra ao acaso. Anotava essa letra. Abria o livro em outra página e lia até encontrar aquela mesma letra; anotava a letra que vinha logo depois dela. Abria em outra página, procurava a letra recém-anotada, anotava a seguinte. E assim por diante. Cada letra nova saía com a frequência exata com que costuma seguir a anterior, sem que ninguém precisasse contar nada, porque o próprio livro guardava as contagens.</p>
+    <p>Com trincas a ideia é a mesma: procura-se o par formado pelas duas últimas letras anotadas e copia-se a letra que vem depois dele. Shannon subiu essa escada degrau por degrau. Com letras sorteadas ao acaso, saiu uma sopa de consoantes. Com as frequências de pares, apareceram sílabas pronunciáveis. Com trincas, surgiram coisas como <span lang="en">IN NO IST LAT WHEY CRATICT FROURE BIRS GROCID</span>, que um falante de inglês quase consegue ler em voz alta. Depois ele trocou letras por palavras inteiras, e o sorteio de cada palavra a partir da anterior produziu isto:</p>
+    <blockquote lang="en">
+      <p>THE HEAD AND IN FRONTAL ATTACK ON AN ENGLISH WRITER THAT THE CHARACTER OF THIS POINT IS THEREFORE ANOTHER METHOD FOR THE LETTERS THAT THE TIME OF WHO EVER TOLD THE PROBLEM FOR AN UNEXPECTED</p>
+      <footer lang="pt-BR">Claude Shannon, 1948, aproximação por pares de palavras</footer>
+    </blockquote>
+    <p>Nenhuma dessas sequências significa nada, e cada uma soa mais inglesa que a anterior. Shannon as chamou de <dfn>aproximações</dfn> do inglês.</p>
+    <p>O interativo abaixo refaz a escada com Machado. O programa leu os nove romances de que falamos no capítulo 1 e sorteia cada letra de acordo com as letras anteriores. A <dfn>ordem</dfn> é o número de letras de memória que ele usa. Na ordem 0, ele só conhece a frequência de cada letra. Na ordem 2, olha as duas últimas letras e sorteia a próxima com a frequência com que ela aparece depois desse par em Machado. A ordem −1 é o ponto de partida, com as 39 letras igualmente prováveis.</p>
+    <aside class="nota">
+      <p><strong>Duas numerações.</strong> Shannon chamava de “aproximação de ordem zero” o sorteio uniforme e de “primeira ordem” o sorteio pelas frequências das letras. Aqui a ordem conta as letras de contexto, e por isso tudo fica uma unidade abaixo: a aproximação de terceira ordem de Shannon, a das trincas, é a nossa ordem 2.</p>
+    </aside>
+    <figure class="widget" data-widget="gerador"></figure>
+    <p>Comece na ordem −1 e suba um degrau de cada vez, sem trocar a semente. Na ordem −1, o <i>ç</i> e o <i>õ</i> aparecem tanto quanto o <i>a</i> e o <i>e</i>, e os blocos entre espaços têm comprimentos absurdos. Na ordem 0, os espaços chegam na proporção certa e as vogais dominam, mas nada lembra português. Na ordem 1 surgem sílabas, e depois de <i>q</i> vem sempre <i>u</i>. Na ordem 2 aparecem palavras curtas de verdade, como <i>de</i>, <i>que</i>, <i>não</i>. Na ordem 3 quase tudo é pronunciável. Nas ordens 4 e 5, a maior parte das palavras existe, e algumas sequências de duas ou três palavras parecem tiradas de um romance, embora a frase como um todo não vá a lugar nenhum.</p>
+    <p>As duas últimas opções trabalham com palavras inteiras. Em <i>palavras soltas</i>, cada palavra é sorteada com a frequência que tem nos romances, e o resultado é um saco de vocábulos machadianos sem gramática. Em <i>pares de palavras</i>, o programa faz exatamente o que Shannon fazia com o livro: procura nos nove romances uma ocorrência qualquer da última palavra escrita e copia a palavra que vem depois dela. Escreva um começo no campo de prefixo, como <i>Capitu</i> ou <i>a viúva</i>, e veja como cada ordem continua.</p>
+    <p>Nenhum desses textos foi escrito por Machado. Ainda assim, a partir da ordem 4, eles têm o vocabulário dele, a frequência dele de <i>que</i> e de <i>não</i>, os nomes dos personagens dele. Uma parte considerável do que parece estilo, pelo menos na superfície, é estatística de sequências curtas.</p>
+  </section>
+
+  <section id="c4-markov">
+    <h2>A memória curta de Andrei Markov</h2>
+    <p>O gerador que você usou obedece a uma regra simples. Para sortear a próxima letra, ele olha apenas as últimas <i>k</i> letras e esquece todo o resto. Um processo assim se chama <dfn>cadeia de Markov</dfn>, em homenagem ao matemático russo Andrei Markov.</p>
+    <div class="destaque-caixa">
+      <span class="rotulo">Definição</span>
+      <p>Uma sequência de símbolos <math><msub><mi>x</mi><mn>1</mn></msub><mo>,</mo><msub><mi>x</mi><mn>2</mn></msub><mo>,</mo><mo>…</mo></math> é uma <em class="termo">cadeia de Markov de ordem <i>k</i></em> quando a probabilidade de cada símbolo depende só dos <i>k</i> anteriores. Conhecidos esses <i>k</i>, saber o que veio antes deles não muda nada:</p>
+      <div class="equacao">
+        <math display="block">
+          <mrow>
+            <mi>P</mi><mo stretchy="false">(</mo><msub><mi>x</mi><mi>n</mi></msub><mo>∣</mo><msub><mi>x</mi><mn>1</mn></msub><mo>,</mo><mo>…</mo><mo>,</mo><msub><mi>x</mi><mrow><mi>n</mi><mo>−</mo><mn>1</mn></mrow></msub><mo stretchy="false">)</mo>
+            <mo>=</mo>
+            <mi>P</mi><mo stretchy="false">(</mo><msub><mi>x</mi><mi>n</mi></msub><mo>∣</mo><msub><mi>x</mi><mrow><mi>n</mi><mo>−</mo><mi>k</mi></mrow></msub><mo>,</mo><mo>…</mo><mo>,</mo><msub><mi>x</mi><mrow><mi>n</mi><mo>−</mo><mn>1</mn></mrow></msub><mo stretchy="false">)</mo>
+            <mo>.</mo>
+          </mrow>
+        </math>
+      </div>
+    </div>
+    <p>Em 1913, Markov fez com um poema o que hoje se faz com bilhões de palavras. Tomou 20 mil letras de <i>Eugênio Onêguin</i>, o romance em versos de Aleksandr Púchkin, e classificou cada uma como vogal ou consoante. Depois contou quantas vezes uma vogal vinha depois de outra vogal, quantas vezes depois de uma consoante, e assim por diante, tudo à mão. O resultado mostrou que as letras do russo não se comportam como sorteios independentes. A chance de vir uma vogal depende muito da letra anterior.</p>
+    <aside class="nota">
+      <p><strong>Uma polêmica.</strong> Markov havia criado essas cadeias alguns anos antes, para mostrar que a lei dos grandes números (a média de muitos sorteios se aproxima do valor esperado) continua valendo quando os sorteios dependem uns dos outros. O poema de Púchkin serviu de exemplo concreto.</p>
+    </aside>
+    <p>Dá para repetir a conta de Markov com Machado. Nas primeiras 20 mil letras de <i>Memorial de Aires</i>, sem contar os espaços, 49,6% são vogais. Se as letras fossem independentes, a chance de uma vogal seria 49,6% depois de qualquer letra. Os números verdadeiros estão no diagrama.</p>
+    <figure class="c4-figura">
+      <svg viewBox="0 0 520 220" role="img" aria-label="Cadeia de Markov de dois estados para Machado: depois de vogal, vogal com probabilidade 0,25 e consoante com 0,75; depois de consoante, vogal com 0,74 e consoante com 0,26.">
+        <defs>
+          <marker id="c4-ponta" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 L10 5 L0 10 z" class="c4-ponta"/></marker>
+          <marker id="c4-ponta-forte" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="5.5" markerHeight="5.5" orient="auto-start-reverse"><path d="M0 0 L10 5 L0 10 z" class="c4-ponta forte"/></marker>
+        </defs>
+        <path d="M185 85 Q260 22 335 85" class="c4-seta forte" marker-end="url(#c4-ponta-forte)"/>
+        <path d="M335 145 Q260 208 185 145" class="c4-seta forte" marker-end="url(#c4-ponta-forte)"/>
+        <path d="M115 85 C40 30, 40 200, 115 145" class="c4-seta" marker-end="url(#c4-ponta)"/>
+        <path d="M405 85 C480 30, 480 200, 405 145" class="c4-seta" marker-end="url(#c4-ponta)"/>
+        <circle cx="150" cy="115" r="46" class="c4-estado"/>
+        <circle cx="370" cy="115" r="46" class="c4-estado"/>
+        <text x="150" y="113" text-anchor="middle" class="c4-estado-nome">vogal</text>
+        <text x="150" y="132" text-anchor="middle" class="c4-estado-freq">49,6%</text>
+        <text x="370" y="113" text-anchor="middle" class="c4-estado-nome">consoante</text>
+        <text x="370" y="132" text-anchor="middle" class="c4-estado-freq">50,4%</text>
+        <text x="260" y="40" text-anchor="middle" class="c4-prob forte">0,75</text>
+        <text x="260" y="200" text-anchor="middle" class="c4-prob forte">0,74</text>
+        <text x="30" y="119" text-anchor="middle" class="c4-prob">0,25</text>
+        <text x="490" y="119" text-anchor="middle" class="c4-prob">0,26</text>
+      </svg>
+      <figcaption>A cadeia de Markov de Machado com dois estados, contada nas primeiras 20 mil letras de <i>Memorial de Aires</i>. Cada seta leva a probabilidade de a próxima letra ser do tipo para onde ela aponta. Se as letras fossem independentes, todas as setas valeriam cerca de 0,5.</figcaption>
+    </figure>
+    <p>Depois de uma vogal, a próxima letra é vogal em apenas 24,8% dos casos; depois de uma consoante, em 73,9%. O português alterna vogais e consoantes com muito mais regularidade do que um sorteio de moeda alternaria. Uma cadeia de Markov de ordem 1, com só dois estados, já captura esse ritmo de sílabas.</p>
+    <p>Shannon usou as cadeias de Markov explicitamente. No artigo de 1948, ele descreve uma fonte de mensagens como um <i>processo de Markov</i> (que escrevia <i>Markoff</i>, grafia corrente na época): uma máquina que, a cada passo, está num estado, sorteia um símbolo com probabilidades que dependem desse estado e passa a outro estado. E argumentou que um processo desse tipo, se fosse suficientemente complexo, daria uma representação satisfatória de uma língua como o inglês. As aproximações eram a evidência. Cada degrau do experimento com o livro é uma cadeia com um pouco mais de memória.</p>
+  </section>
+
+  <section id="c4-curva">
+    <h2>Quanto custa uma letra</h2>
+    <p>Até aqui julgamos as imitações pelo ouvido. Agora vamos medi-las. A pergunta é a do capítulo 1, feita com mais cuidado: se você conhece as <i>N</i> letras anteriores, quanta surpresa a próxima letra ainda traz, em média?</p>
+    <p>Um exemplo. Que letra vem depois de <i>capi</i>? Um modelo que só conhece as frequências gerais (ordem 0) dá ao <i>t</i> a probabilidade de sempre, 0,034, e o <i>t</i> custa 4,9 bits de surpresa. Olhando só a última letra, <i>i</i>, a probabilidade sobe para 0,064 (4,0 bits). Com duas letras, <i>pi</i>, vai a 0,23 (2,1 bits). Com três, <i>api</i>, chega a 0,88 (0,19 bit). Com as quatro, <i>capi</i>, passa de 0,98, e o <i>t</i> custa dois centésimos de bit. Quem já viu <i>capi</i> praticamente sabe o que vem.</p>
+    <p>Faça essa conta para cada letra de um texto longo e tire a média. O resultado é o número de bits por letra que o modelo de ordem <i>N</i> paga para ler esse texto. Vamos chamá-lo de <math><msub><mi>F</mi><mi>N</mi></msub></math>:</p>
+    <div class="equacao">
+      <math display="block">
+        <mrow>
+          <msub><mi>F</mi><mi>N</mi></msub>
+          <mo>=</mo>
+          <mfrac><mn>1</mn><mi>n</mi></mfrac>
+          <munderover><mo>∑</mo><mrow><mi>i</mi><mo>=</mo><mn>1</mn></mrow><mi>n</mi></munderover>
+          <msub><mi>log</mi><mn>2</mn></msub><mo>⁡</mo>
+          <mfrac><mn>1</mn><mrow><mi>p</mi><mo stretchy="false">(</mo><msub><mi>x</mi><mi>i</mi></msub><mo>∣</mo><msub><mi>x</mi><mrow><mi>i</mi><mo>−</mo><mi>N</mi></mrow></msub><mo>…</mo><msub><mi>x</mi><mrow><mi>i</mi><mo>−</mo><mn>1</mn></mrow></msub><mo stretchy="false">)</mo></mrow></mfrac>
+          <mo>.</mo>
+        </mrow>
+      </math>
+    </div>
+    <p>Os ingredientes vêm dos capítulos anteriores. Cada termo da soma é a surpresa de uma letra dado o seu contexto, como no <a href="#c2">capítulo 2</a>. A média dessas surpresas, num texto longo, estima a entropia condicional da próxima letra dadas as <i>N</i> anteriores, do <a href="#c3">capítulo 3</a>. Há um cuidado importante. O modelo foi treinado em nove romances e é testado num décimo, <i>Memorial de Aires</i>, que ele nunca leu. Medido no próprio texto de treino, ele pareceria muito melhor do que é, como um aluno corrigindo a própria prova com o gabarito ao lado. Medido em texto novo, <math><msub><mi>F</mi><mi>N</mi></msub></math> inclui o preço do que o modelo não sabe, e por isso é uma estimativa por cima. O nome técnico dessa medida é <dfn>entropia cruzada</dfn>, e ela volta com todo o rigor no <a href="#c7">capítulo 7</a>.</p>
+    <aside class="nota">
+      <p>Em 1951, Shannon numerava de outro jeito: o seu <math><msub><mi>F</mi><mi>N</mi></msub></math> usava <math><mi>N</mi><mo>−</mo><mn>1</mn></math> letras de contexto, porque tratava de blocos de <i>N</i> letras. Aqui <i>N</i> é o número de letras de contexto, igual à ordem do gerador.</p>
+    </aside>
+    <p>O interativo mede <math><msub><mi>F</mi><mi>N</mi></msub></math> em 30 mil letras de <i>Memorial de Aires</i>, uma ordem de cada vez. Observe a forma da curva enquanto ela se desenha.</p>
+    <figure class="widget" data-widget="curva"></figure>
+    <p>A queda é grande no começo e depois perde fôlego. Só conhecer as frequências das letras já economiza 1,2 bit por letra em relação ao sorteio uniforme. A primeira letra de contexto economiza mais 0,9 bit; a segunda, 0,5; a terceira, 0,4; a quarta, 0,25; a quinta, menos de um décimo de bit. Com cinco letras de memória, o modelo paga cerca de 2 bits por letra, pouco mais de um terço dos 5,29 do sorteio uniforme.</p>
+    <p>Troque o trecho de medida para o meio ou o fim do livro. Os números mudam poucos centésimos, e a forma da curva fica a mesma: 30 mil letras bastam para uma medida estável.</p>
+  </section>
+
+  <section id="c4-mapa">
+    <h2>Onde mora a surpresa</h2>
+    <p>Uma média esconde onde a surpresa está. O próximo interativo pinta um trecho de <i>Memorial de Aires</i> com o marca-texto deste livro: quanto mais amarela a letra, mais bits ela custou ao modelo. Mude a ordem de 0 até 5 e acompanhe o amarelo.</p>
+    <figure class="widget" data-widget="mapa"></figure>
+    <p>Na ordem 0, o amarelo cai sobre as letras raras, onde quer que estejam: o <i>z</i>, o <i>j</i>, o <i>ç</i>, o <i>ã</i>. A partir da ordem 2, o meio e o fim das palavras vão empalidecendo, e o amarelo se concentra no começo de cada palavra. Nas 30 mil letras da curva, a primeira letra de uma palavra custa ao modelo de ordem 1 cerca de 4,2 bits, e ao de ordem 5 ainda cerca de 4,0. As demais letras caem de 3,4 para 1,8 bit, e o espaço que fecha uma palavra cai para meio bit.</p>
+    <p>Em outras palavras, cinco letras de contexto quase não ajudam a adivinhar como começa a próxima palavra, porque esse contexto mal alcança a palavra anterior. Ajudam muito a terminar a palavra já começada. O início de uma palavra é onde se escolhe o que dizer; o resto é, em boa parte, ortografia. Foi exatamente o que você sentiu no jogo do capítulo 1, onde os palpites caros se amontoavam nos começos de palavra.</p>
+  </section>
+
+  <section id="c4-esparsidade">
+    <h2>Por que a curva para de cair</h2>
+    <p>Se mais contexto ajuda, por que parar em cinco letras? Por que não 10, 20, 100? A teoria diz que a curva verdadeira nunca sobe. No capítulo 3 vimos que condicionar não aumenta a entropia: saber uma letra a mais não pode, em média, deixar a próxima mais incerta. Mas a curva medida sobe. Um modelo de ordem 6, treinado nos mesmos nove romances, paga 2,01 bits por letra nas mesmas 30 mil letras de <i>Memorial de Aires</i>, mais que o de ordem 5.</p>
+    <p>O problema está na conta dos contextos. Com 39 símbolos, há 39 contextos de uma letra, <math><msup><mn>39</mn><mn>2</mn></msup><mo>=</mo><mn>1.521</mn></math> de duas, <math><msup><mn>39</mn><mn>3</mn></msup><mo>=</mo><mn>59.319</mn></math> de três. Cada letra a mais multiplica o número por 39. Com cinco letras são 90 milhões de contextos possíveis; com seis, 3,5 bilhões. Os nove romances somam 2,6 milhões de letras. Não haveria letras suficientes nem para visitar uma vez cada contexto possível de cinco letras.</p>
+    <p>Por sorte, a língua usa uma fração minúscula desses contextos, já que ninguém escreve <i>çqx</i>. Mas mesmo a fração usada é grande, e a cada ordem uma parte maior dela foi vista poucas vezes. O interativo conta os contextos que o modelo encontrou de fato nos romances.</p>
+    <figure class="widget" data-widget="contextos"></figure>
+    <p>Os contextos possíveis sobem em linha reta, porque o gráfico está em escala logarítmica. Os vistos sobem cada vez mais devagar e se afastam dos possíveis. Na ordem 5, o modelo conhece 90.794 contextos, cerca de um em cada mil possíveis, e mais de um quarto deles apareceu uma única vez no treino. Com seis letras, mais de um terço dos contextos vistos aparece uma vez só, e mais de 5% das posições de <i>Memorial de Aires</i> têm um contexto que o treino nunca mostrou.</p>
+    <p>Uma estimativa de probabilidade baseada numa única ocorrência é quase um palpite. Ela afirma que depois daquelas seis letras vem sempre a letra que veio daquela vez. Quando um modelo leva a sério demais essas contagens ralas, ele decora o texto de treino em vez de aprender a língua. Esse defeito se chama <dfn>sobreajuste</dfn>: um modelo sobreajustado é ótimo no texto que leu e pior em qualquer outro. A <dfn>esparsidade</dfn> dos dados, o fato de a maior parte dos contextos longos ter sido vista poucas vezes ou nunca, é o que faz a curva empacar perto de 2 bits.</p>
+    <p>O modelo deste livro se defende como pode. Quando um contexto longo é raro ou inédito, ele empresta probabilidade das ordens mais curtas, que foram vistas milhares de vezes. Por isso o modelo de ordem 5 não desaba nas posições cujo contexto de cinco letras ele nunca viu. Mas emprestar das ordens curtas é admitir que, ali, o contexto longo não ajudou em nada. Para ir além, seria preciso muito mais texto, ou uma maneira de generalizar entre contextos parecidos, assunto do capítulo 7.</p>
+    <aside class="nota">
+      <p><strong>Como o modelo empresta.</strong> A técnica usada aqui se chama desconto absoluto. De cada contagem desconta-se um pouco (0,8 ocorrência), e a probabilidade economizada é repartida segundo a ordem de baixo, que por sua vez empresta da sua ordem de baixo, até a distribuição uniforme. Assim nenhuma letra fica com probabilidade zero.</p>
+    </aside>
+  </section>
+
+  <section id="c4-leitor">
+    <h2>O leitor vai mais longe</h2>
+    <p>Você não sofre de esparsidade do mesmo modo. Quando lê <i>a viúva Noronha casava</i>, usa o assunto do parágrafo, a gramática, o que sabe de viúvas e de romances. O seu contexto tem centenas de letras e uma vida inteira de leitura por trás. Foi por isso que Shannon, em 1951, completou as tabelas de frequência com o jogo de adivinhação. Com as tabelas disponíveis, ele não conseguia ir além de umas poucas letras de contexto; um leitor humano dava acesso a contextos longos. Com até cem letras de contexto, seus jogadores ficaram entre 0,6 e 1,3 bit por letra para o inglês.</p>
+    <p>Se você jogou o jogo do capítulo 1 neste navegador, seus próprios limites estão desenhados como uma faixa no gráfico da curva, junto com a faixa da máquina jogando as mesmas frases. Se a sua faixa ficou abaixo dos 2 bits do modelo de ordem 5, você leu Machado com menos surpresa do que um programa que decorou as estatísticas de nove romances. Se ficou acima, jogue mais frases. Com poucas letras os limites oscilam muito, e o limite superior de Shannon é folgado.</p>
+  </section>
+
+  <section id="c4-redundancia">
+    <h2>Redundância</h2>
+    <p>Chegamos ao número prometido no começo do capítulo. Se as 39 letras fossem igualmente prováveis e independentes, cada uma carregaria <math><msub><mi>log</mi><mn>2</mn></msub><mo>⁡</mo><mn>39</mn><mo>≈</mo><mn>5,29</mn></math> bits. Esse é o máximo que o alfabeto comporta, que chamaremos de <math><msub><mi>H</mi><mtext>máx</mtext></msub></math>. O texto de Machado, para o modelo de ordem 5, carrega cerca de 2 bits por letra. A fração da capacidade que não é usada para escolher o que dizer é a <dfn>redundância</dfn>:</p>
+    <div class="destaque-caixa">
+      <span class="rotulo">Definição</span>
+      <div class="equacao">
+        <math display="block">
+          <mrow>
+            <mi>R</mi><mo>=</mo><mn>1</mn><mo>−</mo>
+            <mfrac><mi>H</mi><msub><mi>H</mi><mtext>máx</mtext></msub></mfrac>
+          </mrow>
+        </math>
+      </div>
+      <p>em que <math><mi>H</mi></math> é a informação média por letra do texto e <math><msub><mi>H</mi><mtext>máx</mtext></msub></math> é o logaritmo do tamanho do alfabeto.</p>
+    </div>
+    <p>Com os números do modelo, <math><mi>R</mi><mo>=</mo><mn>1</mn><mo>−</mo><mn>1,99</mn><mo>/</mo><mn>5,29</mn><mo>≈</mo><mn>0,62</mn></math>. De cada 100 bits de capacidade que o alfabeto oferece, Machado usa uns 38 para escolher o que dizer. Os outros 62 são consumidos pelas regras da língua, da ortografia à gramática, e pelos hábitos do autor.</p>
+    <p>E isso é só o que um modelo de cinco letras enxerga. Para um bom leitor, que talvez gaste algo como 1 bit por letra, <math><mi>R</mi><mo>≈</mo><mn>1</mn><mo>−</mo><mn>1</mn><mo>/</mo><mn>5,29</mn><mo>≈</mo><mn>0,81</mn></math>. Cerca de quatro quintos do que está escrito poderiam, em princípio, ser deduzidos do resto.</p>
+    <p>Shannon fez a mesma conta para o inglês em 1948. Levando em conta a estrutura estatística até cerca de oito letras, estimou a redundância em aproximadamente 50%. Nas palavras dele, metade do que escrevemos em inglês é determinado pela estrutura da língua, e metade é escolhido livremente. Os números não são diretamente comparáveis aos nossos, porque o alfabeto e o método são outros, mas o recado é o mesmo.</p>
+    <p>No mesmo artigo, Shannon ligou a redundância às palavras cruzadas. Se a redundância de uma língua fosse zero, qualquer sequência de letras seria um texto válido, e qualquer grade de letras seria uma palavra cruzada resolvida. Se fosse alta demais, as restrições seriam tantas que não daria para cruzar palavras numa grade grande. Ele estimou que uma redundância em torno de 50% é compatível com as palavras cruzadas de duas dimensões que conhecemos, e que, com uma redundância de um terço, seriam possíveis palavras cruzadas em três dimensões.</p>
+    <aside class="nota">
+      <p><strong>Dois extremos.</strong> Shannon citou o <i>Basic English</i>, um inglês simplificado com vocabulário de 850 palavras e redundância muito alta, e <i>Finnegans Wake</i>, de James Joyce, cuja linguagem inventada vai no sentido oposto.</p>
+    </aside>
+  </section>
+
+  <section id="c4-apagadas">
+    <h2>Ler com buracos</h2>
+    <p>Redundância soa como desperdício, mas ela tem uma função. É ela que deixa você ler um bilhete borrado ou entender uma ligação que falha. Teste isso agora. A frase abaixo, de <i>Memorial de Aires</i>, teve parte das letras apagadas ao acaso. Tente lê-la antes de revelar. Depois aumente a fração apagada até a leitura ficar impossível, e experimente apagar só as vogais.</p>
+    <figure class="widget" data-widget="apagadas"></figure>
+    <p>Com 20% ou 30% das letras apagadas, a maioria das pessoas lê a frase sem muito esforço. Por volta de metade, a leitura vira um quebra-cabeça. Apagar só as vogais é bem menos grave do que apagar o mesmo número de letras ao acaso: as consoantes carregam a maior parte da informação, e as vogais, quase sempre, se deduzem delas. Algumas escritas antigas, como a fenícia e a hebraica, simplesmente não registravam as vogais.</p>
+    <p>A máquina também tenta. Para cada buraco, ela experimenta as letras possíveis e escolhe a que torna mais provável a janela de texto em volta. Olhando só para trás, ela conta apenas com as letras anteriores, várias delas também apagadas, e erra muito. Olhando para os dois lados, aproveita também as cinco letras seguintes e acerta bem mais. Repare nos erros: quando falha, ela costuma escolher uma letra que também formaria português, só que outra palavra.</p>
+    <p>Essa é a outra face da redundância. Uma língua sem redundância seria eficiente e frágil: qualquer letra trocada viraria outra mensagem válida, e ninguém notaria o erro. O <a href="#c6">capítulo 6</a> mostra como acrescentar redundância de propósito, e da maneira mais econômica possível, para proteger mensagens contra o ruído.</p>
+  </section>
+
+  <section id="c4-adiante">
+    <h2>Escrever com menos</h2>
+    <p>Recapitulando os números. Um alfabeto de 39 símbolos comporta 5,29 bits por letra. Machado, lido por um modelo com cinco letras de memória, usa uns 2. Lido por uma pessoa, talvez 1. O resto é previsível.</p>
+    <p>E o que é previsível não precisa ser transmitido. Se o receptor consegue adivinhar boa parte de cada letra, deveria ser possível escrever Machado com bem menos de 5,29 bits por letra, talvez com pouco mais de 2, desde que os dois lados usem o mesmo modelo, como os gêmeos idênticos do capítulo 1. Hoje um computador guarda cada letra em pelo menos um byte, 8 bits. O <a href="#c5">capítulo 5</a> mostra como chegar perto do limite, com códigos que gastam pouco com o previsível e muito com o surpreendente.</p>
+  </section>
+
+  <h2 class="exercicios-titulo" id="c4-exercicios">Exercícios</h2>
+  <ol class="exercicios">
+    <li>
+      <p>Na ordem −1 do gerador, os blocos entre espaços são longuíssimos. Na ordem 0, têm um comprimento parecido com o das palavras de verdade. Explique por quê e estime o comprimento médio dos blocos em cada caso, sabendo que 18,4% dos símbolos dos nove romances são espaços. <span class="nivel">aquecimento</span></p>
+      <details class="solucao"><summary>Solução</summary><div>
+        <p>Na ordem −1 cada símbolo tem probabilidade <math><mn>1</mn><mo>/</mo><mn>39</mn></math>, inclusive o espaço. Se um evento tem probabilidade <math><mi>p</mi></math> a cada sorteio, o número médio de sorteios que não são esse evento antes que ele ocorra é <math><mo stretchy="false">(</mo><mn>1</mn><mo>−</mo><mi>p</mi><mo stretchy="false">)</mo><mo>/</mo><mi>p</mi></math>. Com <math><mi>p</mi><mo>=</mo><mn>1</mn><mo>/</mo><mn>39</mn></math>, isso dá 38 letras por bloco. Na ordem 0, o espaço sai com a sua frequência real, <math><mi>p</mi><mo>=</mo><mn>0,184</mn></math>, e o bloco médio tem <math><mn>0,816</mn><mo>/</mo><mn>0,184</mn><mo>≈</mo><mn>4,4</mn></math> letras. É exatamente o comprimento médio das palavras nos romances (2,15 milhões de letras divididas por 485 mil palavras). A ordem 0 acerta a média, mas não a forma: ela produz blocos de 1 letra e de 15 letras com probabilidades que não têm nada a ver com o português.</p>
+      </div></details>
+    </li>
+    <li>
+      <p>Use a cadeia de Markov de Machado do diagrama, com <math><mi>P</mi><mo stretchy="false">(</mo><mtext>vogal</mtext><mo stretchy="false">)</mo><mo>=</mo><mn>0,496</mn></math>, <math><mi>P</mi><mo stretchy="false">(</mo><mtext>vogal</mtext><mo>∣</mo><mtext>vogal</mtext><mo stretchy="false">)</mo><mo>=</mo><mn>0,248</mn></math> e <math><mi>P</mi><mo stretchy="false">(</mo><mtext>vogal</mtext><mo>∣</mo><mtext>consoante</mtext><mo stretchy="false">)</mo><mo>=</mo><mn>0,739</mn></math>. (a) Depois de uma vogal, qual a probabilidade de virem duas consoantes seguidas? Compare com o que daria se as letras fossem independentes. (b) Quanta incerteza, em bits, resta sobre “vogal ou consoante” para a próxima letra quando se conhece o tipo da letra atual? Compare com 1 bit. <span class="nivel">cálculo</span></p>
+      <details class="solucao"><summary>Solução</summary><div>
+        <p>(a) Pela cadeia, a primeira consoante vem com probabilidade <math><mn>1</mn><mo>−</mo><mn>0,248</mn><mo>=</mo><mn>0,752</mn></math>, e a segunda, já depois de uma consoante, com <math><mn>1</mn><mo>−</mo><mn>0,739</mn><mo>=</mo><mn>0,261</mn></math>. O produto é <math><mn>0,752</mn><mo>×</mo><mn>0,261</mn><mo>≈</mo><mn>0,196</mn></math>, cerca de 20%. Com letras independentes seria <math><msup><mn>0,504</mn><mn>2</mn></msup><mo>≈</mo><mn>0,254</mn></math>. A cadeia sabe que consoantes gostam de vir isoladas, entre vogais.</p>
+        <p>(b) É a entropia condicional do capítulo 3. Depois de uma vogal, a incerteza é a de uma moeda com probabilidade 0,248: <math><mi>h</mi><mo stretchy="false">(</mo><mn>0,248</mn><mo stretchy="false">)</mo><mo>≈</mo><mn>0,81</mn></math> bit. Depois de uma consoante, <math><mi>h</mi><mo stretchy="false">(</mo><mn>0,739</mn><mo stretchy="false">)</mo><mo>≈</mo><mn>0,83</mn></math> bit. Ponderando pela frequência de cada estado: <math><mn>0,496</mn><mo>×</mo><mn>0,81</mn><mo>+</mo><mn>0,504</mn><mo>×</mo><mn>0,83</mn><mo>≈</mo><mn>0,82</mn></math> bit. Sem memória, a incerteza seria <math><mi>h</mi><mo stretchy="false">(</mo><mn>0,496</mn><mo stretchy="false">)</mo><mo>≈</mo><mn>1,00</mn></math> bit. Conhecer o tipo da letra atual economiza cerca de 0,18 bit nessa pergunta.</p>
+      </div></details>
+    </li>
+    <li>
+      <p>Os nove romances têm 2.635.226 letras e há <math><msup><mn>39</mn><mn>5</mn></msup><mo>=</mo><mn>90.224.199</mn></math> contextos possíveis de cinco letras. (a) Se cada posição do treino revelasse um contexto diferente, que fração dos contextos possíveis seria vista? (b) O modelo viu 90.794 contextos distintos, bem menos que isso. Dê duas razões para a diferença. <span class="nivel">cálculo</span></p>
+      <details class="solucao"><summary>Solução</summary><div>
+        <p>(a) No máximo <math><mn>2.635.226</mn><mo>/</mo><mn>90.224.199</mn><mo>≈</mo><mn>0,029</mn></math>, menos de 3%. Mesmo no melhor caso, 97% dos contextos possíveis ficariam sem nenhum exemplo.</p>
+        <p>(b) Primeiro, a língua se repete: contextos como <i>que n</i> ou <i>ament</i> aparecem milhares de vezes, e cada repetição não acrescenta contexto novo (na média, cada contexto de cinco letras aparece 29 vezes). Segundo, a imensa maioria das sequências possíveis é impossível ou quase impossível em português, como <i>çqxwk</i>. A fração vista, cerca de 0,1% dos possíveis, mede ao mesmo tempo as regras da língua e o tamanho limitado do corpus.</p>
+      </div></details>
+    </li>
+    <li>
+      <p>Calcule a redundância (a) do modelo de ordem 2, que paga 2,73 bits por letra em <i>Memorial de Aires</i>; (b) do inglês com 27 símbolos, para um leitor que gaste 1 bit por letra. (c) Quantos bits seriam necessários, no mínimo, para guardar 1.000 letras de Machado se cada letra custasse <math><msub><mi>H</mi><mtext>máx</mtext></msub></math>, e quantos se custasse o que o modelo de ordem 5 paga? <span class="nivel">cálculo</span></p>
+      <details class="solucao"><summary>Solução</summary><div>
+        <p>(a) <math><mn>1</mn><mo>−</mo><mn>2,73</mn><mo>/</mo><mn>5,29</mn><mo>≈</mo><mn>0,48</mn></math>. Só as trincas já explicam quase metade da capacidade do alfabeto.</p>
+        <p>(b) <math><msub><mi>log</mi><mn>2</mn></msub><mo>⁡</mo><mn>27</mn><mo>≈</mo><mn>4,75</mn></math>, e <math><mn>1</mn><mo>−</mo><mn>1</mn><mo>/</mo><mn>4,75</mn><mo>≈</mo><mn>0,79</mn></math>. Repare que a redundância depende do alfabeto escolhido: com mais símbolos no alfabeto (acentos, maiúsculas, pontuação), <math><msub><mi>H</mi><mtext>máx</mtext></msub></math> cresce e a redundância aparente também. Por isso só faz sentido comparar redundâncias calculadas com o mesmo alfabeto.</p>
+        <p>(c) <math><mn>1.000</mn><mo>×</mo><mn>5,29</mn><mo>≈</mo><mn>5.290</mn></math> bits contra <math><mn>1.000</mn><mo>×</mo><mn>1,99</mn><mo>≈</mo><mn>1.990</mn></math> bits. O capítulo 5 mostra que a segunda conta não é só teórica: um codificador que use o mesmo modelo chega muito perto dela.</p>
+      </div></details>
+    </li>
+    <li>
+      <p>A entropia condicional verdadeira nunca aumenta quando se acrescenta contexto. Por que, então, a curva medida pode subir na ordem 6? E o que aconteceria com a curva se a medíssemos nos próprios nove romances de treino, com ordens cada vez maiores? <span class="nivel">conceito</span></p>
+      <details class="solucao"><summary>Solução</summary><div>
+        <p>A curva medida não é a entropia condicional verdadeira, e sim a surpresa média de um modelo cujas probabilidades foram estimadas a partir de contagens. Com seis letras de contexto, muitos contextos foram vistos uma vez só, e as probabilidades tiradas deles são ruins. No texto novo, essas estimativas ruins custam mais do que a informação extra do contexto economiza. A subida mede a ignorância do modelo, não a da língua.</p>
+        <p>No texto de treino, a curva continuaria caindo, em direção a zero. Com contextos longos, quase todo contexto aparece uma vez só no treino, e o modelo “sabe” com certeza qual letra veio depois dele. Seria como decorar o livro. Esse é o sobreajuste, e é por isso que modelos se medem sempre em texto que não viram.</p>
+      </div></details>
+    </li>
+    <li>
+      <p>No interativo das letras apagadas, compare duas situações que apagam mais ou menos o mesmo número de letras: 50% ao acaso e 100% só vogais. Qual você lê melhor? Ligue a máquina e compare os acertos dela nos dois casos, olhando para os dois lados e só para trás. Troque de frase algumas vezes. <span class="nivel">experimento</span></p>
+      <details class="solucao"><summary>Solução</summary><div>
+        <p>Como quase metade das letras são vogais, os dois casos abrem um número parecido de buracos. Para a maioria dos leitores, o texto sem vogais é bem mais legível: as consoantes desenham o esqueleto das palavras, e as vogais se deduzem delas. A máquina mostra o mesmo. Na média de muitas frases, olhando para os dois lados, ela acerta perto de dois terços das vogais apagadas, contra cerca de 40% das letras apagadas ao acaso. Olhando só para trás, acerta bem menos nos dois casos, porque não pode usar o fim da palavra para decidir o meio. A diferença entre os dois modos mede quanta informação o contexto à direita carrega, algo que um leitor humano usa o tempo todo sem perceber.</p>
+      </div></details>
+    </li>
+    <li>
+      <p>Shannon observou que uma língua com redundância zero transformaria qualquer grade de letras numa palavra cruzada. Pense no que mais aconteceria numa língua assim. O que seria de um erro de digitação? E de um bilhete com uma letra borrada? <span class="nivel">reflexão</span></p>
+      <details class="solucao"><summary>Solução</summary><div>
+        <p>Com redundância zero, toda sequência de letras seria uma mensagem válida e igualmente provável. Um erro de digitação produziria outra mensagem perfeitamente legítima, e nem o leitor nem um revisor teriam como perceber que houve erro, muito menos como corrigi-lo. Uma letra borrada seria uma perda definitiva, porque nada no resto do texto restringiria qual letra estava ali. A redundância do português é o que nos permite detectar e corrigir erros sem esforço. A contrapartida é que gastamos mais letras do que o necessário. O capítulo 5 tira essa redundância para economizar; o capítulo 6 a devolve, de forma calculada, para proteger.</p>
+      </div></details>
+    </li>
+  </ol>
+
+  <dl class="cartoes-dados">
+    <dt>O que são as aproximações de Shannon (1948)?</dt>
+    <dd>Textos gerados ao acaso com estatísticas cada vez mais ricas da língua: letras equiprováveis, letras com suas frequências, frequências de pares, de trincas, e depois palavras. Quanto mais memória, mais o texto parece a língua, mesmo sem significar nada.</dd>
+    <dt>O que é uma cadeia de Markov de ordem k?</dt>
+    <dd>Uma sequência em que a probabilidade de cada símbolo depende só dos k símbolos anteriores. Um gerador de texto de ordem k é uma cadeia assim, com as probabilidades contadas num corpus.</dd>
+    <dt>O que Andrei Markov fez em 1913 com Eugênio Onêguin?</dt>
+    <dd>Classificou 20 mil letras do poema de Púchkin em vogais e consoantes e contou as transições, mostrando que a chance de uma vogal depende fortemente da letra anterior. Em Machado, uma vogal vem depois de vogal em 25% dos casos e depois de consoante em 74%.</dd>
+    <dt>Neste capítulo, o que mede a curva de bits por letra e quanto ela vale para Machado?</dt>
+    <dd>A surpresa média por letra, em bits, de um modelo que usa as N letras anteriores, medida num texto que ele nunca leu. Em Memorial de Aires: 5,29 (sem contexto, uniforme), 4,09 (só frequências), 3,21, 2,73, 2,32, 2,07 e 1,99 bits com 1 a 5 letras de contexto.</dd>
+    <dt>Por que a curva de bits por letra medida em texto novo deixa de cair e até sobe?</dt>
+    <dd>Por esparsidade: o número de contextos possíveis é 39 elevado ao número de letras de contexto, e os contextos longos são vistos poucas vezes ou nunca no treino. As probabilidades estimadas ficam ruins e o modelo sobreajusta; com seis letras, o resultado piora para 2,01 bits.</dd>
+    <dt>Onde se concentra a surpresa de um texto lido com contexto curto?</dt>
+    <dd>Nas primeiras letras das palavras. Com cinco letras de contexto, a primeira letra de uma palavra ainda custa cerca de 4 bits, enquanto as demais custam menos de 2 e o espaço final, cerca de meio bit.</dd>
+    <dt>O que é redundância e quanto vale para Machado?</dt>
+    <dd>R = 1 − H/Hmáx: a fração da capacidade do alfabeto que não é usada para escolher a mensagem. Com 39 símbolos (Hmáx ≈ 5,29) e 2 bits por letra, R ≈ 62%; com o cerca de 1 bit de um bom leitor, R ≈ 80%.</dd>
+    <dt>Que relação Shannon viu entre redundância e palavras cruzadas?</dt>
+    <dd>Com redundância zero, qualquer grade de letras seria uma palavra cruzada; com redundância alta demais, não daria para cruzar palavras em grades grandes. Ele estimou que uns 50% permitem as palavras cruzadas de duas dimensões, e que um terço permitiria as de três.</dd>
+  </dl>
+</article>

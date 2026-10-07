@@ -1,0 +1,236 @@
+<link rel="stylesheet" href="capitulos/c6.css">
+<article class="capitulo" data-cap="6">
+  <header class="cap-cabeca">
+    <p class="cap-numero">Capítulo 6</p>
+    <h1>Conversa no ruído</h1>
+    <p class="cap-lead">Todo fio, toda antena e todo disco erram de vez em quando. Neste capítulo você vai mandar frases de Machado por um canal que troca bits ao acaso, vai consertar os estragos com códigos cada vez mais espertos e vai encontrar o resultado mais surpreendente do artigo de Shannon, um limite exato para quanto se pode conversar através do ruído.</p>
+  </header>
+
+  <section id="c6-bilhete">
+    <h2>Um bilhete com erros</h2>
+    <p>Leia esta frase do <i>Memorial de Aires</i>, copiada com descuido:</p>
+    <blockquote><p>Cuidei que nãu acabaria de me habitzar novamente a esta outra vidu de cá.</p></blockquote>
+    <p>Você leu <i>não</i>, <i>habituar</i> e <i>vida</i> sem esforço, talvez sem perceber os três erros. Para isso usou tudo o que os capítulos anteriores mediram: depois de <i>habit</i>, poucas letras fazem sentido; <i>vidu</i> não é palavra; <i>outra vida de cá</i> é uma expressão que você já viu. Seu cérebro rodou, de graça, um decodificador de erros apoiado na redundância do português.</p>
+    <p>No <a href="#c5">capítulo 5</a> fizemos o contrário. Esprememos a redundância para fora do texto até cada bit carregar o máximo de informação. Um arquivo bem comprimido não tem folga nenhuma: um bit trocado no meio dele pode estragar tudo o que vem depois, porque não sobrou nada de previsível para denunciar o erro. Comprimir deixa a mensagem curta e frágil.</p>
+    <p>Este capítulo trata da segunda metade do artigo de Shannon de 1948, a que pergunta como conversar quando o meio de transmissão erra. A resposta, em linhas gerais, é acrescentar redundância de volta, só que agora de propósito, com uma estrutura escolhida para que o receptor consiga achar e desfazer os erros. A pergunta que move o capítulo é quanto essa proteção custa.</p>
+  </section>
+
+  <section id="c6-esquema">
+    <h2>O esquema de 1948</h2>
+    <p>Logo na introdução, o artigo de Shannon traz uma frase que define o problema inteiro. Em tradução livre: “O problema fundamental da comunicação é o de reproduzir num ponto, exata ou aproximadamente, uma mensagem selecionada em outro ponto.” Na mesma introdução aparece um desenho de caixas e setas que ficou famoso.</p>
+    <figure class="widget" data-widget="diagrama"></figure>
+    <p>A <dfn>fonte de informação</dfn> escolhe uma mensagem, como uma frase de Machado. O <dfn>transmissor</dfn> a transforma num sinal adequado ao meio, e é aí que mora o <dfn>codificador</dfn>. O <dfn>canal</dfn> é o meio em si: um fio de cobre, o ar entre duas antenas, a superfície de um disco, que guarda a mensagem hoje para entregá-la amanhã. Uma <dfn>fonte de ruído</dfn> perturba o sinal no caminho. O <dfn>receptor</dfn> tenta desfazer o que o transmissor fez, e o <dfn>destino</dfn> recebe o resultado.</p>
+    <p>O desenho separa o que o engenheiro controla do que ele não controla. O ruído é dado pela natureza. O transmissor e o receptor são projetados. Toda a engenhosidade deste capítulo vai morar nessas duas caixas.</p>
+  </section>
+
+  <section id="c6-canal">
+    <h2>O canal binário simétrico</h2>
+    <p>Para estudar o ruído precisamos de um modelo simples dele. O mais simples de todos é o seguinte.</p>
+    <div class="destaque-caixa">
+      <span class="rotulo">Definição</span>
+      <p>Um <dfn>canal binário simétrico</dfn> recebe bits, um de cada vez, e entrega cada um intacto com probabilidade <math><mn>1</mn><mo>−</mo><mi>p</mi></math> ou trocado (0 vira 1, 1 vira 0) com probabilidade <math><mi>p</mi></math>, independentemente do que aconteceu com os outros bits. O número <math><mi>p</mi></math> é a <dfn>probabilidade de troca</dfn>.</p>
+    </div>
+    <p>“Simétrico” porque um 0 e um 1 correm o mesmo risco. O modelo é uma idealização: no mundo real os erros costumam vir em rajadas, como um risco num disco ou um trovão durante uma ligação. Mesmo assim, ele captura o essencial, e quase tudo o que vamos descobrir com ele vale para canais mais realistas.</p>
+    <p>Para pôr uma frase de Machado num canal binário, precisamos primeiro transformá-la em bits. Usaremos o alfabeto do livro, de 39 símbolos. Cinco bits dão só <math><msup><mn>2</mn><mn>5</mn></msup><mo>=</mo><mn>32</mn></math> combinações, poucas demais; seis dão 64, que bastam. Cada letra vira então um número de 0 a 38 escrito com seis bits: o espaço é <span class="dados">000000</span>, o <i>a</i> é <span class="dados">000001</span>, o <i>v</i> é <span class="dados">010110</span>. As 25 combinações que sobram não correspondem a letra nenhuma.</p>
+    <aside class="nota">
+      <p><strong>Por que não o UTF-8?</strong> É o padrão dos computadores, mas usa um byte para as letras sem acento e dois para as acentuadas. Um bit trocado pode transformar um byte comum no início de um caractere de dois bytes e embaralhar o vizinho. Com seis bits fixos, cada erro fica preso na sua letra, o que deixa a experiência mais fácil de interpretar.</p>
+    </aside>
+    <p>Esse código não comprime nem protege nada; ele só deixa ver o efeito do ruído. Mexa no controle abaixo devagar, começando em 1% e subindo até 20%.</p>
+    <figure class="widget" data-widget="canal"></figure>
+    <p>Com <math><mi>p</mi></math> em torno de 1% ou 2%, a frase recebida tem algumas letras trocadas e você a lê sem dificuldade, do mesmo jeito que leu o bilhete do começo. Por volta de 5%, um quarto das letras está errado e a leitura vira decifração. Com 10%, quase metade das letras está errada e a frase se desfaz.</p>
+    <p>A conta por trás é simples. Uma letra chega intacta se os seus seis bits escaparem todos do ruído, e isso acontece com probabilidade</p>
+    <div class="equacao">
+      <math display="block"><mrow><mi>P</mi><mo stretchy="false">(</mo><mtext>letra intacta</mtext><mo stretchy="false">)</mo><mo>=</mo><msup><mrow><mo stretchy="false">(</mo><mn>1</mn><mo>−</mo><mi>p</mi><mo stretchy="false">)</mo></mrow><mn>6</mn></msup><mo>.</mo></mrow></math>
+    </div>
+    <p>Com <math><mi>p</mi><mo>=</mo><mn>0,02</mn></math>, isso dá <math><msup><mn>0,98</mn><mn>6</mn></msup><mo>≈</mo><mn>0,89</mn></math>, e cerca de 11% das letras saem erradas. Com <math><mi>p</mi><mo>=</mo><mn>0,1</mn></math>, dá <math><msup><mn>0,9</mn><mn>6</mn></msup><mo>≈</mo><mn>0,53</mn></math>: quase metade das letras perdida. O leitor humano corrige os erros esparsos porque o português é muito redundante. Quando os erros ficam densos, a redundância da língua não dá conta, e é preciso acrescentar outra.</p>
+  </section>
+
+  <section id="c6-repeticao">
+    <h2>Dizer duas vezes, dizer três</h2>
+    <p>A ideia mais antiga para vencer o ruído é repetir. Num rádio ruim, a gente soletra; num documento importante, escreve o valor em algarismos e por extenso. Para bits, o <dfn>código de repetição</dfn> manda cada bit três vezes: <span class="dados">0</span> vira <span class="dados">000</span> e <span class="dados">1</span> vira <span class="dados">111</span>. O receptor decide por <dfn>maioria</dfn>. Se chegar <span class="dados">010</span>, ele aposta em <span class="dados">0</span>, porque é mais provável que um bit tenha sido trocado do que dois.</p>
+    <p>A maioria erra quando dois ou três dos três bits são trocados. Há três maneiras de trocar exatamente dois bits, cada uma com probabilidade <math><msup><mi>p</mi><mn>2</mn></msup><mo stretchy="false">(</mo><mn>1</mn><mo>−</mo><mi>p</mi><mo stretchy="false">)</mo></math>, e uma de trocar os três:</p>
+    <div class="equacao">
+      <math display="block"><mrow><msub><mi>P</mi><mtext>erro</mtext></msub><mo>=</mo><mn>3</mn><msup><mi>p</mi><mn>2</mn></msup><mo stretchy="false">(</mo><mn>1</mn><mo>−</mo><mi>p</mi><mo stretchy="false">)</mo><mo>+</mo><msup><mi>p</mi><mn>3</mn></msup><mo>.</mo></mrow></math>
+    </div>
+    <p>Com <math><mi>p</mi><mo>=</mo><mn>0,1</mn></math>: <math><mn>3</mn><mo>×</mo><mn>0,01</mn><mo>×</mo><mn>0,9</mn><mo>+</mo><mn>0,001</mn><mo>=</mo><mn>0,028</mn></math>. O erro por bit caiu de 10% para 2,8%. O preço é que agora cada bit de mensagem ocupa três bits do canal. A fração entre bits de mensagem e bits enviados se chama <dfn>taxa</dfn> do código, e a repetição tripla tem taxa <math><mfrac><mn>1</mn><mn>3</mn></mfrac></math>.</p>
+    <p>Com <math><mi>n</mi></math> repetições (<math><mi>n</mi></math> ímpar, para não haver empate), a maioria erra quando mais da metade das cópias é trocada. Somando as maneiras de isso acontecer:</p>
+    <div class="equacao">
+      <math display="block"><mrow><msub><mi>P</mi><mtext>erro</mtext></msub><mo>=</mo><munderover><mo>∑</mo><mrow><mi>k</mi><mo>=</mo><mo stretchy="false">(</mo><mi>n</mi><mo>+</mo><mn>1</mn><mo stretchy="false">)</mo><mo>/</mo><mn>2</mn></mrow><mi>n</mi></munderover><mrow><mo>(</mo><mfrac linethickness="0"><mi>n</mi><mi>k</mi></mfrac><mo>)</mo></mrow><msup><mi>p</mi><mi>k</mi></msup><msup><mrow><mo stretchy="false">(</mo><mn>1</mn><mo>−</mo><mi>p</mi><mo stretchy="false">)</mo></mrow><mrow><mi>n</mi><mo>−</mo><mi>k</mi></mrow></msup><mo>,</mo><mspace width="1.5em"></mspace><mtext>taxa</mtext><mo>=</mo><mfrac><mn>1</mn><mi>n</mi></mfrac><mo>.</mo></mrow></math>
+    </div>
+    <p>O símbolo <math><mrow><mo>(</mo><mfrac linethickness="0"><mi>n</mi><mi>k</mi></mfrac><mo>)</mo></mrow></math> conta de quantas maneiras se escolhem as <math><mi>k</mi></math> cópias trocadas entre as <math><mi>n</mi></math>. O interativo calcula essa soma e também simula cem mil bits passando pelo canal, para você conferir que a fórmula descreve o que acontece.</p>
+    <figure class="widget" data-widget="repeticao"></figure>
+    <p>Cada repetição a mais derruba o erro por um fator considerável, mas empurra o ponto para a esquerda. Para ter um erro de um em um milhão com <math><mi>p</mi></math> de 10%, a repetição precisa de 23 cópias, e a taxa cai para menos de 5%. Se você quiser erro zero, a curva sugere que vai precisar de taxa zero, isto é, repetir para sempre e nunca dizer nada.</p>
+    <p>Essa conclusão parece um fato da natureza: confiabilidade custa repetição, e confiabilidade total custa repetição infinita. Guarde a forma dessa curva. A linha tracejada, que por enquanto não explicamos, vai desmenti-la.</p>
+  </section>
+
+  <section id="c6-hamming">
+    <h2>Os três círculos de Hamming</h2>
+    <p>No fim dos anos 1940, o matemático Richard Hamming trabalhava nos Laboratórios Bell e usava um computador de relés. A máquina conferia o próprio trabalho e, quando detectava um erro, parava. Durante a semana, um operador resolvia o problema e mandava continuar. Nos fins de semana não havia operador, e a máquina simplesmente abandonava o trabalho e passava ao seguinte. Hamming contou muitas vezes, anos depois, a frustração de voltar na segunda-feira e encontrar seus cálculos abortados, e a pergunta que ela lhe sugeriu: se a máquina consegue saber que errou, por que não consegue saber onde errou e consertar?</p>
+    <p>A resposta saiu em 1950, num artigo sobre códigos que detectam e corrigem erros. O mais famoso deles manda 4 bits de mensagem em blocos de 7 e corrige qualquer erro isolado dentro do bloco. Ele se chama <dfn>Hamming(7,4)</dfn> e cabe num desenho de três círculos sobrepostos.</p>
+    <p>Os três círculos dividem o plano em sete regiões. Os 4 bits de dados vão nas regiões onde há sobreposição; os outros 3, chamados bits de <dfn>paridade</dfn>, vão nas regiões que pertencem a um círculo só. Cada bit de paridade é escolhido para que o seu círculo fique com um número par de bits 1. Escolha os dados no interativo, depois faça o papel do ruído e troque um bit qualquer.</p>
+    <figure class="widget" data-widget="hamming"></figure>
+    <p>Um erro único deixa ímpares exatamente os círculos que contêm o bit trocado. Se o bit errado está só em A, só A acusa. Se está em A e C mas fora de B, acusam A e C. Se está no centro, os três acusam. Como cada uma das sete regiões pertence a uma combinação diferente de círculos, o padrão de acusações aponta a região, e o receptor sabe qual bit desfazer. Esse padrão se chama <dfn>síndrome</dfn>.</p>
+    <p>Hamming numerou as posições de 1 a 7 de modo que a síndrome, lida como número binário, seja a própria posição do erro. O círculo A confere as posições cujo número binário tem o último algarismo 1 (1, 3, 5, 7); B, as que têm o do meio (2, 3, 6, 7); C, as que têm o primeiro (4, 5, 6, 7). Se acusam C e A, a síndrome é <span class="dados">101</span>, que em binário é 5. A posição 5 está em A e em C e fora de B.</p>
+    <p>Agora troque dois bits. A síndrome continua diferente de zero, então o receptor sabe que algo deu errado. Mas ela aponta para um terceiro bit, que estava certo. O decodificador obedece, troca esse bit, e a palavra final fica com três erros. O código foi feito para corrigir um erro por bloco e se engana com dois.</p>
+  </section>
+
+  <section id="c6-distancia">
+    <h2>Distância entre palavras</h2>
+    <p>Há uma maneira geométrica de ver por que o código aguenta um erro e não dois. A <dfn>distância de Hamming</dfn> entre duas sequências de bits do mesmo tamanho é o número de posições em que elas diferem. Entre <span class="dados">0110011</span> e <span class="dados">0110111</span> a distância é 1; entre <span class="dados">0000000</span> e <span class="dados">1110000</span>, é 3.</p>
+    <p>O Hamming(7,4) tem 16 <dfn>palavras-código</dfn>, uma para cada escolha dos 4 bits de dados. Quaisquer duas delas diferem em pelo menos 3 posições. Diz-se que a <dfn>distância mínima</dfn> do código é 3.</p>
+    <p>Imagine cada palavra-código cercada por uma pequena “esfera”: ela mesma e as 7 sequências que diferem dela em um bit. Como as palavras-código estão a pelo menos 3 de distância umas das outras, duas esferas de raio 1 nunca se tocam. Um erro único tira a palavra do centro mas a deixa dentro da sua esfera, e o receptor só precisa achar a palavra-código mais próxima. Dois erros podem levá-la para a esfera de uma vizinha, e aí a palavra mais próxima é a errada.</p>
+    <p>A conta das esferas fecha com perfeição. São 16 esferas de 8 sequências cada, <math><mn>16</mn><mo>×</mo><mn>8</mn><mo>=</mo><mn>128</mn><mo>=</mo><msup><mn>2</mn><mn>7</mn></msup></math>, exatamente o número de sequências de 7 bits. As esferas cobrem o espaço inteiro sem sobrepor e sem deixar sobra. Códigos assim se chamam <dfn>perfeitos</dfn>, e são raros.</p>
+    <p>A regra geral: um código com distância mínima <math><mi>d</mi></math> corrige até <math><mo stretchy="false">⌊</mo><mo stretchy="false">(</mo><mi>d</mi><mo>−</mo><mn>1</mn><mo stretchy="false">)</mo><mo>/</mo><mn>2</mn><mo stretchy="false">⌋</mo></math> erros por palavra. A repetição tripla também tem distância 3 (<span class="dados">000</span> e <span class="dados">111</span>) e também corrige um erro, mas gasta 3 bits para cada bit de dados. O Hamming(7,4) gasta 7 para cada 4, com taxa <math><mfrac><mn>4</mn><mn>7</mn></mfrac><mo>≈</mo><mn>0,57</mn></math>.</p>
+  </section>
+
+  <section id="c6-comparar">
+    <h2>A mesma frase, três códigos</h2>
+    <p>Abaixo, a mesma frase atravessa o mesmo canal de três maneiras: crua, com repetição tripla e em blocos de Hamming(7,4).</p>
+    <figure class="widget" data-widget="comparar"></figure>
+    <p>Com <math><mi>p</mi></math> em torno de 1%, a transmissão crua erra várias letras, enquanto o Hamming e a repetição costumam entregar a frase intacta ou com uma letra errada. O Hamming gasta 75% a mais de bits; a repetição, 200% a mais. Suba para 5% e os dois começam a deixar passar erros, o Hamming mais que a repetição. Quando o ruído aperta, dois erros num mesmo bloco de 7 deixam de ser raros, e é aí que o Hamming falha.</p>
+    <p>Volte ao gráfico da repetição e repare no losango: ele mostra o erro por bit do Hamming(7,4). Ele cai perto da curva da repetição, às vezes um pouco abaixo, às vezes um pouco acima. O Hamming(7,4) corrige o mesmo erro isolado que a repetição tripla com bem menos bits, porque usa a estrutura certa. Mas um bloco de 7 bits ainda é curto demais para escapar do dilema entre taxa e erro. Para escapar de verdade, é preciso pensar em blocos muito maiores. Antes, precisamos de uma medida de quanto um canal consegue transportar.</p>
+  </section>
+
+  <section id="c6-informacao-mutua">
+    <h2>Quanto o recebido conta sobre o enviado</h2>
+    <p>Chame de <math><mi>X</mi></math> o bit enviado e de <math><mi>Y</mi></math> o bit recebido. Antes de olhar para <math><mi>Y</mi></math>, a sua incerteza sobre <math><mi>X</mi></math> é a entropia <math><mi>H</mi><mo stretchy="false">(</mo><mi>X</mi><mo stretchy="false">)</mo></math>, que vale 1 bit se 0 e 1 são igualmente prováveis. Depois de olhar, sobra alguma incerteza, porque o canal pode ter trocado o bit. Essa sobra é a entropia condicional <math><mi>H</mi><mo stretchy="false">(</mo><mi>X</mi><mo>|</mo><mi>Y</mi><mo stretchy="false">)</mo></math>, que você conheceu no <a href="#c3">capítulo 3</a>. A diferença é o quanto o recebido ensinou sobre o enviado.</p>
+    <div class="destaque-caixa">
+      <span class="rotulo">Definição</span>
+      <p>A <dfn>informação mútua</dfn> entre <math><mi>X</mi></math> e <math><mi>Y</mi></math> é a parte da incerteza sobre <math><mi>X</mi></math> que o conhecimento de <math><mi>Y</mi></math> elimina:</p>
+      <div class="equacao">
+        <math display="block"><mrow><mi>I</mi><mo stretchy="false">(</mo><mi>X</mi><mo>;</mo><mi>Y</mi><mo stretchy="false">)</mo><mo>=</mo><mi>H</mi><mo stretchy="false">(</mo><mi>X</mi><mo stretchy="false">)</mo><mo>−</mo><mi>H</mi><mo stretchy="false">(</mo><mi>X</mi><mo>|</mo><mi>Y</mi><mo stretchy="false">)</mo><mo>.</mo></mrow></math>
+      </div>
+      <p>Ela é simétrica: também é igual a <math><mi>H</mi><mo stretchy="false">(</mo><mi>Y</mi><mo stretchy="false">)</mo><mo>−</mo><mi>H</mi><mo stretchy="false">(</mo><mi>Y</mi><mo>|</mo><mi>X</mi><mo stretchy="false">)</mo></math>.</p>
+    </div>
+    <p>No canal binário simétrico com entrada equilibrada, saber <math><mi>Y</mi></math> deixa uma dúvida sobre <math><mi>X</mi></math> que é exatamente a de uma moeda viciada com probabilidade <math><mi>p</mi></math>: “o bit foi trocado ou não?”. Essa dúvida vale <math><mi>h</mi><mo stretchy="false">(</mo><mi>p</mi><mo stretchy="false">)</mo></math>, a entropia binária do <a href="#c3-entropia-binaria">capítulo 3</a>. Com <math><mi>p</mi><mo>=</mo><mn>0,1</mn></math>, <math><mi>h</mi><mo stretchy="false">(</mo><mn>0,1</mn><mo stretchy="false">)</mo><mo>≈</mo><mn>0,469</mn></math>, e cada uso do canal transporta <math><mn>1</mn><mo>−</mo><mn>0,469</mn><mo>=</mo><mn>0,531</mn></math> bit de informação. Os outros 0,469 bit são devorados pelo ruído.</p>
+    <p>Se o transmissor mandar 0 e 1 em proporções diferentes, passa menos informação. A <dfn>capacidade</dfn> do canal é o máximo da informação mútua sobre todas as maneiras de usar a entrada. Para o canal binário simétrico, o máximo vem com 0 e 1 meio a meio, e vale</p>
+    <div class="equacao">
+      <math display="block"><mrow><mi>C</mi><mo>=</mo><mn>1</mn><mo>−</mo><mi>h</mi><mo stretchy="false">(</mo><mi>p</mi><mo stretchy="false">)</mo><mo>=</mo><mn>1</mn><mo>+</mo><mi>p</mi><mo>⁢</mo><msub><mi>log</mi><mn>2</mn></msub><mo>⁡</mo><mi>p</mi><mo>+</mo><mo stretchy="false">(</mo><mn>1</mn><mo>−</mo><mi>p</mi><mo stretchy="false">)</mo><mo>⁢</mo><msub><mi>log</mi><mn>2</mn></msub><mo>⁡</mo><mo stretchy="false">(</mo><mn>1</mn><mo>−</mo><mi>p</mi><mo stretchy="false">)</mo></mrow></math>
+    </div>
+    <p>bits por uso do canal. Experimente os dois controles.</p>
+    <figure class="widget" data-widget="capacidade"></figure>
+    <p>Algumas coisas aparecem logo. Com <math><mi>p</mi><mo>=</mo><mn>0</mn></math> o canal é perfeito e transporta 1 bit por uso. Com <math><mi>p</mi><mo>=</mo><mn>0,5</mn></math> a capacidade é zero: o bit recebido é um cara ou coroa que não tem relação nenhuma com o enviado. E com <math><mi>p</mi></math> perto de 1 a capacidade volta a subir, porque um canal que quase sempre troca é tão útil quanto um que quase nunca troca. Basta inverter tudo o que chega.</p>
+    <p>Com <math><mi>q</mi></math> longe de meio a meio, o transmissor desperdiça o canal. Se ele quase sempre manda 0, já não havia muita incerteza para começar, e não há muito o que transmitir.</p>
+  </section>
+
+  <section id="c6-teorema">
+    <h2>O teorema que parecia bom demais</h2>
+    <p>Volte ao gráfico da repetição e procure a linha tracejada. Ela marca a capacidade do canal. Com <math><mi>p</mi><mo>=</mo><mn>0,1</mn></math>, fica em 0,53. O que Shannon provou em 1948 é que todos os pontos à esquerda dessa linha estão ao alcance, inclusive os que ficam lá embaixo, junto ao eixo horizontal.</p>
+    <div class="destaque-caixa">
+      <span class="rotulo">Teorema da codificação para canais com ruído</span>
+      <p>Seja <math><mi>C</mi></math> a capacidade de um canal. Para qualquer taxa <math><mi>R</mi><mo>&lt;</mo><mi>C</mi></math> e qualquer margem de erro <math><mi>ε</mi><mo>&gt;</mo><mn>0</mn></math>, por menor que seja, existe um código com taxa <math><mi>R</mi></math> cuja probabilidade de erro é menor que <math><mi>ε</mi></math>. Para taxas <math><mi>R</mi><mo>&gt;</mo><mi>C</mi></math>, a probabilidade de erro não pode ser levada a zero, qualquer que seja o código.</p>
+    </div>
+    <p>Leia de novo com o gráfico da repetição na cabeça. Com <math><mi>p</mi><mo>=</mo><mn>0,1</mn></math>, a repetição precisa de taxa 1/23 para chegar a um erro em um milhão, e de taxa ainda menor para ir além. Shannon garante que existem códigos com taxa 1/2, mais de dez vezes mais rápidos, que chegam a um em um milhão, a um em um bilhão, ou a qualquer outra meta. O erro pode ir a zero sem que a taxa vá a zero. A intuição que os códigos de repetição constroem, de que cada casa decimal de confiabilidade custa mais repetição, está simplesmente errada abaixo da capacidade.</p>
+    <p>O preço existe, mas é outro. Os bons códigos precisam de blocos muito longos: em vez de proteger 4 bits de cada vez, protegem milhares. Blocos longos significam esperar o bloco inteiro chegar para decodificar, e decodificadores com muito mais conta a fazer. Shannon trocou o preço em taxa por um preço em atraso e em computação. E a capacidade é uma parede de verdade. Acima dela, nenhuma engenhosidade adianta.</p>
+    <p>O teorema também une as duas metades do livro. Uma fonte com entropia <math><mi>H</mi></math> bits por símbolo pode ser comprimida até perto de <math><mi>H</mi></math>, como no <a href="#c5">capítulo 5</a>, e o resultado passa por um canal ruidoso praticamente sem erro, desde que a fonte comprimida produza bits mais devagar do que a capacidade do canal permite transportar. Comprimir para tirar a redundância inútil, depois codificar para pôr a redundância útil. Shannon mostrou que, com blocos longos, fazer as duas coisas separadamente não custa nada em eficiência.</p>
+  </section>
+
+  <section id="c6-prova">
+    <h2>A ideia da prova</h2>
+    <p>A prova de Shannon é engenhosa, mas a ideia central cabe em três passos.</p>
+    <p><strong>Primeiro passo: o ruído fica previsível em blocos longos.</strong> Num bloco de 7 bits com <math><mi>p</mi><mo>=</mo><mn>0,1</mn></math>, o número de erros varia muito: zero, um, dois, às vezes três. Num bloco de mil bits, a lei dos grandes números garante que o número de erros fica quase sempre perto de cem. O ruído continua aleatório no detalhe, mas a <em>quantidade</em> de ruído se torna quase certa.</p>
+    <p><strong>Segundo passo: contar as esferas.</strong> Se o bloco recebido difere do enviado em cerca de <math><mi>n</mi><mi>p</mi></math> posições, ele cai numa “esfera” em torno da palavra enviada, formada pelas sequências que diferem dela em mais ou menos <math><mi>n</mi><mi>p</mi></math> bits. Quantas sequências há nessa esfera? Para <math><mi>n</mi><mo>=</mo><mn>1000</mn></math> e <math><mi>p</mi><mo>=</mo><mn>0,1</mn></math>, o número de maneiras de escolher cem posições entre mil é cerca de <math><msup><mn>2</mn><mn>464</mn></msup></math>. Em geral, é aproximadamente <math><msup><mn>2</mn><mrow><mi>n</mi><mi>h</mi><mo stretchy="false">(</mo><mi>p</mi><mo stretchy="false">)</mo></mrow></msup></math>, e <math><mn>1000</mn><mo>×</mo><mi>h</mi><mo stretchy="false">(</mo><mn>0,1</mn><mo stretchy="false">)</mo><mo>≈</mo><mn>469</mn></math>. O espaço inteiro tem <math><msup><mn>2</mn><mi>n</mi></msup></math> sequências. Se as esferas das palavras-código não podem se sobrepor muito, cabem no máximo</p>
+    <div class="equacao">
+      <math display="block"><mrow><mfrac><msup><mn>2</mn><mi>n</mi></msup><msup><mn>2</mn><mrow><mi>n</mi><mi>h</mi><mo stretchy="false">(</mo><mi>p</mi><mo stretchy="false">)</mo></mrow></msup></mfrac><mo>=</mo><msup><mn>2</mn><mrow><mi>n</mi><mo stretchy="false">(</mo><mn>1</mn><mo>−</mo><mi>h</mi><mo stretchy="false">(</mo><mi>p</mi><mo stretchy="false">)</mo><mo stretchy="false">)</mo></mrow></msup><mo>=</mo><msup><mn>2</mn><mrow><mi>n</mi><mi>C</mi></mrow></msup></mrow></math>
+    </div>
+    <p>palavras-código, o que dá no máximo <math><mi>C</mi></math> bits de mensagem por bit enviado. É daí que vem o limite.</p>
+    <p><strong>Terceiro passo: sortear o código.</strong> Falta mostrar que dá para chegar perto desse máximo. Aqui entra a ideia mais ousada do artigo. Em vez de construir um código bom, Shannon sorteou as palavras-código ao acaso e calculou o erro médio sobre todos os sorteios possíveis. Se a taxa fica abaixo da capacidade, as esferas ocupam uma fração minúscula do espaço, cerca de <math><msup><mn>2</mn><mrow><mo>−</mo><mi>n</mi><mo stretchy="false">(</mo><mi>C</mi><mo>−</mo><mi>R</mi><mo stretchy="false">)</mo></mrow></msup></math>, e a chance de a palavra recebida cair perto de uma palavra-código errada vai a zero quando <math><mi>n</mi></math> cresce. Se a média sobre todos os códigos sorteados tem erro pequeno, pelo menos um código específico tem erro pequeno. Assim fica provado que bons códigos existem.</p>
+    <p>Você pode repetir o experimento com blocos curtos. O interativo sorteia códigos aleatórios de três taxas diferentes e mede, para cada comprimento de bloco, a fração das mensagens decodificadas erradas.</p>
+    <figure class="widget" data-widget="aleatorios"></figure>
+    <p>Com <math><mi>p</mi></math> em 5%, a capacidade é 0,71. As curvas de taxa 1/4 e 1/2 descem à medida que os blocos crescem, a de 1/4 mais depressa, porque está mais longe do limite. A de 3/4, que passa da capacidade, sobe. Aumente <math><mi>p</mi></math> para 10% e a capacidade cai para 0,53: a curva de 1/2 fica quase parada, rente à parede, e a de 1/4 continua descendo. Com blocos de 30 bits a tendência ainda é tímida. O teorema fala de blocos de milhares de bits, e o computador não consegue decodificar códigos aleatórios desse tamanho.</p>
+    <p>Esse é o problema que o teorema deixou. Um código aleatório com taxa 1/2 e blocos de mil bits tem <math><msup><mn>2</mn><mn>500</mn></msup></math> palavras-código. Decodificar comparando a palavra recebida com cada uma delas levaria mais tempo que a idade do universo. Shannon provou que os bons códigos existem, mas não disse como achar um que se pudesse decodificar.</p>
+  </section>
+
+  <section id="c6-depois">
+    <h2>Meio século atrás do limite</h2>
+    <p>Os engenheiros passaram décadas procurando códigos com estrutura suficiente para serem decodificados depressa e aleatoriedade suficiente para chegarem perto da capacidade. Os códigos de Hamming estão entre os primeiros. Em 1960, Irving Reed e Gustave Solomon publicaram os códigos que levam seus nomes, que tratam grupos de bits (bytes, por exemplo) como um único símbolo e por isso são especialmente bons contra rajadas de erros. Eles estão nos CDs e DVDs e nos QR codes, que continuam legíveis com uma parte do desenho rasgada ou coberta por um logotipo.</p>
+    <p>Também em 1960, Robert Gallager, em sua tese de doutorado no MIT, propôs os <dfn>códigos LDPC</dfn> (sigla inglesa para “verificação de paridade de baixa densidade”): blocos enormes, cada bit de paridade conferindo só alguns poucos bits, e um decodificador que troca mensagens entre os bits e as paridades até chegar a um consenso. Eram pesados demais para os computadores da época e ficaram quase esquecidos por mais de trinta anos, até serem redescobertos nos anos 1990.</p>
+    <p>Em 1993, Claude Berrou, Alain Glavieux e Punya Thitimajshima apresentaram os <dfn>turbo codes</dfn>, que combinam dois codificadores simples e um decodificador que vai e volta entre eles, refinando a cada passada a sua aposta sobre cada bit. O desempenho chegava tão perto do limite de Shannon que muitos especialistas, a princípio, desconfiaram dos resultados. Em 2009, Erdal Arıkan publicou os <dfn>códigos polares</dfn>, os primeiros com prova matemática de que atingem a capacidade de toda uma classe de canais com codificação e decodificação eficientes.</p>
+    <p>Hoje esses códigos estão em quase tudo que transmite ou guarda dados. Os turbo codes foram adotados nas redes de celular de terceira e quarta geração; as redes 5G usam códigos LDPC para os dados e códigos polares para as mensagens de controle. O Wi-Fi moderno, a televisão digital por satélite, os discos rígidos e as memórias flash usam códigos LDPC ou parentes deles. As memórias de servidores usam códigos da família de Hamming para corrigir bits trocados por acidente. E as sondas espaciais, cujo sinal chega extremamente fraco depois de atravessar distâncias enormes, conversam com a Terra há décadas graças a códigos corretores.</p>
+    <aside class="nota">
+      <p><strong>Decibéis.</strong> Os engenheiros costumam medir a distância até o limite de Shannon em decibéis de relação sinal-ruído. Os melhores códigos atuais, com blocos longos, ficam a uma fração de decibel do limite em canais bem modelados.</p>
+    </aside>
+  </section>
+
+  <section id="c6-lingua">
+    <h2>A língua como código corretor</h2>
+    <p>Voltemos ao bilhete do começo. A língua portuguesa é, ela mesma, um código corretor de erros. O <a href="#c4">capítulo 4</a> mediu que, com cinco letras de contexto, um modelo estatístico de Machado precisa de cerca de 2 bits por letra, contra os 5,29 de um alfabeto sem estrutura. Isso dá uma redundância de cerca de 62%. Leitores humanos usam contextos muito mais longos, e os números do jogo de Shannon sugerem que, para eles, a redundância chega perto de 80%. É uma proteção generosa. Ela permite entender uma ligação ruim, ler uma letra difícil, completar uma palavra que o barulho da rua engoliu.</p>
+    <p>Do ponto de vista de um engenheiro, porém, a língua é um código mal projetado. A redundância está distribuída ao sabor da história: <i>casa</i> e <i>caso</i> diferem em uma letra só e ambas fazem sentido em muitas frases, enquanto outras palavras são tão longas e únicas que sobra proteção. Um código como o Hamming coloca a redundância exatamente onde ela é útil. A língua a coloca onde a evolução das palavras a deixou.</p>
+    <p>Mas há algo que nenhum código de engenharia faz. Para corrigir o bilhete, você usou o que sabe sobre o mundo e sobre o jeito de Machado escrever. O decodificador da língua é um adivinhador, exatamente como os do jogo de Shannon. Quanto melhor alguém adivinha a próxima letra, mais ruído consegue atravessar. O <a href="#c7">capítulo 7</a> trata das máquinas que aprenderam essa estrutura lendo quantidades enormes de texto, e que hoje adivinham melhor que qualquer programa anterior.</p>
+  </section>
+
+  <h2 class="exercicios-titulo" id="c6-exercicios">Exercícios</h2>
+  <ol class="exercicios">
+    <li>
+      <p>Calcule à mão a probabilidade de erro por bit da repetição 3× e da repetição 5× com <math><mi>p</mi><mo>=</mo><mn>0,1</mn></math>. Quanto cada uma custa em taxa? Confira os resultados no interativo da repetição. <span class="nivel">cálculo</span></p>
+      <details class="solucao"><summary>Solução</summary><div>
+        <p>Na repetição 3×, a maioria erra se 2 ou 3 bits forem trocados: <math><mn>3</mn><msup><mi>p</mi><mn>2</mn></msup><mo stretchy="false">(</mo><mn>1</mn><mo>−</mo><mi>p</mi><mo stretchy="false">)</mo><mo>+</mo><msup><mi>p</mi><mn>3</mn></msup><mo>=</mo><mn>3</mn><mo>×</mo><mn>0,01</mn><mo>×</mo><mn>0,9</mn><mo>+</mo><mn>0,001</mn><mo>=</mo><mn>0,028</mn></math>, ou 2,8%, com taxa 1/3.</p>
+        <p>Na repetição 5×, a maioria erra se 3, 4 ou 5 bits forem trocados. Há <math><mrow><mo>(</mo><mfrac linethickness="0"><mn>5</mn><mn>3</mn></mfrac><mo>)</mo></mrow><mo>=</mo><mn>10</mn></math> maneiras de escolher 3 bits, 5 de escolher 4 e 1 de escolher 5:</p>
+        <p><math><mn>10</mn><mo>×</mo><mn>0,001</mn><mo>×</mo><mn>0,81</mn><mo>+</mo><mn>5</mn><mo>×</mo><mn>0,0001</mn><mo>×</mo><mn>0,9</mn><mo>+</mo><mn>0,00001</mn><mo>=</mo><mn>0,0081</mn><mo>+</mo><mn>0,00045</mn><mo>+</mo><mn>0,00001</mn><mo>≈</mo><mn>0,0086</mn></math>, ou 0,86%, com taxa 1/5.</p>
+        <p>Passar de 3 para 5 cópias dividiu o erro por pouco mais de 3, ao custo de 67% a mais de bits no canal. Cada nova redução do erro custa mais repetição.</p>
+      </div></details>
+    </li>
+    <li>
+      <p>Um receptor de Hamming(7,4) recebe <span class="dados">0110111</span> (posições 1 a 7, da esquerda para a direita, paridades nas posições 1, 2 e 4). Calcule a síndrome, corrija a palavra e extraia os 4 bits de dados. Confira no interativo dos círculos. <span class="nivel">cálculo</span></p>
+      <details class="solucao"><summary>Solução</summary><div>
+        <p>Os bits são: posição 1 = 0, 2 = 1, 3 = 1, 4 = 0, 5 = 1, 6 = 1, 7 = 1.</p>
+        <p>Círculo A (posições 1, 3, 5, 7): <math><mn>0</mn><mo>+</mo><mn>1</mn><mo>+</mo><mn>1</mn><mo>+</mo><mn>1</mn><mo>=</mo><mn>3</mn></math>, ímpar, acusa. Círculo B (2, 3, 6, 7): <math><mn>1</mn><mo>+</mo><mn>1</mn><mo>+</mo><mn>1</mn><mo>+</mo><mn>1</mn><mo>=</mo><mn>4</mn></math>, par. Círculo C (4, 5, 6, 7): <math><mn>0</mn><mo>+</mo><mn>1</mn><mo>+</mo><mn>1</mn><mo>+</mo><mn>1</mn><mo>=</mo><mn>3</mn></math>, ímpar, acusa.</p>
+        <p>Lida na ordem C, B, A, a síndrome é <span class="dados">101</span> = 5. Trocando o bit da posição 5, a palavra corrigida é <span class="dados">0110011</span>. Os dados estão nas posições 3, 5, 6 e 7: <span class="dados">1011</span>. Para conferir, codifique <span class="dados">1011</span>: <math><msub><mi>p</mi><mn>1</mn></msub><mo>=</mo><mn>1</mn><mo>⊕</mo><mn>0</mn><mo>⊕</mo><mn>1</mn><mo>=</mo><mn>0</mn></math>, <math><msub><mi>p</mi><mn>2</mn></msub><mo>=</mo><mn>1</mn><mo>⊕</mo><mn>1</mn><mo>⊕</mo><mn>1</mn><mo>=</mo><mn>1</mn></math>, <math><msub><mi>p</mi><mn>4</mn></msub><mo>=</mo><mn>0</mn><mo>⊕</mo><mn>1</mn><mo>⊕</mo><mn>1</mn><mo>=</mo><mn>0</mn></math>, o que dá <span class="dados">0110011</span>, como esperado. (O símbolo ⊕ é a soma que só olha se o resultado é par ou ímpar: 1 ⊕ 1 = 0.)</p>
+      </div></details>
+    </li>
+    <li>
+      <p>Em vez de corrigir, um receptor usa o Hamming(7,4) só para <em>detectar</em> erros: se a síndrome não for zero, ele pede que o bloco seja reenviado. Quantos erros por bloco ele detecta com certeza? Por que isso é melhor do que tentar corrigir quando o ruído é alto? <span class="nivel">conceito</span></p>
+      <details class="solucao"><summary>Solução</summary><div>
+        <p>Ele detecta com certeza qualquer padrão de 1 ou 2 erros. Como as palavras-código estão a pelo menos 3 de distância, 1 ou 2 trocas nunca transformam uma palavra-código em outra, então a síndrome nunca dá zero nesses casos. Com 3 erros a palavra pode cair exatamente sobre outra palavra-código, e o erro passa despercebido.</p>
+        <p>Ao corrigir, o receptor confunde 2 erros com 1 e “conserta” o bit errado, como você viu no interativo. Ao só detectar, ele não conserta nada, mas também não aceita dados errados com 2 erros. Quando há um canal de volta para pedir reenvio, como na internet, detectar e repetir costuma ser a escolha mais segura. Uma sonda espacial a bilhões de quilômetros não pode esperar horas por cada reenvio, e por isso precisa corrigir.</p>
+      </div></details>
+    </li>
+    <li>
+      <p>Um canal binário simétrico tem <math><mi>p</mi><mo>=</mo><mn>0,11</mn></math>. Calcule sua capacidade (use <math><msub><mi>log</mi><mn>2</mn></msub><mo>⁡</mo><mn>0,11</mn><mo>≈</mo><mo>−</mo><mn>3,18</mn></math> e <math><msub><mi>log</mi><mn>2</mn></msub><mo>⁡</mo><mn>0,89</mn><mo>≈</mo><mo>−</mo><mn>0,168</mn></math>). Quantos bits, no mínimo, é preciso mandar pelo canal para transmitir de forma confiável uma mensagem de 1.000 bits já comprimida? <span class="nivel">cálculo</span></p>
+      <details class="solucao"><summary>Solução</summary><div>
+        <p><math><mi>h</mi><mo stretchy="false">(</mo><mn>0,11</mn><mo stretchy="false">)</mo><mo>≈</mo><mn>0,11</mn><mo>×</mo><mn>3,18</mn><mo>+</mo><mn>0,89</mn><mo>×</mo><mn>0,168</mn><mo>≈</mo><mn>0,350</mn><mo>+</mo><mn>0,150</mn><mo>=</mo><mn>0,500</mn></math>. Então <math><mi>C</mi><mo>≈</mo><mn>1</mn><mo>−</mo><mn>0,5</mn><mo>=</mo><mn>0,5</mn></math> bit por uso.</p>
+        <p>Cada uso do canal transporta no máximo meio bit de mensagem, e o teorema diz que acima da capacidade o erro não pode ir a zero. Logo são necessários pelo menos 2.000 bits no canal, e na prática um pouco mais, porque o teorema só garante erro pequeno para taxas estritamente abaixo de <math><mi>C</mi></math> e blocos longos. Para comparação, a repetição 3× usaria 3.000 bits e ainda erraria cerca de 3,4% dos bits.</p>
+      </div></details>
+    </li>
+    <li>
+      <p>No interativo do canal binário simétrico, ache o maior <math><mi>p</mi></math> em que você ainda consegue ler a frase recebida sem olhar a original. Que fração das letras estava errada? Repita com outras duas frases. Depois, no interativo da comparação, procure o <math><mi>p</mi></math> a partir do qual o Hamming(7,4) começa a deixar passar letras erradas com frequência. <span class="nivel">experimento</span></p>
+      <details class="solucao"><summary>Solução</summary><div>
+        <p>Em geral se lê com folga até 2% ou 3%, e a leitura começa a travar por volta de 5%. Pela fórmula <math><mn>1</mn><mo>−</mo><msup><mrow><mo stretchy="false">(</mo><mn>1</mn><mo>−</mo><mi>p</mi><mo stretchy="false">)</mo></mrow><mn>6</mn></msup></math>, isso corresponde a algo entre 11% e 26% das letras erradas. O resultado varia com a frase: palavras longas e comuns se reconstroem com facilidade, nomes próprios e palavras curtas (<i>de</i>, <i>da</i>, <i>do</i>, <i>se</i>) são mais frágeis, porque trocadas continuam sendo palavras.</p>
+        <p>O Hamming(7,4) começa a falhar visivelmente por volta de 3% a 5%. A probabilidade de um bloco de 7 bits ter 2 ou mais erros é <math><mn>1</mn><mo>−</mo><msup><mrow><mo stretchy="false">(</mo><mn>1</mn><mo>−</mo><mi>p</mi><mo stretchy="false">)</mo></mrow><mn>7</mn></msup><mo>−</mo><mn>7</mn><mi>p</mi><msup><mrow><mo stretchy="false">(</mo><mn>1</mn><mo>−</mo><mi>p</mi><mo stretchy="false">)</mo></mrow><mn>6</mn></msup></math>, que vale cerca de 0,2% com <math><mi>p</mi><mo>=</mo><mn>0,01</mn></math> e cerca de 4,4% com <math><mi>p</mi><mo>=</mo><mn>0,05</mn></math>. Como uma frase de 70 letras usa uns 105 blocos, com 5% alguns blocos falham em quase toda frase.</p>
+      </div></details>
+    </li>
+    <li>
+      <p>Mostre que não existe um código de comprimento 7 com 16 palavras-código que corrija quaisquer 2 erros. (Dica: conte quantas sequências cabem numa esfera de raio 2.) <span class="nivel">desafio</span></p>
+      <details class="solucao"><summary>Solução</summary><div>
+        <p>Para corrigir 2 erros, as esferas de raio 2 em torno das palavras-código não podem se sobrepor: senão uma mesma palavra recebida poderia ter vindo de duas palavras-código com no máximo 2 erros cada. Uma esfera de raio 2 contém a palavra central, as 7 que diferem em um bit e as <math><mrow><mo>(</mo><mfrac linethickness="0"><mn>7</mn><mn>2</mn></mfrac><mo>)</mo></mrow><mo>=</mo><mn>21</mn></math> que diferem em dois, total 29.</p>
+        <p>Dezesseis esferas disjuntas ocupariam <math><mn>16</mn><mo>×</mo><mn>29</mn><mo>=</mo><mn>464</mn></math> sequências, mas só existem <math><msup><mn>2</mn><mn>7</mn></msup><mo>=</mo><mn>128</mn></math>. Impossível. O mesmo argumento, com esferas de raio 1, mostra por que o Hamming(7,4) é perfeito: <math><mn>16</mn><mo>×</mo><mn>8</mn><mo>=</mo><mn>128</mn></math> exatamente. Esse tipo de contagem, chamado limite de empacotamento de esferas, é a versão em miniatura do segundo passo da prova de Shannon.</p>
+      </div></details>
+    </li>
+    <li>
+      <p>Um canal binário simétrico com <math><mi>p</mi><mo>=</mo><mn>0,5</mn></math> tem capacidade zero, mas um com <math><mi>p</mi><mo>=</mo><mn>0,9</mn></math> tem a mesma capacidade que um com <math><mi>p</mi><mo>=</mo><mn>0,1</mn></math>. Explique os dois fatos sem fórmulas. <span class="nivel">reflexão</span></p>
+      <details class="solucao"><summary>Solução</summary><div>
+        <p>Com <math><mi>p</mi><mo>=</mo><mn>0,5</mn></math>, cada bit recebido é 0 ou 1 com chance meio a meio, qualquer que seja o enviado. O receptor poderia jogar uma moeda em vez de ouvir o canal e saberia o mesmo. Nenhum código ajuda, porque não há relação nenhuma entre entrada e saída para explorar.</p>
+        <p>Com <math><mi>p</mi><mo>=</mo><mn>0,9</mn></math>, o canal troca 90% dos bits. Basta o receptor inverter tudo o que recebe e o canal passa a se comportar como um que troca só 10%. A informação mede quanto a saída depende da entrada, e inverter tudo é uma operação que o receptor faz de graça. Um mentiroso consistente informa tanto quanto alguém que quase sempre diz a verdade.</p>
+      </div></details>
+    </li>
+  </ol>
+
+  <dl class="cartoes-dados">
+    <dt>O que é um canal binário simétrico?</dt>
+    <dd>Um modelo de canal que recebe bits e troca cada um (0 por 1 ou 1 por 0) com probabilidade p, independentemente dos outros, entregando-o intacto com probabilidade 1 − p.</dd>
+    <dt>Qual é a probabilidade de erro por bit da repetição 3× com decodificação por maioria?</dt>
+    <dd>3p²(1 − p) + p³, a chance de dois ou três dos três bits serem trocados. Com p = 0,1, dá 0,028, ao custo de taxa 1/3.</dd>
+    <dt>Como o código de Hamming(7,4) localiza um erro?</dt>
+    <dd>Três bits de paridade conferem três grupos sobrepostos de posições (os três círculos). Um erro único torna ímpares exatamente os grupos que contêm o bit trocado, e essa síndrome, lida em binário, é a posição do erro.</dd>
+    <dt>Por que um código com distância mínima 3 corrige um erro, mas não dois?</dt>
+    <dd>Com um erro, a palavra recebida fica a distância 1 da enviada e a pelo menos 2 de qualquer outra, então a mais próxima é a certa. Com dois erros, ela pode ficar mais perto de outra palavra-código, e o decodificador escolhe a errada.</dd>
+    <dt>O que é a informação mútua I(X;Y)?</dt>
+    <dd>A parte da incerteza sobre o que foi enviado que o conhecimento do que foi recebido elimina: I(X;Y) = H(X) − H(X|Y). É simétrica em X e Y.</dd>
+    <dt>Qual é a capacidade do canal binário simétrico com probabilidade de troca p?</dt>
+    <dd>C = 1 − h(p) bits por uso, em que h é a entropia binária. Vale 1 para p = 0 ou p = 1 e 0 para p = 0,5; com p = 0,1, cerca de 0,53.</dd>
+    <dt>O que diz o teorema de Shannon para canais com ruído?</dt>
+    <dd>Abaixo da capacidade C existem códigos com probabilidade de erro tão pequena quanto se queira, sem que a taxa caia a zero; acima de C, nenhum código leva o erro a zero. O preço de chegar perto de C são blocos longos.</dd>
+    <dt>Quais famílias de códigos chegaram perto da capacidade na prática?</dt>
+    <dd>Os códigos LDPC (Gallager, 1960, redescobertos nos anos 1990), os turbo codes (Berrou, Glavieux e Thitimajshima, 1993) e os códigos polares (Arıkan, 2009), usados hoje em redes de celular, Wi-Fi e armazenamento.</dd>
+  </dl>
+</article>

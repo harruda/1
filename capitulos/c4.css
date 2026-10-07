@@ -1,0 +1,107 @@
+/* Capítulo 4 — O português previsível */
+
+.c4-rotulo-campo {
+  display: block;
+  font: var(--t-0) / 1.6 var(--f-dados);
+  color: var(--tinta-2);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  margin-bottom: 0.3rem;
+}
+.linha > .c4-rotulo-campo { margin-bottom: 0; }
+.c4-empurra { margin-left: auto; display: inline-flex; flex-wrap: wrap; gap: 0.3rem; }
+
+/* ---------- gerador ---------- */
+.c4-desc { font-size: var(--t-1); color: var(--tinta-2); min-height: 2.6em; }
+.c4-saida {
+  font-size: var(--t-3);
+  line-height: 1.6;
+  background: var(--papel);
+  border: 1px solid var(--regua);
+  border-radius: var(--raio);
+  padding: 0.8rem 1rem;
+  min-height: 7.5em;
+  overflow-wrap: anywhere;
+}
+.c4-prefixo { color: var(--sinal); font-weight: 600; }
+.c4-campos { display: grid; grid-template-columns: minmax(0, 1fr) 8rem; gap: 0.8rem; align-items: end; }
+.c4-semente {
+  font: var(--t-2) var(--f-dados);
+  color: var(--tinta);
+  background: var(--papel);
+  border: 1px solid var(--regua);
+  border-radius: var(--raio);
+  padding: 0.45rem 0.6rem;
+  width: 100%;
+}
+.c4-escada { list-style: none; margin: 0; padding: 0; border-top: 1px solid var(--regua); }
+.c4-escada li {
+  display: grid;
+  grid-template-columns: 9rem minmax(0, 1fr);
+  gap: 0.2rem 1rem;
+  padding: 0.55rem 0;
+  border-bottom: 1px solid var(--regua);
+  margin: 0;
+}
+.c4-escada li.atual .c4-escada-rotulo { color: var(--sinal); }
+.c4-escada-rotulo { font: var(--t-0) / 1.9 var(--f-dados); color: var(--tinta-2); text-transform: uppercase; letter-spacing: 0.06em; }
+.c4-escada-texto { font-size: var(--t-1); line-height: 1.5; overflow-wrap: anywhere; }
+
+/* ---------- gráficos ---------- */
+.c4-grafico { min-width: 0; }
+.c4-faixa-voce { fill: var(--sinal-suave); stroke: var(--sinal); stroke-width: 1; }
+.c4-faixa-maquina { fill: color-mix(in srgb, var(--tinta-2) 16%, transparent); stroke: var(--tinta-2); stroke-width: 1; }
+.c4-faixa-shannon { fill: none; stroke: var(--tinta-2); stroke-width: 1; stroke-dasharray: 2 3; }
+.grafico .c4-faixa-rotulo { font-size: 11.5px; fill: var(--tinta-2); }
+.c4-linha-tracejada { fill: none; stroke: var(--sinal); stroke-width: 1.6; stroke-dasharray: 4 4; }
+.c4-ponto-vazio { fill: var(--papel-2); stroke: var(--sinal); stroke-width: 2; }
+.c4-linha-possiveis { fill: none; stroke: var(--tinta-2); stroke-width: 1.6; stroke-dasharray: 5 4; }
+.c4-ponto-possiveis { fill: var(--papel-2); stroke: var(--tinta-2); stroke-width: 1.6; }
+.c4-leitor { font-size: var(--t-1); color: var(--tinta-2); }
+
+.c4-tabela { border-collapse: collapse; font-size: var(--t-1); width: 100%; min-width: 36rem; }
+.c4-tabela th, .c4-tabela td { padding: 0.4rem 0.6rem; text-align: right; border-bottom: 1px solid var(--regua); white-space: nowrap; }
+.c4-tabela td { font-family: var(--f-dados); font-size: var(--t-0); font-variant-numeric: tabular-nums; }
+.c4-tabela thead th { font: var(--t-0) / 1.35 var(--f-dados); color: var(--tinta-2); text-transform: uppercase; letter-spacing: 0.05em; white-space: normal; vertical-align: bottom; }
+.c4-tabela tbody th { font: 500 var(--t-1) var(--f-dados); text-align: center; }
+.c4-tabela .c4-linha-extra td, .c4-tabela .c4-linha-extra th { color: var(--tinta-2); }
+
+/* ---------- mapa da surpresa ---------- */
+.c4-mapa-texto .marcado { font-size: var(--t-2); line-height: 1.85; }
+
+/* ---------- letras apagadas ---------- */
+.c4-buracos { font-size: var(--t-3); line-height: 1.75; margin: 0; overflow-wrap: anywhere; }
+.c4-buraco { color: var(--tinta-2); font-family: var(--f-dados); font-size: 0.9em; }
+.c4-revelada { color: var(--sinal); font-weight: 600; text-decoration: underline; text-decoration-color: var(--regua); text-underline-offset: 0.2em; }
+.c4-bloco-maquina { border-top: 1px solid var(--regua); padding-top: 0.8rem; }
+.c4-acerto { color: var(--certo); font-weight: 600; text-decoration: underline; text-underline-offset: 0.2em; }
+.c4-erro { color: var(--ruido); font-weight: 600; text-decoration: underline wavy var(--ruido); text-underline-offset: 0.25em; }
+
+/* ---------- diagrama de Markov (figura estática) ---------- */
+.c4-figura { margin: 1.4rem 0 1.8rem; }
+.c4-figura svg { display: block; width: 100%; max-width: 34rem; height: auto; margin: 0 auto; }
+.c4-figura figcaption { font-size: var(--t-1); color: var(--tinta-2); margin-top: 0.6rem; line-height: 1.5; }
+.c4-estado { fill: var(--papel-2); stroke: var(--tinta); stroke-width: 1.5; }
+.c4-estado-nome { font: 600 15px var(--f-texto); fill: var(--tinta); }
+.c4-estado-freq { font: 11px var(--f-dados); fill: var(--tinta-2); }
+.c4-seta { fill: none; stroke: var(--tinta-2); stroke-width: 1.5; }
+.c4-seta.forte { stroke: var(--sinal); stroke-width: 2.6; }
+.c4-ponta { fill: var(--tinta-2); }
+.c4-ponta.forte { fill: var(--sinal); }
+.c4-prob { font: 12px var(--f-dados); fill: var(--tinta); }
+.c4-prob.forte { fill: var(--sinal); font-weight: 600; }
+
+@media (max-width: 30rem) {
+  .c4-campos { grid-template-columns: minmax(0, 1fr) 6rem; }
+  .c4-escada li { grid-template-columns: minmax(0, 1fr); }
+  .c4-empurra { margin-left: 0; }
+  .c4-saida { padding: 0.6rem 0.7rem; }
+}
+
+/* legenda das faixas da curva */
+.c4-legenda { list-style: none; margin: 0; padding: 0; display: flex; flex-wrap: wrap; gap: 0.3rem 1.4rem; font-size: var(--t-1); color: var(--tinta-2); }
+.c4-legenda li { margin: 0; display: inline-flex; align-items: center; gap: 0.5rem; }
+.c4-amostra { display: inline-block; width: 1.6rem; height: 0.8rem; border: 1px solid var(--tinta-2); flex: none; }
+.c4-amostra.c4-faixa-voce { background: var(--sinal-suave); border-color: var(--sinal); }
+.c4-amostra.c4-faixa-maquina { background: color-mix(in srgb, var(--tinta-2) 16%, transparent); }
+.c4-amostra.c4-faixa-shannon { border-style: dotted; }

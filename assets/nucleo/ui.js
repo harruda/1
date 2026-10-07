@@ -292,6 +292,7 @@ export function textoMarcado(original, surpresas, { teto = 10, rotular = true } 
     }
     const b = surpresas[j];
     const sp = h("span.letra", { style: { "--s": intensidade(b, teto).toFixed(3) } }, c);
+    if (intensidade(b, teto) > 0.5) sp.classList.add("forte"); // texto escuro sobre amarelo forte
     if (rotular) sp.title = `${rotulo(chars[i] === " " ? " " : c.toLowerCase())}: ${fmt(b, 1)} bits`;
     sp.dataset.bits = b.toFixed(2);
     porPos[j] = sp;
