@@ -100,7 +100,8 @@ async function navegar() {
     }
   }
   const alvo = ancora !== pagina ? document.getElementById(ancora) : null;
-  if (alvo) alvo.scrollIntoView();
+  // seções usam display: contents e não têm caixa própria; rola até o primeiro filho
+  if (alvo) (alvo.getClientRects().length ? alvo : alvo.firstElementChild ?? alvo).scrollIntoView();
   else scrollTo(0, 0);
   atualizarProgresso();
   guardarLocal("ultima", pagina);

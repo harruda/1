@@ -1,0 +1,265 @@
+<link rel="stylesheet" href="capitulos/c3.css">
+<article class="capitulo" data-cap="3">
+  <header class="cap-cabeca">
+    <p class="cap-numero">Capítulo 3</p>
+    <h1>A média da surpresa</h1>
+    <p class="cap-lead">Nos nove romances de Machado de Assis que servem de laboratório a este livro, a letra q aparece 28.198 vezes, e em 28.197 delas a letra seguinte é u. Depois de um espaço, ao contrário, pode vir quase qualquer letra. Este capítulo dá um número a essa diferença. O número se chama entropia, e é a surpresa que uma fonte de mensagens causa em média.</p>
+  </header>
+
+  <section id="c3-media">
+    <h2>A surpresa que se espera</h2>
+    <p>No <a href="#c2">capítulo 2</a> você mediu a surpresa de um acontecimento isolado. Um evento de probabilidade <math><mi>p</mi></math>, quando acontece, traz <math><msub><mi>log</mi><mn>2</mn></msub><mo>⁡</mo><mo stretchy="false">(</mo><mn>1</mn><mo>/</mo><mi>p</mi><mo stretchy="false">)</mo></math> bits. Uma moeda honesta que dá cara traz 1 bit. Um dado que mostra seis traz <math><msub><mi>log</mi><mn>2</mn></msub><mo>⁡</mo><mn>6</mn><mo>≈</mo><mn>2,58</mn></math> bits. Um acontecimento de uma chance em mil traz quase 10 bits.</p>
+    <p>Essa medida fala do que já aconteceu. Quem projeta uma linha de telégrafo precisa decidir antes. Sabe que tipo de mensagem a linha vai transportar, mas não sabe qual mensagem chegará amanhã. A pergunta dele é outra: quanta surpresa, em média, essa fonte vai produzir a cada símbolo?</p>
+    <p>Tome uma moeda viciada, que dá cara em 90% dos lançamentos. Quando sai cara, a surpresa é pequena, <math><msub><mi>log</mi><mn>2</mn></msub><mo>⁡</mo><mo stretchy="false">(</mo><mn>1</mn><mo>/</mo><mn>0,9</mn><mo stretchy="false">)</mo><mo>≈</mo><mn>0,15</mn></math> bit. Quando sai coroa, é grande, <math><msub><mi>log</mi><mn>2</mn></msub><mo>⁡</mo><mo stretchy="false">(</mo><mn>1</mn><mo>/</mo><mn>0,1</mn><mo stretchy="false">)</mo><mo>≈</mo><mn>3,32</mn></math> bits. Numa longa sequência de lançamentos, nove em cada dez trarão 0,15 bit e um em cada dez trará 3,32 bits. A surpresa média por lançamento é a média ponderada</p>
+    <div class="equacao">
+      <math display="block">
+        <mrow>
+          <mn>0,9</mn><mo>×</mo><mn>0,15</mn><mo>+</mo><mn>0,1</mn><mo>×</mo><mn>3,32</mn><mo>≈</mo><mn>0,47</mn><mspace width="0.3em"></mspace><mtext>bit</mtext><mo>.</mo>
+        </mrow>
+      </math>
+    </div>
+    <p>Menos de meio bit. A moeda viciada surpreende muito de vez em quando e quase nada no resto do tempo. Na média, fica bem abaixo da moeda honesta, que entrega exatamente 1 bit a cada lançamento.</p>
+    <div class="destaque-caixa">
+      <span class="rotulo">Definição</span>
+      <p>Se uma fonte produz o resultado <math><mi>i</mi></math> com probabilidade <math><msub><mi>p</mi><mi>i</mi></msub></math>, a sua <dfn>entropia</dfn> é a surpresa média dos resultados:</p>
+      <math display="block">
+        <mrow>
+          <mi>H</mi><mo>=</mo>
+          <munderover><mo>∑</mo><mrow><mi>i</mi><mo>=</mo><mn>1</mn></mrow><mi>n</mi></munderover>
+          <msub><mi>p</mi><mi>i</mi></msub><mo>⁢</mo><msub><mi>log</mi><mn>2</mn></msub><mo>⁡</mo><mfrac><mn>1</mn><msub><mi>p</mi><mi>i</mi></msub></mfrac>
+          <mo>.</mo>
+        </mrow>
+      </math>
+      <p>Ela se mede em bits por símbolo. Resultados com <math><msub><mi>p</mi><mi>i</mi></msub><mo>=</mo><mn>0</mn></math> nunca acontecem e ficam fora da soma.</p>
+    </div>
+    <aside class="nota">
+      <p>Muitos livros escrevem <math><mi>H</mi><mo>=</mo><mo>−</mo><mo>∑</mo><msub><mi>p</mi><mi>i</mi></msub><msub><mi>log</mi><mn>2</mn></msub><mo>⁡</mo><msub><mi>p</mi><mi>i</mi></msub></math>. É a mesma soma, porque <math><mi>log</mi><mo>⁡</mo><mo stretchy="false">(</mo><mn>1</mn><mo>/</mo><mi>p</mi><mo stretchy="false">)</mo><mo>=</mo><mo>−</mo><mi>log</mi><mo>⁡</mo><mi>p</mi></math>. A forma com <math><mn>1</mn><mo>/</mo><mi>p</mi></math> deixa à vista que cada parcela é uma surpresa.</p>
+    </aside>
+    <p>Cada parcela da soma tem duas partes. O logaritmo diz quanto o resultado surpreende quando acontece. O fator <math><msub><mi>p</mi><mi>i</mi></msub></math> diz com que frequência ele acontece. Um resultado muito raro surpreende muito, mas quase nunca aparece, e por isso pesa pouco na média. Um resultado muito comum aparece o tempo todo, mas surpreende pouco. Quem mais contribui são os resultados do meio.</p>
+    <aside class="nota">
+      <p><strong>O nome.</strong> Shannon observou, no próprio artigo de 1948, que a fórmula tem a mesma forma da entropia da mecânica estatística, a grandeza da física associada a Boltzmann e Gibbs. Segundo uma história que o próprio Shannon teria contado anos mais tarde, quem sugeriu o nome foi o matemático John von Neumann, com um argumento de debatedor: como ninguém sabe direito o que é entropia, quem usa a palavra leva vantagem numa discussão.</p>
+    </aside>
+    <p>Num dado honesto, os seis resultados têm probabilidade <math><mfrac><mn>1</mn><mn>6</mn></mfrac></math> e a mesma surpresa de 2,58 bits. A média de seis números iguais é o próprio número, de modo que <math><mi>H</mi><mo>=</mo><mn>2,58</mn></math> bits. Num dado viciado a conta muda, e o interativo abaixo deixa você desenhar a distribuição que quiser e ver a média sendo montada, parcela por parcela.</p>
+    <figure class="widget" data-widget="distribuicao"></figure>
+    <p>Comece pelo dado viciado e arraste a barra do seis para cima. A surpresa do seis cai, a dos outros números sobe, e a entropia total diminui. Agora tente o contrário: com seis resultados, procure a distribuição de maior entropia. Por mais que tente, você não passará de 2,58 bits, e só chegará lá com as seis barras na mesma altura.</p>
+    <p>Depois escolha “quase certa”. Um resultado com probabilidade 0,97 traz só 0,04 bit. Os três raros trazem 6,64 bits cada, mas aparecem tão pouco que, somados, pesam 0,2 bit. A faixa amarela inteira mal chega a um quarto de bit.</p>
+  </section>
+
+  <section id="c3-entropia-binaria">
+    <h2>A curva da moeda</h2>
+    <p>A moeda é o caso mais simples: dois resultados, com probabilidades <math><mi>p</mi></math> e <math><mn>1</mn><mo>−</mo><mi>p</mi></math>. A sua entropia ganhou nome e notação próprios, <dfn>entropia binária</dfn>, escrita <math><mi>h</mi><mo stretchy="false">(</mo><mi>p</mi><mo stretchy="false">)</mo></math>:</p>
+    <div class="equacao">
+      <math display="block">
+        <mrow>
+          <mi>h</mi><mo stretchy="false">(</mo><mi>p</mi><mo stretchy="false">)</mo><mo>=</mo>
+          <mi>p</mi><mo>⁢</mo><msub><mi>log</mi><mn>2</mn></msub><mo>⁡</mo><mfrac><mn>1</mn><mi>p</mi></mfrac>
+          <mo>+</mo>
+          <mo stretchy="false">(</mo><mn>1</mn><mo>−</mo><mi>p</mi><mo stretchy="false">)</mo><mo>⁢</mo><msub><mi>log</mi><mn>2</mn></msub><mo>⁡</mo><mfrac><mn>1</mn><mrow><mn>1</mn><mo>−</mo><mi>p</mi></mrow></mfrac>
+          <mo>.</mo>
+        </mrow>
+      </math>
+    </div>
+    <p>A moeda honesta tem <math><mi>h</mi><mo stretchy="false">(</mo><mfrac><mn>1</mn><mn>2</mn></mfrac><mo stretchy="false">)</mo><mo>=</mo><mn>1</mn></math> bit. Uma moeda de duas caras, que sempre dá cara, tem <math><mi>h</mi><mo stretchy="false">(</mo><mn>1</mn><mo stretchy="false">)</mo><mo>=</mo><mn>0</mn></math>, porque não há o que adivinhar. Entre esses extremos a curva tem a forma de uma cúpula simétrica: trocar os nomes de cara e coroa não muda a incerteza.</p>
+    <figure class="widget" data-widget="binaria"></figure>
+    <p>Arraste o ponto sobre a curva e lance a moeda muitas vezes. Cada lançamento aparece pintado pela surpresa que causou, e as coroas raras de uma moeda viciada se destacam em amarelo. O segundo gráfico acompanha a surpresa média de todos os lançamentos feitos até ali. No começo ela salta de um lado para o outro. Com algumas centenas de lançamentos, assenta perto da linha tracejada, que é <math><mi>h</mi><mo stretchy="false">(</mo><mi>p</mi><mo stretchy="false">)</mo></math>. Esse é o sentido preciso de dizer que a entropia é uma média: é o valor para onde converge a surpresa média de uma sequência longa.</p>
+    <p>A curva tem um detalhe que engana a intuição. Perto do topo ela é achatada. Uma moeda que dá cara em 60% das vezes ainda tem 0,97 bit, quase o mesmo que a honesta. Perto das pontas ela é íngreme. Uma moeda que dá cara em 89% das vezes parece muito previsível e ainda tem meio bit de entropia. Para descer a um décimo de bit é preciso chegar a 98,7% de caras.</p>
+    <aside class="nota">
+      <p>A entropia binária volta no <a href="#c6">capítulo 6</a>. Um canal que troca cada bit com probabilidade <math><mi>p</mi></math> consegue transmitir no máximo <math><mn>1</mn><mo>−</mo><mi>h</mi><mo stretchy="false">(</mo><mi>p</mi><mo stretchy="false">)</mo></math> bit útil por bit enviado.</p>
+    </aside>
+  </section>
+
+  <section id="c3-limites">
+    <h2>Entre zero e log₂ n</h2>
+    <p>Os experimentos com os dois interativos sugerem duas regras. A entropia nunca é negativa, e só vale zero quando um dos resultados é certo. E, entre todas as distribuições com <math><mi>n</mi></math> resultados, a de maior entropia é a uniforme.</p>
+    <div class="destaque-caixa">
+      <span class="rotulo">Limites da entropia</span>
+      <math display="block">
+        <mrow>
+          <mn>0</mn><mo>≤</mo><mi>H</mi><mo>≤</mo><msub><mi>log</mi><mn>2</mn></msub><mo>⁡</mo><mi>n</mi>
+        </mrow>
+      </math>
+      <p>A igualdade da esquerda vale só quando um resultado tem probabilidade 1. A da direita, só quando os <math><mi>n</mi></math> resultados são igualmente prováveis.</p>
+    </div>
+    <p>A primeira regra é fácil. Cada surpresa <math><msub><mi>log</mi><mn>2</mn></msub><mo>⁡</mo><mo stretchy="false">(</mo><mn>1</mn><mo>/</mo><mi>p</mi><mo stretchy="false">)</mo></math> é maior ou igual a zero, porque <math><mi>p</mi></math> não passa de 1. Uma média de números não negativos também não é negativa. E ela só dá zero se todas as parcelas forem zero, isto é, se o único resultado possível tiver probabilidade 1.</p>
+    <p>A segunda regra diz que nenhuma distribuição é mais incerta que a uniforme. A intuição é que qualquer desigualdade é uma pista. Se você sabe que o seis sai mais que os outros números, já sabe em que apostar primeiro. Na uniforme não há pista nenhuma.</p>
+    <p>Há também um argumento curto. A entropia é a média dos números <math><msub><mi>log</mi><mn>2</mn></msub><mo>⁡</mo><mo stretchy="false">(</mo><mn>1</mn><mo>/</mo><msub><mi>p</mi><mi>i</mi></msub><mo stretchy="false">)</mo></math>. Se, em vez da média dos logaritmos, você tomar o logaritmo da média, a conta fica simples: a média ponderada dos números <math><mn>1</mn><mo>/</mo><msub><mi>p</mi><mi>i</mi></msub></math> é <math><mo>∑</mo><msub><mi>p</mi><mi>i</mi></msub><mo>⋅</mo><mo stretchy="false">(</mo><mn>1</mn><mo>/</mo><msub><mi>p</mi><mi>i</mi></msub><mo stretchy="false">)</mo></math>, uma soma de parcelas iguais a 1, que dá <math><mi>n</mi></math> (ou menos, se algum resultado tiver probabilidade zero e ficar de fora). O logaritmo da média é, portanto, no máximo <math><msub><mi>log</mi><mn>2</mn></msub><mo>⁡</mo><mi>n</mi></math>.</p>
+    <p>Falta comparar as duas coisas. O gráfico do logaritmo se curva para baixo, e por isso a média dos logaritmos nunca fica acima do logaritmo da média. Com dois números, 2 e 8, dá para ver: a média dos logaritmos é <math><mo stretchy="false">(</mo><mn>1</mn><mo>+</mo><mn>3</mn><mo stretchy="false">)</mo><mo>/</mo><mn>2</mn><mo>=</mo><mn>2</mn></math>, e o logaritmo da média é <math><msub><mi>log</mi><mn>2</mn></msub><mo>⁡</mo><mn>5</mn><mo>≈</mo><mn>2,32</mn></math>. As duas coisas só coincidem quando os números são todos iguais. No nosso caso, quando todos os <math><msub><mi>p</mi><mi>i</mi></msub></math> são iguais.</p>
+    <aside class="nota">
+      <p>Essa comparação entre a média dos valores de uma função curvada e o valor da função na média se chama <strong>desigualdade de Jensen</strong>. É uma das ferramentas mais usadas da teoria da informação.</p>
+    </aside>
+    <p>Daqui sai uma leitura útil de <math><msub><mi>log</mi><mn>2</mn></msub><mo>⁡</mo><mi>n</mi></math>. Ele é o teto, a entropia que uma fonte de <math><mi>n</mi></math> símbolos teria se não houvesse nenhuma regularidade a explorar. A distância entre o teto e a entropia de verdade mede a estrutura da fonte, e estrutura pode ser aproveitada.</p>
+  </section>
+
+  <section id="c3-letras">
+    <h2>As letras de Machado</h2>
+    <p>Com 39 símbolos, o teto é <math><msub><mi>log</mi><mn>2</mn></msub><mo>⁡</mo><mn>39</mn><mo>≈</mo><mn>5,29</mn></math> bits por letra. É o que valeria cada letra se o texto fosse uma sequência de sorteios uniformes, digitado por alguém que aperta teclas ao acaso. Machado não escrevia assim. O espaço ocupa 18% das posições, o a ocupa 11%, e o w quase nunca aparece.</p>
+    <p>O primeiro passo para medir a entropia do português é tratar cada letra como um sorteio independente, com as probabilidades dadas pelas frequências nos romances. Isso ignora tudo o que uma letra diz sobre a seguinte, mas já captura a preferência da língua por certas letras. O interativo abaixo conta os 2,6 milhões de letras dos nove romances e faz a conta da entropia ali mesmo, no seu navegador.</p>
+    <figure class="widget" data-widget="letras"></figure>
+    <p>O resultado é cerca de 4,1 bits por letra, quase 1,2 bit abaixo do teto. Só por saber quais letras são comuns, um adivinhador elimina mais de um quinto da incerteza máxima. Esse número tem um nome curto, <math><msub><mi>H</mi><mn>1</mn></msub></math>, em que o índice lembra que as letras foram contadas uma de cada vez.</p>
+    <p>Olhe agora para a coluna da contribuição. A letra que mais pesa na soma é o espaço, justamente a menos surpreendente de todas: ele aparece tanto que suas surpresas pequenas se acumulam. As vogais vêm logo atrás. As letras raras quase não contam. Cada w traz 14,6 bits de surpresa, mas há só 109 deles em 2,6 milhões de letras, e a sua contribuição para a média não chega a um milésimo de bit.</p>
+    <aside class="nota">
+      <p>A parcela <math><mi>p</mi><mo>⁢</mo><msub><mi>log</mi><mn>2</mn></msub><mo>⁡</mo><mo stretchy="false">(</mo><mn>1</mn><mo>/</mo><mi>p</mi><mo stretchy="false">)</mo></math> é máxima quando <math><mi>p</mi><mo>=</mo><mn>1</mn><mo>/</mo><mi>e</mi><mo>≈</mo><mn>0,37</mn></math>. Nenhuma letra chega lá. O espaço, com 0,18, é a que fica mais perto.</p>
+    </aside>
+  </section>
+
+  <section id="c3-pares">
+    <h2>Uma letra depois da outra</h2>
+    <p>Considere agora duas letras consecutivas do texto. Chame de <math><mi>X</mi></math> a primeira e de <math><mi>Y</mi></math> a segunda. O par <math><mo stretchy="false">(</mo><mi>X</mi><mo>,</mo><mi>Y</mi><mo stretchy="false">)</mo></math> também é um sorteio, com <math><mn>39</mn><mo>×</mo><mn>39</mn><mo>=</mo><mn>1.521</mn></math> resultados possíveis, e tem a sua entropia, chamada <dfn>entropia conjunta</dfn> e escrita <math><mi>H</mi><mo stretchy="false">(</mo><mi>X</mi><mo>,</mo><mi>Y</mi><mo stretchy="false">)</mo></math>. Nos romances de Machado ela vale cerca de 7,32 bits por par.</p>
+    <p>Se as letras fossem independentes, a entropia do par seria a soma das duas, <math><mn>4,10</mn><mo>+</mo><mn>4,10</mn><mo>=</mo><mn>8,20</mn></math> bits. O par sai mais barato, quase 0,9 bit a menos, porque a primeira letra dá pistas sobre a segunda.</p>
+    <p>Quanto vale essa pista? Fixe a primeira letra. Se <math><mi>X</mi></math> é q, a distribuição de <math><mi>Y</mi></math> está toda concentrada no u, e a entropia dela é praticamente zero. Se <math><mi>X</mi></math> é um espaço, <math><mi>Y</mi></math> é a primeira letra de uma palavra nova, e a incerteza é enorme. A entropia da distribuição de <math><mi>Y</mi></math> quando <math><mi>X</mi></math> vale <math><mi>x</mi></math> se escreve <math><mi>H</mi><mo stretchy="false">(</mo><mi>Y</mi><mo>∣</mo><mi>X</mi><mo>=</mo><mi>x</mi><mo stretchy="false">)</mo></math>. Escolha letras no teclado abaixo e compare.</p>
+    <figure class="widget" data-widget="condicional"></figure>
+    <p>Algumas coisas saltam aos olhos. Depois de q, de õ e de ã quase não há dúvida: o q pede u, o õ pede e (como em <i>corações</i> e <i>põe</i>), o ã pede o em 94% das vezes. Depois de ç, a escolha fica praticamente entre ã, a, o e õ, menos de dois bits. No outro extremo estão o i e o espaço. Depois de um espaço, a incerteza é de 4,15 bits, um pouco mais que os 4,10 bits de uma letra sorteada sem contexto nenhum. O começo de uma palavra é o lugar mais imprevisível do texto, como você talvez tenha sentido no jogo do <a href="#c1">capítulo 1</a>.</p>
+    <p>Para resumir tudo num número, toma-se a média dessas incertezas, ponderada pela frequência de cada primeira letra. O resultado é a <dfn>entropia condicional</dfn>:</p>
+    <div class="equacao">
+      <math display="block">
+        <mrow>
+          <mi>H</mi><mo stretchy="false">(</mo><mi>Y</mi><mo>∣</mo><mi>X</mi><mo stretchy="false">)</mo><mo>=</mo>
+          <munder><mo>∑</mo><mi>x</mi></munder>
+          <mi>p</mi><mo stretchy="false">(</mo><mi>x</mi><mo stretchy="false">)</mo><mo>⁢</mo><mi>H</mi><mo stretchy="false">(</mo><mi>Y</mi><mo>∣</mo><mi>X</mi><mo>=</mo><mi>x</mi><mo stretchy="false">)</mo>
+          <mo>.</mo>
+        </mrow>
+      </math>
+    </div>
+    <p>Nos romances ela dá cerca de 3,22 bits. Em média, saber a letra anterior reduz a incerteza sobre a próxima de 4,10 para 3,22 bits. O q contribui quase nada para essa soma, porque a sua incerteza é nula. O espaço contribui com 0,18 × 4,15 ≈ 0,76 bit, quase um quarto do total, porque é ao mesmo tempo frequente e incerto.</p>
+    <p>E aqui aparece uma das identidades mais úteis da teoria. Descobrir o par de uma vez custa o mesmo que descobrir a primeira letra e depois, já sabendo qual é, descobrir a segunda.</p>
+    <div class="destaque-caixa">
+      <span class="rotulo">Regra da cadeia</span>
+      <math display="block">
+        <mrow>
+          <mi>H</mi><mo stretchy="false">(</mo><mi>X</mi><mo>,</mo><mi>Y</mi><mo stretchy="false">)</mo><mo>=</mo><mi>H</mi><mo stretchy="false">(</mo><mi>X</mi><mo stretchy="false">)</mo><mo>+</mo><mi>H</mi><mo stretchy="false">(</mo><mi>Y</mi><mo>∣</mo><mi>X</mi><mo stretchy="false">)</mo>
+        </mrow>
+      </math>
+      <p>Com as letras de Machado: <math><mn>4,10</mn><mo>+</mo><mn>3,22</mn><mo>=</mo><mn>7,32</mn></math> bits. O painel de baixo do interativo confere a conta com todas as casas.</p>
+    </div>
+    <p>O motivo é o mesmo que fez do logaritmo a medida da surpresa. A probabilidade de um par é o produto <math><mi>p</mi><mo stretchy="false">(</mo><mi>x</mi><mo>,</mo><mi>y</mi><mo stretchy="false">)</mo><mo>=</mo><mi>p</mi><mo stretchy="false">(</mo><mi>x</mi><mo stretchy="false">)</mo><mo>⋅</mo><mi>p</mi><mo stretchy="false">(</mo><mi>y</mi><mo>∣</mo><mi>x</mi><mo stretchy="false">)</mo></math>, a chance da primeira letra vezes a chance da segunda sabendo a primeira. O logaritmo transforma o produto em soma, de modo que a surpresa do par é a surpresa de <math><mi>x</mi></math> mais a surpresa de <math><mi>y</mi></math> depois de <math><mi>x</mi></math>. Tirando a média dos dois lados, chega-se à regra.</p>
+    <p>A regra da cadeia vale para quaisquer duas variáveis e se estende a sequências inteiras. A incerteza de um texto é a soma das incertezas de cada letra, dado tudo o que veio antes dela. É exatamente o que o jogo de Shannon mede, uma letra de cada vez.</p>
+  </section>
+
+  <section id="c3-agrupamento">
+    <h2>Por que esta fórmula</h2>
+    <p>Até aqui, a fórmula da entropia apareceu como uma escolha natural, a média das surpresas. Shannon quis uma justificativa mais firme. No artigo de 1948, antes de escrever a fórmula, ele listou o que qualquer medida razoável da incerteza de uma escolha deveria cumprir. Eram três exigências.</p>
+    <ol>
+      <li><strong>Continuidade.</strong> Uma mudança pequena nas probabilidades deve mudar a incerteza só um pouco.</li>
+      <li><strong>Crescimento.</strong> Se os <math><mi>n</mi></math> resultados são igualmente prováveis, a incerteza deve crescer com <math><mi>n</mi></math>. Escolher entre dez portas é mais incerto que escolher entre duas.</li>
+      <li><strong>Agrupamento.</strong> Se uma escolha for desdobrada em duas escolhas sucessivas, a incerteza total deve ser a da primeira mais a da segunda, esta pesada pela probabilidade de chegar a ela.</li>
+    </ol>
+    <p>A terceira é a mais interessante, e Shannon a ilustrou com um exemplo que vale reproduzir. Uma escolha entre três resultados, A, B e C, com probabilidades <math><mfrac><mn>1</mn><mn>2</mn></mfrac></math>, <math><mfrac><mn>1</mn><mn>3</mn></mfrac></math> e <math><mfrac><mn>1</mn><mn>6</mn></mfrac></math>, pode ser feita de uma vez. Ou pode ser feita em duas etapas. Primeiro uma moeda honesta decide entre A e “B ou C”. Se der “B ou C”, uma segunda escolha, com probabilidades <math><mfrac><mn>2</mn><mn>3</mn></mfrac></math> e <math><mfrac><mn>1</mn><mn>3</mn></mfrac></math>, decide qual dos dois. As probabilidades finais são as mesmas, porque <math><mfrac><mn>1</mn><mn>2</mn></mfrac><mo>⋅</mo><mfrac><mn>2</mn><mn>3</mn></mfrac><mo>=</mo><mfrac><mn>1</mn><mn>3</mn></mfrac></math> e <math><mfrac><mn>1</mn><mn>2</mn></mfrac><mo>⋅</mo><mfrac><mn>1</mn><mn>3</mn></mfrac><mo>=</mo><mfrac><mn>1</mn><mn>6</mn></mfrac></math>. Então a incerteza também deve ser a mesma:</p>
+    <div class="equacao">
+      <math display="block">
+        <mrow>
+          <mi>H</mi><mo>(</mo><mfrac><mn>1</mn><mn>2</mn></mfrac><mo>,</mo><mfrac><mn>1</mn><mn>3</mn></mfrac><mo>,</mo><mfrac><mn>1</mn><mn>6</mn></mfrac><mo>)</mo>
+          <mo>=</mo>
+          <mi>H</mi><mo>(</mo><mfrac><mn>1</mn><mn>2</mn></mfrac><mo>,</mo><mfrac><mn>1</mn><mn>2</mn></mfrac><mo>)</mo>
+          <mo>+</mo>
+          <mfrac><mn>1</mn><mn>2</mn></mfrac><mo>⁢</mo><mi>H</mi><mo>(</mo><mfrac><mn>2</mn><mn>3</mn></mfrac><mo>,</mo><mfrac><mn>1</mn><mn>3</mn></mfrac><mo>)</mo>
+          <mo>.</mo>
+        </mrow>
+      </math>
+    </div>
+    <p>O fator <math><mfrac><mn>1</mn><mn>2</mn></mfrac></math> está ali porque a segunda escolha só acontece metade das vezes. Com a fórmula da entropia, o lado esquerdo dá 1,459 bit e o direito dá <math><mn>1</mn><mo>+</mo><mfrac><mn>1</mn><mn>2</mn></mfrac><mo>×</mo><mn>0,918</mn></math>, também 1,459. Mexa nos controles abaixo para ver que a coincidência não depende dos números escolhidos.</p>
+    <figure class="widget" data-widget="agrupamento"></figure>
+    <p>Com a entropia de Shannon, os dois lados coincidem em qualquer posição dos controles. Agora troque a medida. A segunda opção, <math><mn>1</mn><mo>−</mo><mo>∑</mo><msubsup><mi>p</mi><mi>i</mi><mn>2</mn></msubsup></math>, é um índice de diversidade usado em ecologia e em estatística, conhecido como índice de Gini–Simpson. Ele é contínuo e cresce com <math><mi>n</mi></math>, mas falha no agrupamento. A terceira, o logaritmo do número de resultados possíveis, é a medida de Hartley que você conheceu no capítulo 2. Ela ignora as probabilidades e falha tanto na continuidade quanto no agrupamento.</p>
+    <p>Shannon provou que as três exigências bastam para determinar a fórmula. A única medida que cumpre todas tem a forma <math><mi>H</mi><mo>=</mo><mi>K</mi><mo>∑</mo><msub><mi>p</mi><mi>i</mi></msub><mi>log</mi><mo>⁡</mo><mo stretchy="false">(</mo><mn>1</mn><mo>/</mo><msub><mi>p</mi><mi>i</mi></msub><mo stretchy="false">)</mo></math>, em que <math><mi>K</mi></math> é uma constante positiva. Mudar <math><mi>K</mi></math> equivale a mudar a base do logaritmo, isto é, a unidade. Com logaritmo na base 2 e <math><mi>K</mi><mo>=</mo><mn>1</mn></math>, a moeda honesta vale 1 bit.</p>
+    <p>Dá para ver de onde vem o logaritmo. Escolher entre quatro resultados iguais é o mesmo que fazer duas escolhas sucessivas entre dois, e o agrupamento diz que a incerteza de quatro é o dobro da de dois. Escolher entre oito é fazer três escolhas entre dois, e a incerteza é o triplo. Uma medida que transforma possibilidades multiplicadas em incertezas somadas é um logaritmo. A continuidade se encarrega de estender a conta a probabilidades quaisquer.</p>
+    <aside class="nota">
+      <p>Shannon não dava muito peso a essa demonstração. Escreveu que o teorema servia sobretudo para tornar as definições plausíveis, e que a justificativa verdadeira delas estaria nas suas consequências. Os capítulos <a href="#c5">5</a> e <a href="#c6">6</a> mostram essas consequências.</p>
+    </aside>
+  </section>
+
+  <section id="c3-perguntas">
+    <h2>Perguntas, em média</h2>
+    <p>O capítulo 2 ligou o bit às perguntas de sim ou não. Com <math><mi>N</mi></math> possibilidades igualmente prováveis, <math><msub><mi>log</mi><mn>2</mn></msub><mo>⁡</mo><mi>N</mi></math> perguntas bem escolhidas encontram a resposta. A entropia estende essa ligação a possibilidades desiguais.</p>
+    <p>Imagine um dado de quatro faces, viciado de modo que o 1 sai metade das vezes, o 2 um quarto das vezes, e o 3 e o 4 um oitavo cada um. Alguém lança o dado escondido e você precisa descobrir a face só com perguntas de sim ou não. Uma estratégia que trata as faces como iguais gasta sempre 2 perguntas. Uma estratégia melhor começa pelo mais provável.</p>
+    <ol>
+      <li>“É o 1?” Metade das vezes a resposta é sim, e o jogo acaba com uma pergunta.</li>
+      <li>Se não for: “É o 2?” Um quarto das vezes o jogo acaba aqui, com duas perguntas.</li>
+      <li>Se ainda não for: “É o 3?” A resposta, sim ou não, encerra o jogo com três perguntas.</li>
+    </ol>
+    <p>O número médio de perguntas é <math><mfrac><mn>1</mn><mn>2</mn></mfrac><mo>⋅</mo><mn>1</mn><mo>+</mo><mfrac><mn>1</mn><mn>4</mn></mfrac><mo>⋅</mo><mn>2</mn><mo>+</mo><mfrac><mn>1</mn><mn>8</mn></mfrac><mo>⋅</mo><mn>3</mn><mo>+</mo><mfrac><mn>1</mn><mn>8</mn></mfrac><mo>⋅</mo><mn>3</mn><mo>=</mo><mn>1,75</mn></math>. A entropia desse dado é exatamente a mesma conta, porque as surpresas das quatro faces são 1, 2, 3 e 3 bits. Cada face custa tantas perguntas quanto a surpresa que causa.</p>
+    <p>A coincidência nem sempre é perfeita, porque um número de perguntas é inteiro e uma surpresa em geral não é. Mas vale um resultado notável, que o <a href="#c5">capítulo 5</a> demonstra com cuidado. A melhor estratégia de perguntas gasta, em média, pelo menos <math><mi>H</mi></math> perguntas e menos de <math><mi>H</mi><mo>+</mo><mn>1</mn></math>. E quem adivinha muitos sorteios de uma vez, em bloco, consegue chegar tão perto de <math><mi>H</mi></math> perguntas por sorteio quanto quiser.</p>
+    <p>Volte ao primeiro interativo. A leitura “perguntas, em média” mostra o desempenho da melhor estratégia para a distribuição desenhada. Escolha “½ ¼ ⅛ ⅛” e as duas leituras ficam iguais. Escolha o dado viciado e a estratégia perde um pouco para a entropia, mas por menos de uma pergunta.</p>
+    <p>Daí vem a leitura mais concreta da entropia: ela é o número médio de perguntas de sim ou não de que uma boa estratégia precisa para descobrir o resultado. Uma letra de Machado, tomada sozinha, exige pouco mais de 4 perguntas. Sabendo a letra anterior, e ajustando as perguntas a ela, bastam pouco mais de 3.</p>
+  </section>
+
+  <section id="c3-adiante">
+    <h2>Mais contexto, menos surpresa</h2>
+    <p>Junte os números do capítulo. Sem saber nada, cada letra de Machado custaria 5,29 bits. Sabendo só quais letras são comuns, 4,10. Sabendo a letra anterior, 3,22. A sequência desce, e não por acaso. Em média, saber mais nunca aumenta a incerteza. Em símbolos, <math><mi>H</mi><mo stretchy="false">(</mo><mi>Y</mi><mo>∣</mo><mi>X</mi><mo stretchy="false">)</mo><mo>≤</mo><mi>H</mi><mo stretchy="false">(</mo><mi>Y</mi><mo stretchy="false">)</mo></math>, com igualdade só quando <math><mi>X</mi></math> e <math><mi>Y</mi></math> são independentes.</p>
+    <p>O “em média” é importante. Depois de um espaço, a incerteza sobe acima dos 4,10 bits. Uma informação específica pode deixar você mais em dúvida do que estava. O que não acontece é que, tomada a média sobre todas as situações, conhecer a letra anterior atrapalhe.</p>
+    <p>E se você soubesse as duas letras anteriores? Ou as cinco? Ou a frase inteira, como o leitor que jogou o jogo do capítulo 1? O <a href="#c4">capítulo 4</a> segue por esse caminho. Vai medir a incerteza de uma letra diante de contextos cada vez mais longos, vai fabricar textos falsos de Machado com essas estatísticas e vai descobrir quanto do português é, afinal, previsível.</p>
+  </section>
+
+  <h2 class="exercicios-titulo" id="c3-exercicios">Exercícios</h2>
+  <ol class="exercicios">
+    <li>
+      <p>Uma urna tem quatro bolas. Qual é a entropia da cor de uma bola sorteada se as quatro forem vermelhas? E se forem duas vermelhas e duas azuis? E três vermelhas e uma azul? Use <math><msub><mi>log</mi><mn>2</mn></msub><mo>⁡</mo><mo stretchy="false">(</mo><mn>4</mn><mo>/</mo><mn>3</mn><mo stretchy="false">)</mo><mo>≈</mo><mn>0,415</mn></math>. <span class="nivel">aquecimento</span></p>
+      <details class="solucao"><summary>Solução</summary><div>
+        <p>Com quatro vermelhas, a cor é certa e <math><mi>H</mi><mo>=</mo><mn>0</mn></math>. Com duas de cada, é uma moeda honesta, <math><mi>H</mi><mo>=</mo><mn>1</mn></math> bit. Com três e uma, a vermelha tem probabilidade <math><mfrac><mn>3</mn><mn>4</mn></mfrac></math> e surpresa <math><msub><mi>log</mi><mn>2</mn></msub><mo>⁡</mo><mo stretchy="false">(</mo><mn>4</mn><mo>/</mo><mn>3</mn><mo stretchy="false">)</mo><mo>≈</mo><mn>0,415</mn></math> bit; a azul tem probabilidade <math><mfrac><mn>1</mn><mn>4</mn></mfrac></math> e surpresa 2 bits. A média é</p>
+        <math display="block"><mrow><mfrac><mn>3</mn><mn>4</mn></mfrac><mo>×</mo><mn>0,415</mn><mo>+</mo><mfrac><mn>1</mn><mn>4</mn></mfrac><mo>×</mo><mn>2</mn><mo>≈</mo><mn>0,311</mn><mo>+</mo><mn>0,5</mn><mo>=</mo><mn>0,811</mn><mspace width="0.3em"></mspace><mtext>bit</mtext><mo>.</mo></mrow></math>
+        <p>É o valor <math><mi>h</mi><mo stretchy="false">(</mo><mn>0,75</mn><mo stretchy="false">)</mo></math> da curva da moeda, que você pode conferir no segundo interativo.</p>
+      </div></details>
+    </li>
+    <li>
+      <p>Um dado viciado mostra o seis em metade dos lançamentos; as outras cinco faces dividem igualmente a outra metade. Calcule à mão a entropia desse dado, sabendo que <math><msub><mi>log</mi><mn>2</mn></msub><mo>⁡</mo><mn>10</mn><mo>≈</mo><mn>3,32</mn></math>, e compare com a de um dado honesto. <span class="nivel">cálculo</span></p>
+      <details class="solucao"><summary>Solução</summary><div>
+        <p>O seis tem probabilidade <math><mfrac><mn>1</mn><mn>2</mn></mfrac></math> e surpresa 1 bit. Cada uma das outras faces tem probabilidade <math><mfrac><mn>1</mn><mn>10</mn></mfrac></math> e surpresa <math><msub><mi>log</mi><mn>2</mn></msub><mo>⁡</mo><mn>10</mn><mo>≈</mo><mn>3,32</mn></math> bits. A média ponderada é</p>
+        <math display="block"><mrow><mfrac><mn>1</mn><mn>2</mn></mfrac><mo>×</mo><mn>1</mn><mo>+</mo><mn>5</mn><mo>×</mo><mfrac><mn>1</mn><mn>10</mn></mfrac><mo>×</mo><mn>3,32</mn><mo>=</mo><mn>0,5</mn><mo>+</mo><mn>1,66</mn><mo>=</mo><mn>2,16</mn><mspace width="0.3em"></mspace><mtext>bits</mtext><mo>.</mo></mrow></math>
+        <p>O dado honesto tem <math><msub><mi>log</mi><mn>2</mn></msub><mo>⁡</mo><mn>6</mn><mo>≈</mo><mn>2,58</mn></math> bits. O vício custa cerca de 0,42 bit por lançamento: saber que o seis é favorito é uma pista. Esse é o “dado viciado” do primeiro interativo, onde a conta aparece montada parcela por parcela.</p>
+      </div></details>
+    </li>
+    <li>
+      <p>Use a propriedade de agrupamento para calcular <math><mi>H</mi><mo>(</mo><mfrac><mn>1</mn><mn>2</mn></mfrac><mo>,</mo><mfrac><mn>1</mn><mn>4</mn></mfrac><mo>,</mo><mfrac><mn>1</mn><mn>8</mn></mfrac><mo>,</mo><mfrac><mn>1</mn><mn>8</mn></mfrac><mo>)</mo></math> sem calcular nenhum logaritmo, sabendo apenas que uma escolha honesta entre dois vale 1 bit. <span class="nivel">cálculo</span></p>
+      <details class="solucao"><summary>Solução</summary><div>
+        <p>Faça a escolha em três etapas, como na estratégia de perguntas do texto. Primeiro, uma moeda honesta decide entre o primeiro resultado e “os outros três”: 1 bit. Metade das vezes é preciso continuar, e então os outros três têm probabilidades <math><mfrac><mn>1</mn><mn>2</mn></mfrac></math>, <math><mfrac><mn>1</mn><mn>4</mn></mfrac></math>, <math><mfrac><mn>1</mn><mn>4</mn></mfrac></math> (cada uma dividida por <math><mfrac><mn>1</mn><mn>2</mn></mfrac></math>). Uma nova moeda honesta separa o segundo resultado dos dois últimos: 1 bit, com peso <math><mfrac><mn>1</mn><mn>2</mn></mfrac></math>. Um quarto das vezes ainda falta decidir entre os dois últimos, que são igualmente prováveis: 1 bit, com peso <math><mfrac><mn>1</mn><mn>4</mn></mfrac></math>. Somando,</p>
+        <math display="block"><mrow><mn>1</mn><mo>+</mo><mfrac><mn>1</mn><mn>2</mn></mfrac><mo>⋅</mo><mn>1</mn><mo>+</mo><mfrac><mn>1</mn><mn>4</mn></mfrac><mo>⋅</mo><mn>1</mn><mo>=</mo><mn>1,75</mn><mspace width="0.3em"></mspace><mtext>bit</mtext><mo>,</mo></mrow></math>
+        <p>o mesmo valor da conta direta e o mesmo número médio de perguntas da estratégia do texto. Cada etapa da escolha é uma pergunta.</p>
+      </div></details>
+    </li>
+    <li>
+      <p>Mostre que <math><mi>H</mi><mo stretchy="false">(</mo><mi>X</mi><mo>,</mo><mi>Y</mi><mo stretchy="false">)</mo><mo>≤</mo><mi>H</mi><mo stretchy="false">(</mo><mi>X</mi><mo stretchy="false">)</mo><mo>+</mo><mi>H</mi><mo stretchy="false">(</mo><mi>Y</mi><mo stretchy="false">)</mo></math>, usando a regra da cadeia e o fato de que, em média, saber mais não aumenta a incerteza. Quando vale a igualdade? Quanto vale a diferença entre os dois lados para as letras de Machado? <span class="nivel">conceito</span></p>
+      <details class="solucao"><summary>Solução</summary><div>
+        <p>Pela regra da cadeia, <math><mi>H</mi><mo stretchy="false">(</mo><mi>X</mi><mo>,</mo><mi>Y</mi><mo stretchy="false">)</mo><mo>=</mo><mi>H</mi><mo stretchy="false">(</mo><mi>X</mi><mo stretchy="false">)</mo><mo>+</mo><mi>H</mi><mo stretchy="false">(</mo><mi>Y</mi><mo>∣</mo><mi>X</mi><mo stretchy="false">)</mo></math>. Como <math><mi>H</mi><mo stretchy="false">(</mo><mi>Y</mi><mo>∣</mo><mi>X</mi><mo stretchy="false">)</mo><mo>≤</mo><mi>H</mi><mo stretchy="false">(</mo><mi>Y</mi><mo stretchy="false">)</mo></math>, o lado direito é no máximo <math><mi>H</mi><mo stretchy="false">(</mo><mi>X</mi><mo stretchy="false">)</mo><mo>+</mo><mi>H</mi><mo stretchy="false">(</mo><mi>Y</mi><mo stretchy="false">)</mo></math>. A igualdade vale quando saber <math><mi>X</mi></math> não ajuda nada a prever <math><mi>Y</mi></math>, isto é, quando as duas são independentes.</p>
+        <p>Para as letras de Machado, <math><mn>4,10</mn><mo>+</mo><mn>4,10</mn><mo>−</mo><mn>7,32</mn><mo>≈</mo><mn>0,88</mn></math> bit. É quanto uma letra conta, em média, sobre a vizinha. Essa quantidade ganha o nome de informação mútua no capítulo 6, onde mede quanto a saída de um canal ruidoso conta sobre a entrada.</p>
+      </div></details>
+    </li>
+    <li>
+      <p>No interativo da moeda, encontre os dois valores de <math><mi>p</mi></math> para os quais <math><mi>h</mi><mo stretchy="false">(</mo><mi>p</mi><mo stretchy="false">)</mo></math> é meio bit. Fixe um deles e lance a moeda mil vezes, três ou quatro vezes seguidas, zerando entre uma e outra. Quantas coroas saem? Quão perto de <math><mi>h</mi><mo stretchy="false">(</mo><mi>p</mi><mo stretchy="false">)</mo></math> fica a surpresa média? <span class="nivel">experimento</span></p>
+      <details class="solucao"><summary>Solução</summary><div>
+        <p>Os valores são <math><mi>p</mi><mo>≈</mo><mn>0,11</mn></math> e <math><mi>p</mi><mo>≈</mo><mn>0,89</mn></math>, simétricos em torno de <math><mfrac><mn>1</mn><mn>2</mn></mfrac></math>. Com <math><mi>p</mi><mo>=</mo><mn>0,89</mn></math>, saem em torno de 110 coroas em mil lançamentos, às vezes 95, às vezes 125. Cada coroa traz cerca de 3,2 bits e cada cara cerca de 0,17 bit, de modo que a surpresa média oscila entre aproximadamente 0,45 e 0,55 bit de uma rodada para outra. Com mais lançamentos a oscilação diminui. A entropia descreve a fonte; uma sequência finita só se aproxima dela.</p>
+      </div></details>
+    </li>
+    <li>
+      <p>No interativo das letras seguintes, a letra d é comum (quase 4% do texto) e mesmo assim deixa pouca dúvida sobre a próxima, cerca de 2,3 bits. Veja quais letras costumam segui-la e explique por quê. Depois encontre uma letra comum que deixe muita dúvida e explique também. <span class="nivel">experimento</span></p>
+      <details class="solucao"><summary>Solução</summary><div>
+        <p>Depois de d vêm quase sempre vogais: e (36%), o (25%), a (21%) e i (12%). O d raramente fecha sílaba em português, e aparece sobretudo em palavras curtíssimas e frequentes como <i>de</i>, <i>do</i> e <i>da</i>. Restam quatro opções razoáveis, e quatro opções igualmente prováveis valeriam 2 bits; como não são exatamente iguais e há outras raras, sai um pouco mais.</p>
+        <p>O i é o caso oposto entre as letras comuns, com cerca de 4 bits. Ele aparece no meio e no fim de palavras, como vogal de sílaba aberta ou fechada, e pode ser seguido de a, n, s, r, m, t, espaço, d e muitas outras, nenhuma com mais de 16% das vezes.</p>
+      </div></details>
+    </li>
+    <li>
+      <p>Usando apenas a exigência de agrupamento, mostre que a incerteza de uma escolha entre <math><msup><mn>2</mn><mi>k</mi></msup></math> resultados igualmente prováveis é <math><mi>k</mi></math> vezes a incerteza de uma escolha entre dois. Por que isso indica que a medida tem de envolver um logaritmo? <span class="nivel">desafio</span></p>
+      <details class="solucao"><summary>Solução</summary><div>
+        <p>Chame de <math><mi>A</mi><mo stretchy="false">(</mo><mi>n</mi><mo stretchy="false">)</mo></math> a incerteza de uma escolha uniforme entre <math><mi>n</mi></math> resultados. Divida os <math><msup><mn>2</mn><mi>k</mi></msup></math> resultados em duas metades. A escolha pode ser feita em duas etapas: primeiro, qual metade, uma escolha honesta entre dois, com incerteza <math><mi>A</mi><mo stretchy="false">(</mo><mn>2</mn><mo stretchy="false">)</mo></math>; depois, qual resultado dentro da metade, uma escolha uniforme entre <math><msup><mn>2</mn><mrow><mi>k</mi><mo>−</mo><mn>1</mn></mrow></msup></math>. A segunda etapa acontece sempre, qualquer que seja a metade, então o seu peso é 1. O agrupamento dá</p>
+        <math display="block"><mrow><mi>A</mi><mo stretchy="false">(</mo><msup><mn>2</mn><mi>k</mi></msup><mo stretchy="false">)</mo><mo>=</mo><mi>A</mi><mo stretchy="false">(</mo><mn>2</mn><mo stretchy="false">)</mo><mo>+</mo><mi>A</mi><mo stretchy="false">(</mo><msup><mn>2</mn><mrow><mi>k</mi><mo>−</mo><mn>1</mn></mrow></msup><mo stretchy="false">)</mo><mo>.</mo></mrow></math>
+        <p>Repetindo o argumento <math><mi>k</mi></math> vezes, <math><mi>A</mi><mo stretchy="false">(</mo><msup><mn>2</mn><mi>k</mi></msup><mo stretchy="false">)</mo><mo>=</mo><mi>k</mi><mo>⋅</mo><mi>A</mi><mo stretchy="false">(</mo><mn>2</mn><mo stretchy="false">)</mo></math>. A incerteza cresce como o expoente <math><mi>k</mi></math>, e o expoente de 2 que dá <math><mi>n</mi></math> é justamente <math><msub><mi>log</mi><mn>2</mn></msub><mo>⁡</mo><mi>n</mi></math>. O mesmo raciocínio, com grupos de tamanho <math><mi>m</mi></math>, mostra que <math><mi>A</mi><mo stretchy="false">(</mo><mi>m</mi><mo>⋅</mo><mi>n</mi><mo stretchy="false">)</mo><mo>=</mo><mi>A</mi><mo stretchy="false">(</mo><mi>m</mi><mo stretchy="false">)</mo><mo>+</mo><mi>A</mi><mo stretchy="false">(</mo><mi>n</mi><mo stretchy="false">)</mo></math>: multiplicar possibilidades soma incertezas. Junto com a exigência de crescimento, isso só deixa a saída <math><mi>A</mi><mo stretchy="false">(</mo><mi>n</mi><mo stretchy="false">)</mo><mo>=</mo><mi>K</mi><mi>log</mi><mo>⁡</mo><mi>n</mi></math>, a medida de Hartley que você viu no capítulo 2.</p>
+      </div></details>
+    </li>
+  </ol>
+
+  <dl class="cartoes-dados">
+    <dt>O que é a entropia de uma fonte?</dt>
+    <dd>É a surpresa média dos seus resultados: H = Σ pᵢ·log₂(1/pᵢ), em bits por símbolo. Cada surpresa log₂(1/pᵢ) entra na média com o peso da sua probabilidade.</dd>
+    <dt>Qual é a entropia de uma moeda honesta, de um dado honesto e de uma moeda que dá cara 90% das vezes?</dt>
+    <dd>1 bit, log₂ 6 ≈ 2,58 bits e cerca de 0,47 bit, respectivamente. A moeda viciada surpreende muito de vez em quando, mas pouco na média.</dd>
+    <dt>Como é a curva da entropia binária h(p)?</dt>
+    <dd>Uma cúpula simétrica, que vale 0 em p = 0 e p = 1 e atinge o máximo de 1 bit em p = ½. É achatada no topo e íngreme nas pontas: com p = 0,11 ainda vale meio bit.</dd>
+    <dt>Entre que limites fica a entropia de uma fonte com n resultados?</dt>
+    <dd>0 ≤ H ≤ log₂ n. Vale zero só quando um resultado é certo, e log₂ n só quando todos são igualmente prováveis: qualquer desigualdade é uma pista.</dd>
+    <dt>Quanto vale a entropia das letras de Machado contadas isoladamente?</dt>
+    <dd>Cerca de 4,1 bits por letra (H₁), contra log₂ 39 ≈ 5,29 bits se as 39 letras fossem igualmente prováveis. A diferença vem só das frequências desiguais.</dd>
+    <dt>O que é a entropia condicional H(Y | X)?</dt>
+    <dd>A incerteza média sobre Y quando se conhece X: a média, pesada por p(x), das entropias H(Y | X = x). Para pares de letras de Machado, cerca de 3,22 bits; depois de q é quase zero, depois de espaço é 4,15 bits.</dd>
+    <dt>O que diz a regra da cadeia?</dt>
+    <dd>H(X, Y) = H(X) + H(Y | X): a incerteza de um par é a da primeira parte mais a da segunda sabendo a primeira. Em Machado, 4,10 + 3,22 = 7,32 bits por par de letras.</dd>
+    <dt>Quais são as três exigências de Shannon para uma medida de incerteza?</dt>
+    <dd>Continuidade nas probabilidades, crescimento com n quando os n resultados são igualmente prováveis, e agrupamento: desdobrar uma escolha em etapas não muda a incerteza total. A única medida que cumpre as três é K Σ p log(1/p).</dd>
+  </dl>
+</article>

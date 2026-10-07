@@ -367,7 +367,7 @@ textarea { resize: vertical; line-height: 1.5; }
 
 .leituras { display: flex; flex-wrap: wrap; gap: 0.5rem 2rem; margin: 0; }
 .leituras > div { display: flex; flex-direction: column; min-width: 0; }
-.leituras dt { font: var(--t-0) / 1.4 var(--f-dados); color: var(--tinta-2); text-transform: uppercase; letter-spacing: 0.08em; }
+.leituras dt { font: var(--t-0) / 1.4 var(--f-dados); color: var(--tinta-2); letter-spacing: 0.02em; }
 .leituras dd { margin: 0; font: 500 var(--t-3) / 1.3 var(--f-dados); font-variant-numeric: tabular-nums; }
 .leituras dd.destaque { color: var(--sinal); }
 
