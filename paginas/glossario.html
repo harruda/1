@@ -1,0 +1,92 @@
+<link rel="stylesheet" href="paginas/paginas.css">
+<article class="pagina">
+  <header class="cap-cabeca">
+    <p class="cap-numero">Apêndice</p>
+    <h1>Glossário</h1>
+    <p class="cap-lead">Os termos técnicos do livro, cada um com um link para o capítulo onde é explicado.</p>
+  </header>
+  <dl class="glossario">
+    <dt id="g-0">Atenção <a href="#c7-dentro">cap. 7</a></dt>
+    <dd>Mecanismo dos transformers em que, para cada posição, a rede calcula pesos sobre as posições anteriores e combina as informações delas segundo esses pesos. Os pesos são aprendidos no treino.</dd>
+    <dt id="g-1">Bit <a href="#c2-bit">cap. 2</a></dt>
+    <dd>Unidade de informação: o que se aprende com a resposta a uma pergunta de sim ou não cujas duas respostas eram igualmente prováveis. Também designa um algarismo binário (0 ou 1), que só carrega um bit de informação quando os dois valores são equiprováveis.</dd>
+    <dt id="g-2">Cadeia de Markov <a href="#c4-markov">cap. 4</a></dt>
+    <dd>Sequência aleatória em que a probabilidade de cada símbolo depende apenas dos k símbolos anteriores (cadeia de ordem k).</dd>
+    <dt id="g-3">Canal <a href="#c6-esquema">cap. 6</a></dt>
+    <dd>O meio por onde o sinal passa entre transmissor e receptor: um fio, o ar, um disco. No modelo de Shannon, é nele que o ruído age.</dd>
+    <dt id="g-4">Canal binário simétrico <a href="#c6-canal">cap. 6</a></dt>
+    <dd>Canal que entrega cada bit intacto com probabilidade 1 − p e trocado com probabilidade p, independentemente dos outros bits.</dd>
+    <dt id="g-5">Capacidade <a href="#c6-informacao-mutua">cap. 6</a></dt>
+    <dd>A maior informação mútua entre entrada e saída que um canal permite, em bits por uso. Para o canal binário simétrico, C = 1 − h(p).</dd>
+    <dt id="g-6">Codificação aritmética <a href="#c5-aritmetica">cap. 5</a></dt>
+    <dd>Método de compressão que representa a mensagem inteira por um número dentro de um intervalo que encolhe a cada símbolo, na proporção da probabilidade que o modelo lhe dava. Gasta quase exatamente a soma das surpresas.</dd>
+    <dt id="g-7">Código de comprimento fixo <a href="#c5-fixo">cap. 5</a></dt>
+    <dd>Código em que todas as palavras-código têm o mesmo número de bits, como o ASCII ou o código de 6 bits para o alfabeto de 39 símbolos.</dd>
+    <dt id="g-8">Código de Huffman <a href="#c5-huffman">cap. 5</a></dt>
+    <dd>Código de prefixo de menor comprimento médio para uma lista de probabilidades, construído juntando repetidamente os dois símbolos (ou grupos) de menor peso.</dd>
+    <dt id="g-9">Código de prefixo <a href="#c5-prefixo">cap. 5</a></dt>
+    <dd>Código em que nenhuma palavra-código é o começo de outra, o que permite decodificar sem pausas nem ambiguidade. Equivale a uma árvore binária com os símbolos nas folhas.</dd>
+    <dt id="g-10">Código de repetição <a href="#c6-repeticao">cap. 6</a></dt>
+    <dd>Código que envia cada bit n vezes e decodifica por maioria. Tem taxa 1/n.</dd>
+    <dt id="g-11">Códigos LDPC, turbo e polares <a href="#c6-depois">cap. 6</a></dt>
+    <dd>Famílias modernas de códigos corretores que chegam muito perto da capacidade do canal com decodificação eficiente.</dd>
+    <dt id="g-12">Desigualdade de Kraft <a href="#c5-kraft">cap. 5</a></dt>
+    <dd>Condição Σ 2^−ℓᵢ ≤ 1, necessária e suficiente para que existam palavras-código de prefixo com comprimentos ℓᵢ.</dd>
+    <dt id="g-13">Distância de Hamming <a href="#c6-distancia">cap. 6</a></dt>
+    <dd>Número de posições em que duas sequências de bits do mesmo tamanho diferem. Um código com distância mínima d corrige até ⌊(d − 1)/2⌋ erros.</dd>
+    <dt id="g-14">Divergência de Kullback–Leibler <a href="#c7-nota">cap. 7</a></dt>
+    <dd>D(p‖q) = Σ p·log₂(p/q) ≥ 0: os bits desperdiçados, por símbolo, quando se usa a distribuição q para descrever dados que seguem p.</dd>
+    <dt id="g-15">Entropia <a href="#c3-media">cap. 3</a></dt>
+    <dd>A surpresa média de uma fonte: H = Σ p·log₂(1/p). Mede, em bits por símbolo, quanto a fonte ainda tem a dizer a quem conhece suas probabilidades.</dd>
+    <dt id="g-16">Entropia binária <a href="#c3-entropia-binaria">cap. 3</a></dt>
+    <dd>h(p) = −p·log₂ p − (1 − p)·log₂(1 − p), a entropia de uma moeda que dá cara com probabilidade p. Vale no máximo 1 bit, em p = ½.</dd>
+    <dt id="g-17">Entropia condicional <a href="#c3-pares">cap. 3</a></dt>
+    <dd>H(Y|X): a incerteza média que resta sobre Y depois que se conhece X. Pela regra da cadeia, H(X, Y) = H(X) + H(Y|X).</dd>
+    <dt id="g-18">Entropia conjunta <a href="#c3-pares">cap. 3</a></dt>
+    <dd>H(X, Y): a entropia do par de resultados tomado como um único sorteio.</dd>
+    <dt id="g-19">Entropia cruzada <a href="#c7-nota">cap. 7</a></dt>
+    <dd>Surpresa média de um modelo diante do texto real, em bits por símbolo. É o custo de comprimir o texto com aquele modelo e nunca fica abaixo da entropia da fonte.</dd>
+    <dt id="g-20">Esparsidade <a href="#c4-esparsidade">cap. 4</a></dt>
+    <dd>Problema dos modelos de contagem com contextos longos: a maioria dos contextos possíveis aparece poucas vezes ou nunca nos dados de treino.</dd>
+    <dt id="g-21">Hamming(7,4) <a href="#c6-hamming">cap. 6</a></dt>
+    <dd>Código corretor que envia 4 bits de dados em blocos de 7, com três bits de paridade, e corrige qualquer erro isolado no bloco.</dd>
+    <dt id="g-22">Hartley <a href="#c2-unidades">cap. 2</a></dt>
+    <dd>Unidade de informação definida com logaritmo na base 10: a escolha entre dez alternativas igualmente prováveis. Vale cerca de 3,32 bits.</dd>
+    <dt id="g-23">Informação mútua <a href="#c6-informacao-mutua">cap. 6</a></dt>
+    <dd>I(X;Y) = H(X) − H(X|Y): quanto da incerteza sobre X o conhecimento de Y elimina. É simétrica.</dd>
+    <dt id="g-24">ITA2 <a href="#c2-telegrafo">cap. 2</a></dt>
+    <dd>Alfabeto Telegráfico Internacional nº 2, o código de cinco bits de Baudot e Murray usado em teleimpressoras. É o código da fita perfurada no alto de cada capítulo.</dd>
+    <dt id="g-25">Jogo de Shannon <a href="#c1-sala">cap. 1</a></dt>
+    <dd>Experimento de 1951 em que uma pessoa adivinha um texto letra por letra; o número de palpites de cada letra permite estimar a informação por letra da língua.</dd>
+    <dt id="g-26">Limites de Shannon <a href="#c1-limites">cap. 1</a></dt>
+    <dd>Duas fórmulas que convertem a distribuição do número de palpites no jogo de adivinhação em limites inferior e superior para a entropia por letra.</dd>
+    <dt id="g-27">Nat <a href="#c2-unidades">cap. 2</a></dt>
+    <dd>Unidade de informação definida com o logaritmo natural. Vale cerca de 1,44 bit.</dd>
+    <dt id="g-28">Ordem de um modelo <a href="#c4-livro">cap. 4</a></dt>
+    <dd>Neste livro, o número de letras anteriores que um modelo de contagens usa como contexto para prever a próxima.</dd>
+    <dt id="g-29">Perplexidade <a href="#c7-nota">cap. 7</a></dt>
+    <dd>2 elevado à entropia cruzada. Um modelo com perplexidade k está, em média, tão indeciso quanto quem escolhe entre k opções equiprováveis.</dd>
+    <dt id="g-30">Redundância <a href="#c4-redundancia">cap. 4</a></dt>
+    <dd>R = 1 − H/H_máx: a fração da capacidade do alfabeto que não é usada para escolher o que dizer, porque é determinada pelas regras e hábitos da língua.</dd>
+    <dt id="g-31">Renormalização <a href="#c5-aritmetica">cap. 5</a></dt>
+    <dd>Técnica da codificação aritmética prática: assim que os primeiros bits das duas pontas do intervalo coincidem, eles são enviados e o intervalo é ampliado, evitando a perda de precisão.</dd>
+    <dt id="g-32">Síndrome <a href="#c6-hamming">cap. 6</a></dt>
+    <dd>O padrão de verificações de paridade que falham num código como o Hamming(7,4). Diferente de zero, indica erro; no Hamming(7,4), aponta a posição do bit trocado.</dd>
+    <dt id="g-33">Sobreajuste <a href="#c4-esparsidade">cap. 4</a></dt>
+    <dd>Quando um modelo se ajusta demais aos dados de treino e decora em vez de generalizar: fica ótimo no texto que leu e pior em textos novos.</dd>
+    <dt id="g-34">Surpresa <a href="#c2-surpresa">cap. 2</a></dt>
+    <dd>Também chamada autoinformação: a informação de um acontecimento de probabilidade p, igual a log₂(1/p) bits. Zero para o certo, enorme para o raríssimo.</dd>
+    <dt id="g-35">Taxa de um código <a href="#c6-repeticao">cap. 6</a></dt>
+    <dd>A razão entre bits de mensagem e bits enviados pelo canal. A repetição tripla tem taxa 1/3; o Hamming(7,4), 4/7.</dd>
+    <dt id="g-36">Temperatura <a href="#c7-gerar">cap. 7</a></dt>
+    <dd>Parâmetro de geração de texto que deforma a distribuição antes do sorteio: temperaturas baixas concentram a escolha nas opções mais prováveis, altas a espalham.</dd>
+    <dt id="g-37">Teorema da codificação de fonte <a href="#c5-limite">cap. 5</a></dt>
+    <dd>Nenhum código de prefixo tem comprimento médio menor que a entropia H, e o código de Huffman fica abaixo de H + 1. Codificando blocos, chega-se tão perto de H quanto se queira.</dd>
+    <dt id="g-38">Teorema do canal ruidoso <a href="#c6-teorema">cap. 6</a></dt>
+    <dd>Para qualquer taxa abaixo da capacidade do canal existem códigos com probabilidade de erro tão pequena quanto se queira; acima da capacidade, não.</dd>
+    <dt id="g-39">Token <a href="#c7-escala">cap. 7</a></dt>
+    <dd>Pedaço de texto (palavra, sílaba, sinal) que os grandes modelos de linguagem usam como unidade de previsão, no lugar de letras.</dd>
+    <dt id="g-40">Transformer <a href="#c7-machadinho">cap. 7</a></dt>
+    <dd>Arquitetura de rede neural, introduzida em 2017, em que camadas de atenção combinam informação de todas as posições anteriores. É a base dos grandes modelos de linguagem e do Machadinho.</dd>
+  </dl>
+</article>

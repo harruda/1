@@ -17,7 +17,7 @@ export const CAPITULOS = [
 ];
 export const APENDICES = [
   { id: "glossario", titulo: "Glossário" },
-  { id: "cartoes", titulo: "Cartões de revisão" },
+  { id: "cartoes", titulo: "Cartões de revisão", modulo: true },
   { id: "referencias", titulo: "Referências e créditos" },
 ];
 const NOMES = Object.fromEntries([...CAPITULOS, ...APENDICES].map((c) => [c.id, c.titulo]));
@@ -144,10 +144,7 @@ async function carregarApendice(id) {
   if (paginaAtual !== id) return null;
   conteudo.innerHTML = html;
   const artigo = conteudo.querySelector("article");
-  let mod = null;
-  try {
-    mod = await import(new URL(`paginas/${id}.js`, raiz).href);
-  } catch {}
+  const mod = APENDICES.find((a) => a.id === id)?.modulo ? await import(new URL(`paginas/${id}.js`, raiz).href) : null;
   const fim = await mod?.montar?.(artigo, { CAPITULOS, raiz });
   return typeof fim === "function" ? fim : null;
 }
