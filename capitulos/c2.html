@@ -1,0 +1,223 @@
+<link rel="stylesheet" href="capitulos/c2.css">
+<article class="capitulo" data-cap="2">
+  <header class="cap-cabeca">
+    <p class="cap-numero">Capítulo 2</p>
+    <h1>Perguntas de sim ou não</h1>
+    <p class="cap-lead">Pense num número entre um e um milhão. Com vinte perguntas de sim ou não, este livro descobre qual é. Por trás desse truque de salão está a unidade de medida da informação, o bit, e a razão de ela vir sempre acompanhada de um logaritmo.</p>
+  </header>
+
+  <section id="c2-vinte">
+    <h2>Vinte perguntas</h2>
+    <p>Há uma brincadeira antiga, jogada em muitas línguas, chamada vinte perguntas. Uma pessoa pensa numa coisa qualquer, e as outras têm direito a vinte perguntas cuja resposta seja sim ou não. É um animal? É maior que uma galinha? Vive no Brasil?</p>
+    <p>Quem joga bem sabe que algumas perguntas rendem mais que outras. Abrir o jogo com “É o cachorro do Quincas Borba?” é desperdício. A resposta será quase certamente não, e você terá aprendido quase nada. A boa pergunta divide as possibilidades que restam em duas metades, porque aí, seja qual for a resposta, metade delas vai embora.</p>
+    <p>Com números, essa estratégia fica exata. Pense num número de 1 a 100, guarde-o bem e deixe o livro adivinhar. Responda com honestidade e acompanhe a grade: os números eliminados vão se apagando.</p>
+    <figure class="widget" data-widget="pense"></figure>
+    <p>Experimente outros tamanhos de lista. Com 8 números, o livro precisa de 3 perguntas. Com 100, de no máximo 7. Com mil, de 10. Com um milhão, de 20. O motivo é uma conta simples. Cada resposta corta a lista de candidatos pela metade. Depois de uma pergunta sobram <math><mi>N</mi><mo>/</mo><mn>2</mn></math>; depois de duas, <math><mi>N</mi><mo>/</mo><mn>4</mn></math>; depois de <math><mi>k</mi></math> perguntas, <math><mi>N</mi><mo>/</mo><msup><mn>2</mn><mi>k</mi></msup></math>. O jogo termina quando sobra um só candidato, isto é, quando <math><msup><mn>2</mn><mi>k</mi></msup></math> alcança <math><mi>N</mi></math>. O número de perguntas necessárias é</p>
+    <div class="equacao">
+      <math display="block">
+        <mrow>
+          <mi>k</mi><mo>=</mo><mo>⌈</mo><msub><mi>log</mi><mn>2</mn></msub><mo>⁡</mo><mi>N</mi><mo>⌉</mo>
+          <mo>.</mo>
+        </mrow>
+      </math>
+    </div>
+    <p>O logaritmo na base 2 responde à pergunta “quantas vezes preciso dobrar o 1 para chegar a <math><mi>N</mi></math>?”, que é o mesmo que perguntar quantas vezes dá para cortar <math><mi>N</mi></math> ao meio até sobrar 1. Os colchetes quebrados arredondam para cima. Com 100 números, <math><msub><mi>log</mi><mn>2</mn></msub><mo>⁡</mo><mn>100</mn><mo>≈</mo><mn>6,64</mn></math>, e como não existe 0,64 de pergunta, são 7. Com um milhão, <math><msub><mi>log</mi><mn>2</mn></msub><mo>⁡</mo><mn>1.000.000</mn><mo>≈</mo><mn>19,93</mn></math>, e vinte perguntas bastam, porque <math><msup><mn>2</mn><mn>20</mn></msup><mo>=</mo><mn>1.048.576</mn></math>.</p>
+    <p>Olhe também a fileira de respostas que o interativo anota, com 1 para sim e 0 para não. Com a lista de 1 a 8, quem pensa no 6 responde sim, não, sim, e <span class="dados">101</span> é o número 5 escrito em base 2. Vale para qualquer número da lista: as respostas formam o número menos um, em binário. A busca binária é, no fundo, a escrita do número em base 2, um algarismo por pergunta.</p>
+    <aside class="nota">
+      <p><strong>Por que “menos um”?</strong> Em base 2, três algarismos escrevem os números de 000 a 111, isto é, de 0 a 7. A lista vai de 1 a 8. Basta deslocar tudo de uma casa.</p>
+    </aside>
+    <p>Agora inverta os papéis. No mesmo interativo, escolha <i>Você adivinha</i>. O livro esconde um número, e você decide onde cortar. Tente estratégias diferentes: cortar sempre ao meio, cortar perto da ponta, arriscar. Ao lado de cada resposta aparece quanto ela valeu, em bits. Logo adiante esse número ganha uma definição.</p>
+    <p>Cortar longe do meio é uma aposta. Com mil candidatos, pergunte “É maior que 900?”. Se ouvir sim, ganhou muito de uma vez: sobram 100, um décimo da lista. Mas nove em cada dez vezes você ouvirá não, e terá eliminado só um décimo dela. A busca binária nunca tem sorte nem azar, porque as duas respostas eliminam a mesma quantidade. E nenhuma estratégia, por mais esperta, garante terminar com menos de <math><mo>⌈</mo><msub><mi>log</mi><mn>2</mn></msub><mo>⁡</mo><mi>N</mi><mo>⌉</mo></math> perguntas. O exercício 7 mostra por quê.</p>
+  </section>
+
+  <section id="c2-bit">
+    <h2>O que é um bit</h2>
+    <p>Chegamos à unidade que o capítulo 1 prometeu.</p>
+    <div class="destaque-caixa">
+      <span class="rotulo">Definição</span>
+      <p>Um <dfn>bit</dfn> é a quantidade de informação que você recebe ao ouvir a resposta a uma pergunta de sim ou não quando, antes de ouvi-la, as duas respostas eram igualmente prováveis.</p>
+      <p>Descobrir qual entre <math><mi>N</mi></math> possibilidades igualmente prováveis aconteceu vale <math><msub><mi>log</mi><mn>2</mn></msub><mo>⁡</mo><mi>N</mi></math> bits.</p>
+    </div>
+    <p>Descobrir um número entre 8 vale 3 bits. Um entre mil, quase 10. Um entre um milhão, quase 20. Uma letra do nosso alfabeto de 39 símbolos, se todas fossem igualmente prováveis, valeria <math><msub><mi>log</mi><mn>2</mn></msub><mo>⁡</mo><mn>39</mn><mo>≈</mo><mn>5,29</mn></math> bits, o número que apareceu no capítulo 1.</p>
+    <p>A palavra vem do inglês <i>binary digit</i>, dígito binário. Quem a sugeriu foi o estatístico John Tukey, e ela apareceu impressa pela primeira vez no artigo de Shannon de 1948. Shannon dá o crédito numa frase: as unidades, escreve ele, “podem ser chamadas dígitos binários, ou, mais brevemente, bits, palavra sugerida por J. W. Tukey” (a tradução é minha).</p>
+    <p>O nome carrega uma ambiguidade que convém desfazer logo. Na computação, bit quer dizer um algarismo 0 ou 1 guardado na memória. Na teoria da informação, quer dizer uma quantidade de informação. As duas coisas coincidem quando os dois valores do algarismo são igualmente prováveis. Quando não são, um algarismo binário carrega menos de um bit. Se um amigo responde “não” à pergunta “Você ganhou na Mega-Sena esta semana?”, a resposta ocupa um algarismo binário, mas informa quase nada, porque você já esperava aquele não.</p>
+  </section>
+
+  <section id="c2-logaritmo">
+    <h2>Por que logaritmo</h2>
+    <p>Por que medir a informação pelo logaritmo do número de possibilidades, e não pelo próprio número? A ideia já rondava a engenharia de telecomunicações nos anos 1920. Quem a defendeu com mais clareza foi Ralph Hartley, engenheiro dos Laboratórios Bell, num artigo de 1928 chamado <i>Transmission of Information</i>.</p>
+    <p>Pense, como Hartley, numa mensagem telegráfica. Uma mensagem de <math><mi>n</mi></math> letras, cada uma escolhida dentre <math><mi>s</mi></math> símbolos, é uma entre <math><msup><mi>s</mi><mi>n</mi></msup></math> mensagens possíveis. Dobre o comprimento do telegrama e o número de mensagens possíveis não dobra: ele é elevado ao quadrado. Mas o bom senso diz que um telegrama duas vezes mais longo pode levar duas vezes mais informação, e não informação ao quadrado. A saída de Hartley foi tomar o logaritmo, que transforma potências em multiplicações e produtos em somas:</p>
+    <div class="equacao c2-quebra">
+      <math display="block">
+        <mrow>
+          <mi>H</mi><mo>=</mo><mi>log</mi><mo>⁡</mo><msup><mi>s</mi><mi>n</mi></msup><mo>=</mo><mi>n</mi><mo>⁢</mo><mi>log</mi><mo>⁡</mo><mi>s</mi><mo>,</mo>
+        </mrow>
+      </math>
+      <math display="block">
+        <mrow>
+          <mi>log</mi><mo>⁡</mo><mo stretchy="false">(</mo><mi>a</mi><mo>×</mo><mi>b</mi><mo stretchy="false">)</mo><mo>=</mo><mi>log</mi><mo>⁡</mo><mi>a</mi><mo>+</mo><mi>log</mi><mo>⁡</mo><mi>b</mi><mo>.</mo>
+        </mrow>
+      </math>
+    </div>
+    <p>A mesma ideia cabe numa mesa de jogo. Lance uma moeda e um dado. A moeda tem 2 resultados, o dado tem 6, e a dupla tem <math><mn>2</mn><mo>×</mo><mn>6</mn><mo>=</mo><mn>12</mn></math>. A informação da moeda é 1 bit, a do dado é <math><msub><mi>log</mi><mn>2</mn></msub><mo>⁡</mo><mn>6</mn><mo>≈</mo><mn>2,58</mn></math> bits, e a da dupla é <math><msub><mi>log</mi><mn>2</mn></msub><mo>⁡</mo><mn>12</mn><mo>≈</mo><mn>3,58</mn></math> bits, exatamente a soma. Saber o resultado do par é saber o da moeda e, além disso, o do dado. Uma boa medida de informação precisa somar quando as coisas se juntam assim. Escolha outros pares abaixo e confira que os resultados se multiplicam enquanto os bits se somam.</p>
+    <figure class="widget" data-widget="soma"></figure>
+    <p>E os bits quebrados? Um dado vale 2,58 bits, mas ninguém faz 2,58 perguntas. Para descobrir o resultado de um dado sozinho, você precisa de 3 perguntas no pior caso, e às vezes acerta com 2. A fração ganha sentido quando os dados vêm em grupo. Cinco dados têm <math><msup><mn>6</mn><mn>5</mn></msup><mo>=</mo><mn>7.776</mn></math> resultados possíveis, e como <math><msup><mn>2</mn><mn>13</mn></msup><mo>=</mo><mn>8.192</mn></math>, treze perguntas bem escolhidas descobrem os cinco de uma vez. São 2,6 perguntas por dado. Com mais dados, a conta por dado se aproxima de 2,58. Um bit quebrado é o preço de cada escolha quando muitas escolhas são pagas juntas.</p>
+  </section>
+
+  <section id="c2-surpresa">
+    <h2>Notícias improváveis</h2>
+    <p>A medida de Hartley supõe que todas as possibilidades são igualmente prováveis. A vida raramente é assim. Vinte anos depois, Shannon pôs as probabilidades na conta, e com elas dá para medir a informação de um acontecimento qualquer, provável ou não.</p>
+    <p>A pista já apareceu no jogo inverso. Quando você perguntou “É maior que 900?” e ouviu sim, sobraram 100 dos 1.000 candidatos. A resposta valeu <math><msub><mi>log</mi><mn>2</mn></msub><mo>⁡</mo><mn>10</mn><mo>≈</mo><mn>3,32</mn></math> bits, bem mais que um. Era também uma resposta improvável, com uma chance em dez. A resposta não, que tinha nove chances em dez, valeria só <math><msub><mi>log</mi><mn>2</mn></msub><mo>⁡</mo><mo stretchy="false">(</mo><mn>10</mn><mo>/</mo><mn>9</mn><mo stretchy="false">)</mo><mo>≈</mo><mn>0,15</mn></math> bit. Nos dois casos, a informação é o logaritmo de um sobre a probabilidade da resposta. Um acontecimento de probabilidade <math><mi>p</mi></math> é como um sorteio entre <math><mn>1</mn><mo>/</mo><mi>p</mi></math> possibilidades igualmente prováveis, e informa o mesmo que ele.</p>
+    <div class="destaque-caixa">
+      <span class="rotulo">Definição</span>
+      <p>A <dfn>surpresa</dfn> (ou <dfn>autoinformação</dfn>) de um acontecimento de probabilidade <math><mi>p</mi></math> é</p>
+      <div class="equacao">
+        <math display="block">
+          <mrow>
+            <mi>I</mi><mo stretchy="false">(</mo><mi>p</mi><mo stretchy="false">)</mo><mo>=</mo>
+            <msub><mi>log</mi><mn>2</mn></msub><mo>⁡</mo><mfrac><mn>1</mn><mi>p</mi></mfrac>
+            <mo>=</mo><mo>−</mo><msub><mi>log</mi><mn>2</mn></msub><mo>⁡</mo><mi>p</mi>
+            <mspace width="0.4em"></mspace><mtext>bits</mtext><mo>.</mo>
+          </mrow>
+        </math>
+      </div>
+    </div>
+    <p>Três propriedades fazem dessa fórmula a medida certa. Um acontecimento certo, com <math><mi>p</mi><mo>=</mo><mn>1</mn></math>, tem surpresa zero: notícia que você já sabia não informa nada. Quanto menos provável o acontecimento, maior a surpresa, sem teto. E as surpresas de acontecimentos independentes se somam, porque as probabilidades se multiplicam e o logaritmo transforma o produto em soma. A moeda e o dado da seção anterior são o caso em que tudo é equiprovável: a cara tem <math><mi>p</mi><mo>=</mo><mn>1</mn><mo>/</mo><mn>2</mn></math> e surpresa de 1 bit, o seis tem <math><mi>p</mi><mo>=</mo><mn>1</mn><mo>/</mo><mn>6</mn></math> e surpresa de 2,58 bits.</p>
+    <p>Um exemplo extremo. Uma aposta simples na Mega-Sena escolhe 6 dezenas entre 60, e há 50.063.860 maneiras de fazer isso. Acertar tem probabilidade de 1 em 50.063.860 e surpresa de <math><msub><mi>log</mi><mn>2</mn></msub><mo>⁡</mo><mn>50.063.860</mn><mo>≈</mo><mn>25,6</mn></math> bits, tanto quanto acertar o resultado de 25 ou 26 lances de moeda seguidos. Errar, que é quase certo, tem surpresa de cerca de 0,00000003 bit.</p>
+    <p>Use a calculadora abaixo. Arraste a probabilidade, digite a chance que quiser ou toque nos exemplos. As letras vêm da contagem que o livro faz nos nove romances de Machado que leu para o capítulo 1, contando também os espaços.</p>
+    <figure class="widget" data-widget="surpresa"></figure>
+    <p>O <i>e</i> ocupa cerca de 10% das posições de um texto de Machado, e sua surpresa é de 3,3 bits. O <i>x</i> aparece uma vez a cada 500 posições, mais ou menos, e vale 9 bits. O <i>k</i> aparece 24 vezes em 2,6 milhões de letras, quase sempre em nomes e palavras estrangeiras, como Shakespeare, Klopstock, Kant e Bismarck, e vale quase 17 bits, quase tanto quanto tirar o ás de espadas três vezes seguidas de um baralho bem embaralhado.</p>
+    <p>Repare que aqui cada letra foi medida sozinha, sem olhar as vizinhas. No jogo do capítulo 1, e no marca-texto amarelo da abertura do livro, o adivinhador leva em conta as letras anteriores, e a surpresa de uma mesma letra sobe ou desce conforme o que veio antes. Um <i>u</i> depois de <i>q</i> quase não surpreende ninguém. A fórmula é a mesma; muda a probabilidade que se põe nela.</p>
+    <aside class="nota">
+      <p><strong>Uma surpresa por letra.</strong> Quando a probabilidade de cada letra depende do contexto, a soma das surpresas de uma frase é a informação que ela carrega para aquele leitor. É essa soma que o capítulo 5 transforma em bits de um arquivo comprimido.</p>
+    </aside>
+  </section>
+
+  <section id="c2-unidades">
+    <h2>Bits, nats e hartleys</h2>
+    <p>Nada obriga o logaritmo a ser de base 2. Shannon disse isso logo na introdução do artigo de 1948:</p>
+    <blockquote>
+      <p>A escolha de uma base logarítmica corresponde à escolha de uma unidade para medir a informação.</p>
+      <footer>Claude Shannon, <i>Uma teoria matemática da comunicação</i>, 1948 (tradução minha)</footer>
+    </blockquote>
+    <p>A base escolhe a unidade, como o metro e o pé escolhem a unidade de comprimento. Na base 2, a unidade é o <dfn>bit</dfn>, a escolha entre duas alternativas igualmente prováveis. Na base 10, a unidade é o <dfn>hartley</dfn> (também chamado <i>dit</i>, de <i>decimal digit</i>), em homenagem ao engenheiro de 1928: a escolha entre dez alternativas, como um algarismo sorteado. Na base <math><mi>e</mi><mo>≈</mo><mn>2,718</mn></math>, a do logaritmo natural, a unidade é o <dfn>nat</dfn>, preferido por quem faz contas com derivadas, porque a derivada de <math><mi>ln</mi><mo>⁡</mo><mi>x</mi></math> é simplesmente <math><mn>1</mn><mo>/</mo><mi>x</mi></math>.</p>
+    <p>Passar de uma unidade a outra é mudar a base do logaritmo:</p>
+    <div class="equacao c2-quebra">
+      <math display="block">
+        <mrow>
+          <msub><mi>log</mi><mi>b</mi></msub><mo>⁡</mo><mi>x</mi><mo>=</mo>
+          <mfrac><mrow><msub><mi>log</mi><mn>2</mn></msub><mo>⁡</mo><mi>x</mi></mrow><mrow><msub><mi>log</mi><mn>2</mn></msub><mo>⁡</mo><mi>b</mi></mrow></mfrac><mo>,</mo>
+        </mrow>
+      </math>
+      <math display="block">
+        <mrow>
+          <mn>1</mn><mspace width="0.2em"></mspace><mtext>hartley</mtext><mo>=</mo><msub><mi>log</mi><mn>2</mn></msub><mo>⁡</mo><mn>10</mn><mo>≈</mo><mn>3,32</mn><mspace width="0.2em"></mspace><mtext>bits</mtext><mo>,</mo>
+        </mrow>
+      </math>
+      <math display="block">
+        <mrow>
+          <mn>1</mn><mspace width="0.2em"></mspace><mtext>nat</mtext><mo>=</mo><msub><mi>log</mi><mn>2</mn></msub><mo>⁡</mo><mi>e</mi><mo>≈</mo><mn>1,44</mn><mspace width="0.2em"></mspace><mtext>bit</mtext><mo>.</mo>
+        </mrow>
+      </math>
+    </div>
+    <p>Um exemplo junta tudo. Uma senha de seis algarismos é uma escolha entre um milhão de possibilidades. Ela vale 6 hartleys, um por algarismo, ou <math><mn>6</mn><mo>×</mo><mn>3,32</mn><mo>≈</mo><mn>19,93</mn></math> bits, as quase vinte perguntas do começo do capítulo. A informação é a mesma; muda o tamanho da régua. O seletor de unidades da calculadora acima faz essa conversão para qualquer probabilidade. Neste livro, salvo aviso, a unidade é sempre o bit.</p>
+  </section>
+
+  <section id="c2-telegrafo">
+    <h2>Cinco furos</h2>
+    <p>Muito antes de Hartley, os engenheiros do telégrafo já contavam combinações. Nos anos 1870, o francês Émile Baudot construiu um telégrafo em que cada letra era uma combinação de cinco sinais, cada um ligado ou desligado. O operador tinha um teclado de cinco teclas e tocava cada letra como um acorde, apertando ao mesmo tempo as teclas da combinação. Cinco sinais de duas posições dão <math><msup><mn>2</mn><mn>5</mn></msup><mo>=</mo><mn>32</mn></math> combinações, o suficiente para as 26 letras e alguns comandos. O nome de Baudot ficou no <i>baud</i>, unidade de velocidade de sinalização usada até hoje.</p>
+    <p>Por volta de 1900, Donald Murray adaptou a ideia a um teclado de máquina de escrever que perfurava a mensagem numa fita de papel; depois, uma máquina lia a fita e a transmitia. O código de Murray, com retoques, virou padrão internacional com o nome de <dfn>ITA2</dfn> (Alfabeto Telegráfico Internacional nº 2) e serviu ao telex e às teleimpressoras durante boa parte do século XX. Na fita, cada coluna é uma letra, cada furo é um 1 e cada posição sem furo é um 0. A fileira de furinhos menores, entre o terceiro e o quarto bit, serve para a máquina puxar o papel.</p>
+    <aside class="nota">
+      <p><strong>Fitas de guerra.</strong> Durante a Segunda Guerra Mundial, o alto comando alemão cifrava mensagens de teleimpressora, escritas nesse código de cinco furos, com as máquinas Lorenz. Para quebrá-las, os britânicos de Bletchley Park construíram o Colossus, que lia a mensagem cifrada numa fita perfurada.</p>
+    </aside>
+    <p>Você já viu uma fita dessas. Ela está no alto de cada capítulo deste livro, logo acima do número do capítulo. A desta página diz, em ITA2, <i>perguntas de sim ou nao</i>, sem o til, que o telégrafo não conhecia. Digite qualquer coisa abaixo e veja a fita ser perfurada.</p>
+    <figure class="widget" data-widget="telegrafo"></figure>
+    <p>Trinta e duas combinações são poucas. Tirando as 26 letras e o espaço, sobram cinco, gastas com comandos: retorno do carro, mudança de linha, uma combinação vazia e duas mudanças de registro. Algarismos e pontuação não cabem, e a solução foi a das máquinas de escrever com tecla de maiúsculas. A combinação <span class="dados">11011</span> avisa que, daqui em diante, cada coluna deve ser lida como algarismo ou sinal; a <span class="dados">11111</span> avisa que as letras voltaram. Na posição do Q fica o 1, na do W o 2, na do E o 3, e assim por diante pela fileira de cima do teclado. Digite um ano, como 1908, e veja as mudanças de registro aparecerem na fita.</p>
+    <p>E o nosso alfabeto de 39 símbolos? Cinco furos não bastam, porque 39 passa de 32. Seis bastam com folga, porque <math><msup><mn>2</mn><mn>6</mn></msup><mo>=</mo><mn>64</mn></math>. Um código de comprimento fixo para Machado gastaria então 6 bits por letra, quando a informação de uma escolha entre 39 é <math><msub><mi>log</mi><mn>2</mn></msub><mo>⁡</mo><mn>39</mn><mo>≈</mo><mn>5,29</mn></math> bits. A diferença de 0,71 bit por letra é desperdício. O <a href="#c5">capítulo 5</a> mostra como recuperá-lo, e muito mais, com códigos em que cada letra tem um comprimento diferente.</p>
+  </section>
+
+  <section id="c2-morse">
+    <h2>Pontos e traços</h2>
+    <p>Códigos de comprimentos diferentes são mais velhos que o telégrafo de Baudot. No código de Samuel Morse e Alfred Vail, criado nos anos 1830 e 1840 para o telégrafo elétrico americano, cada letra é uma sequência de pontos e traços. Um traço dura três pontos, e entre os sinais de uma mesma letra há uma pausa do tamanho de um ponto. O <i>e</i> é um ponto só, 1 unidade de tempo. O <i>t</i> é um traço, 3 unidades. O <i>q</i>, traço, traço, ponto, traço, leva 13.</p>
+    <p>Conta-se que Vail foi a uma tipografia contar quantos tipos de cada letra o tipógrafo guardava na caixa, e que deu os sinais mais curtos às letras mais usadas. A história pode ter sido enfeitada com o tempo, mas o resultado está aí para conferir. A lista abaixo põe as letras em ordem de frequência em Machado, com o código Morse de cada uma ao lado. Usamos o Morse internacional, a revisão europeia do código americano que é a versão ainda em uso.</p>
+    <figure class="widget" data-widget="morse"></figure>
+    <p>As letras do alto da lista têm, em geral, códigos curtos, e as do pé, códigos longos. As exceções contam uma história. O <i>o</i> é a terceira letra mais comum em Machado e tem um dos códigos mais longos, três traços. O <i>a</i>, a mais comum de todas, ganhou 5 unidades, enquanto o <i>e</i> e o <i>t</i> ficaram com os sinais mais curtos. Morse e Vail pensavam no inglês, em que o <i>e</i> e o <i>t</i> lideram.</p>
+    <p>Mesmo assim, o código ajuda o português. Em média, uma letra de Machado custa 6,2 unidades de tempo em Morse. Se os mesmos 26 códigos fossem distribuídos entre as letras ao acaso, custaria 8,2. O pior arranjo possível passaria de 10, e o melhor arranjo dos mesmos códigos para Machado, com o ponto para o <i>a</i>, ficaria em 5,2. Troque o seletor para ver a fita de Murray: no ITA2, o <i>e</i>, o <i>t</i> e o espaço têm um furo só, e as letras raras do inglês, como <i>q</i>, <i>k</i>, <i>v</i> e <i>x</i>, têm quatro. Ao que tudo indica, a ideia era poupar a máquina de perfurar.</p>
+    <p>Há um detalhe no Morse que vai importar mais adiante. Entre uma letra e outra, o telegrafista faz uma pausa de três unidades. Sem ela, ponto-traço tanto poderia ser um <i>a</i> quanto um <i>e</i> seguido de um <i>t</i>. A pausa é um sinal a mais, e custa tempo. O capítulo 5 mostra como montar códigos de comprimento variável que dispensam a pausa, e qual é o menor comprimento que um código assim pode alcançar.</p>
+  </section>
+
+  <section id="c2-fecho">
+    <h2>Da surpresa à média</h2>
+    <p>Recapitulando. Um bit é a resposta a uma boa pergunta de sim ou não. Escolher entre <math><mi>N</mi></math> coisas igualmente prováveis vale <math><msub><mi>log</mi><mn>2</mn></msub><mo>⁡</mo><mi>N</mi></math> bits, porque as possibilidades se multiplicam e a informação se soma. Um acontecimento de probabilidade <math><mi>p</mi></math> traz <math><mo>−</mo><msub><mi>log</mi><mn>2</mn></msub><mo>⁡</mo><mi>p</mi></math> bits de surpresa, e o raro traz mais que o comum. E os engenheiros do telégrafo, sem essas palavras, já tinham percebido que convém gastar pouco com o que é comum.</p>
+    <p>Falta juntar as surpresas. A pena de Machado às vezes produz um <i>e</i> de 3 bits, às vezes um <i>k</i> de 17. Quanto ela produz por letra, em média, ao longo de um romance inteiro? Essa média tem nome, entropia, e é o número mais importante deste livro. É o assunto do <a href="#c3">capítulo 3</a>.</p>
+  </section>
+
+  <h2 class="exercicios-titulo" id="c2-exercicios">Exercícios</h2>
+  <ol class="exercicios">
+    <li>
+      <p>Quantas perguntas de sim ou não bastam para descobrir o dia do ano em que uma pessoa nasceu, contando o 29 de fevereiro (366 possibilidades)? E só o mês? Quantos bits vale cada descoberta, supondo todas as possibilidades igualmente prováveis? <span class="nivel">aquecimento</span></p>
+      <details class="solucao"><summary>Solução</summary><div>
+        <p>Como <math><msup><mn>2</mn><mn>8</mn></msup><mo>=</mo><mn>256</mn></math> é menos que 366 e <math><msup><mn>2</mn><mn>9</mn></msup><mo>=</mo><mn>512</mn></math> é mais, bastam 9 perguntas para o dia; a informação é <math><msub><mi>log</mi><mn>2</mn></msub><mo>⁡</mo><mn>366</mn><mo>≈</mo><mn>8,52</mn></math> bits. Para o mês, <math><msup><mn>2</mn><mn>3</mn></msup><mo>=</mo><mn>8</mn><mo>&lt;</mo><mn>12</mn><mo>≤</mo><mn>16</mn><mo>=</mo><msup><mn>2</mn><mn>4</mn></msup></math>, então bastam 4 perguntas, e a informação é <math><msub><mi>log</mi><mn>2</mn></msub><mo>⁡</mo><mn>12</mn><mo>≈</mo><mn>3,58</mn></math> bits. (Na vida real os meses não são exatamente equiprováveis, porque têm números de dias diferentes, mas a diferença é pequena.)</p>
+      </div></details>
+    </li>
+    <li>
+      <p>Tire uma carta de um baralho comum de 52 cartas. Calcule à mão a surpresa de (a) tirar o ás de espadas; (b) tirar um ás qualquer; (c) tirar uma carta de espadas qualquer. Mostre que (b) + (c) = (a) e explique por que isso tinha de acontecer. Use <math><msub><mi>log</mi><mn>2</mn></msub><mo>⁡</mo><mn>13</mn><mo>≈</mo><mn>3,70</mn></math>. <span class="nivel">cálculo</span></p>
+      <details class="solucao"><summary>Solução</summary><div>
+        <p>(a) <math><mi>p</mi><mo>=</mo><mn>1</mn><mo>/</mo><mn>52</mn></math>, surpresa <math><msub><mi>log</mi><mn>2</mn></msub><mo>⁡</mo><mn>52</mn><mo>=</mo><msub><mi>log</mi><mn>2</mn></msub><mo>⁡</mo><mn>4</mn><mo>+</mo><msub><mi>log</mi><mn>2</mn></msub><mo>⁡</mo><mn>13</mn><mo>≈</mo><mn>2</mn><mo>+</mo><mn>3,70</mn><mo>=</mo><mn>5,70</mn></math> bits. (b) Há 4 ases, <math><mi>p</mi><mo>=</mo><mn>4</mn><mo>/</mo><mn>52</mn><mo>=</mo><mn>1</mn><mo>/</mo><mn>13</mn></math>, surpresa de 3,70 bits. (c) Há 13 cartas de espadas, <math><mi>p</mi><mo>=</mo><mn>13</mn><mo>/</mo><mn>52</mn><mo>=</mo><mn>1</mn><mo>/</mo><mn>4</mn></math>, surpresa de 2 bits.</p>
+        <p>De fato, 3,70 + 2 = 5,70. Num baralho completo, o valor e o naipe de uma carta são independentes: saber que saiu um ás não muda a chance de ela ser de espadas. Então <math><mi>P</mi><mo stretchy="false">(</mo><mtext>ás de espadas</mtext><mo stretchy="false">)</mo><mo>=</mo><mfrac><mn>1</mn><mn>13</mn></mfrac><mo>×</mo><mfrac><mn>1</mn><mn>4</mn></mfrac></math>, e o logaritmo transforma esse produto na soma das duas surpresas. Descobrir a carta é descobrir o valor e, depois, o naipe.</p>
+      </div></details>
+    </li>
+    <li>
+      <p>Você pergunta a um amigo: “Você acertou a Mega-Sena esta semana?”. Supondo que ele fez uma aposta simples, quanto vale, em bits, a resposta “não”? E a resposta “sim”? Por que essa pergunta é ruim para quem quer informação? <span class="nivel">conceito</span></p>
+      <details class="solucao"><summary>Solução</summary><div>
+        <p>A chance do sim é <math><mi>p</mi><mo>=</mo><mn>1</mn><mo>/</mo><mn>50.063.860</mn></math>, e sua surpresa é <math><msub><mi>log</mi><mn>2</mn></msub><mo>⁡</mo><mn>50.063.860</mn><mo>≈</mo><mn>25,6</mn></math> bits. A chance do não é <math><mn>1</mn><mo>−</mo><mi>p</mi></math>, e sua surpresa é <math><mo>−</mo><msub><mi>log</mi><mn>2</mn></msub><mo>⁡</mo><mo stretchy="false">(</mo><mn>1</mn><mo>−</mo><mi>p</mi><mo stretchy="false">)</mo></math>. Para <math><mi>p</mi></math> pequeno, isso é aproximadamente <math><mi>p</mi><mo>/</mo><mi>ln</mi><mo>⁡</mo><mn>2</mn><mo>≈</mo><mn>1,44</mn><mo>⁢</mo><mi>p</mi></math>, ou cerca de 0,000000029 bit.</p>
+        <p>A pergunta é ruim porque quase sempre rende quase nada. Ela pode render muito, mas só numa chance em cinquenta milhões. Uma pergunta que divide as possibilidades ao meio rende 1 bit garantido. A resposta ocupa um algarismo binário nos dois casos; só vale um bit de informação quando as duas respostas eram igualmente prováveis.</p>
+      </div></details>
+    </li>
+    <li>
+      <p>Três dados são lançados juntos. Quantos resultados possíveis há? Quantas perguntas de sim ou não bastam para descobrir os três de uma vez? E descobrindo um dado de cada vez? Compare com <math><mn>3</mn><mo>×</mo><msub><mi>log</mi><mn>2</mn></msub><mo>⁡</mo><mn>6</mn></math>. <span class="nivel">cálculo</span></p>
+      <details class="solucao"><summary>Solução</summary><div>
+        <p>São <math><msup><mn>6</mn><mn>3</mn></msup><mo>=</mo><mn>216</mn></math> resultados. Como <math><msup><mn>2</mn><mn>7</mn></msup><mo>=</mo><mn>128</mn><mo>&lt;</mo><mn>216</mn><mo>≤</mo><mn>256</mn><mo>=</mo><msup><mn>2</mn><mn>8</mn></msup></math>, bastam 8 perguntas para os três juntos, cerca de 2,67 por dado. Um dado de cada vez exige 3 perguntas no pior caso, 9 no total. A informação é <math><mn>3</mn><mo>×</mo><mn>2,585</mn><mo>≈</mo><mn>7,75</mn></math> bits, que é <math><msub><mi>log</mi><mn>2</mn></msub><mo>⁡</mo><mn>216</mn></math>. Agrupar os dados aproxima o número de perguntas da informação verdadeira: com 5 dados, 13 perguntas (2,6 por dado); com muitos dados, o custo por dado se aproxima de 2,585.</p>
+      </div></details>
+    </li>
+    <li>
+      <p>Uma senha de banco tem 6 algarismos. Quanta informação ela tem em hartleys, em bits e em nats? E uma senha de 4 letras minúsculas, de <i>a</i> a <i>z</i>? Qual das duas é mais difícil de adivinhar por tentativa, supondo que foram escolhidas ao acaso? <span class="nivel">cálculo</span></p>
+      <details class="solucao"><summary>Solução</summary><div>
+        <p>Seis algarismos sorteados são 6 hartleys. Em bits, <math><mn>6</mn><mo>×</mo><msub><mi>log</mi><mn>2</mn></msub><mo>⁡</mo><mn>10</mn><mo>≈</mo><mn>19,93</mn></math>; em nats, <math><mn>6</mn><mo>×</mo><mi>ln</mi><mo>⁡</mo><mn>10</mn><mo>≈</mo><mn>13,82</mn></math>. A senha de letras tem <math><msup><mn>26</mn><mn>4</mn></msup><mo>=</mo><mn>456.976</mn></math> possibilidades, ou <math><mn>4</mn><mo>×</mo><msub><mi>log</mi><mn>2</mn></msub><mo>⁡</mo><mn>26</mn><mo>≈</mo><mn>18,80</mn></math> bits. A de algarismos é um pouco mais difícil: um milhão de possibilidades contra menos de meio milhão, uma diferença de 1,13 bit, o que quer dizer pouco mais que o dobro de tentativas.</p>
+      </div></details>
+    </li>
+    <li>
+      <p>No interativo <i>Pense num número</i>, escolha <i>Você adivinha</i> e a lista de 1 a 1.000. Jogue três partidas: (a) cortando sempre ao meio; (b) cortando sempre perto de um quarto do intervalo; (c) como quiser. Anote o número de perguntas e a soma dos bits das respostas. O que você observa sobre a soma? Por quê? <span class="nivel">experimento</span></p>
+      <details class="solucao"><summary>Solução</summary><div>
+        <p>Em (a), a partida termina em 9 ou 10 perguntas, e cada resposta vale perto de 1 bit. Em (b), a maioria das respostas vale menos de 1 bit (a resposta provável elimina só um quarto), algumas valem 2 bits (a improvável elimina três quartos), e a partida costuma passar de 10 perguntas. Em todas, a soma dá exatamente <math><msub><mi>log</mi><mn>2</mn></msub><mo>⁡</mo><mn>1000</mn><mo>≈</mo><mn>9,97</mn></math> bits.</p>
+        <p>O motivo: cada resposta vale <math><msub><mi>log</mi><mn>2</mn></msub><mo>⁡</mo><mo stretchy="false">(</mo><mtext>antes</mtext><mo>/</mo><mtext>depois</mtext><mo stretchy="false">)</mo></math>, em que “antes” e “depois” são os números de candidatos. Somando, os termos intermediários se cancelam, porque o “depois” de uma pergunta é o “antes” da seguinte, e sobra <math><msub><mi>log</mi><mn>2</mn></msub><mo>⁡</mo><mo stretchy="false">(</mo><mn>1000</mn><mo>/</mo><mn>1</mn><mo stretchy="false">)</mo></math>. A informação necessária para isolar um entre mil é fixa. As estratégias só mudam a maneira de reparti-la entre as perguntas, e cortar ao meio é a única que nunca deixa uma pergunta render pouco.</p>
+      </div></details>
+    </li>
+    <li>
+      <p>Mostre que nenhuma estratégia de perguntas de sim ou não consegue garantir que descobre um número de 1 a <math><mi>N</mi></math> com menos de <math><mo>⌈</mo><msub><mi>log</mi><mn>2</mn></msub><mo>⁡</mo><mi>N</mi><mo>⌉</mo></math> perguntas, mesmo que cada pergunta seja escolhida conforme as respostas anteriores. <span class="nivel">desafio</span></p>
+      <details class="solucao"><summary>Solução</summary><div>
+        <p>Suponha uma estratégia que sempre termina com no máximo <math><mi>k</mi></math> perguntas. Para cada número secreto possível, anote a sequência de respostas que ele produz, com 1 para sim e 0 para não, completando com zeros se a partida acabar antes de <math><mi>k</mi></math> perguntas. Dois números diferentes precisam produzir sequências diferentes. Se produzissem a mesma, quem pergunta ouviria exatamente as mesmas respostas nos dois casos (inclusive as perguntas seriam as mesmas, já que cada uma depende só das respostas anteriores) e não teria como saber qual dos dois é o certo.</p>
+        <p>Só existem <math><msup><mn>2</mn><mi>k</mi></msup></math> sequências de <math><mi>k</mi></math> algarismos binários. Para caberem <math><mi>N</mi></math> números com sequências distintas, é preciso <math><msup><mn>2</mn><mi>k</mi></msup><mo>≥</mo><mi>N</mi></math>, isto é, <math><mi>k</mi><mo>≥</mo><msub><mi>log</mi><mn>2</mn></msub><mo>⁡</mo><mi>N</mi></math>. Como <math><mi>k</mi></math> é inteiro, <math><mi>k</mi><mo>≥</mo><mo>⌈</mo><msub><mi>log</mi><mn>2</mn></msub><mo>⁡</mo><mi>N</mi><mo>⌉</mo></math>. A busca binária atinge esse mínimo, então ela é ótima no pior caso. Esse tipo de argumento, que conta quantas mensagens distintas cabem num certo número de bits, volta no capítulo 5 para mostrar que dados aleatórios não se deixam comprimir.</p>
+      </div></details>
+    </li>
+  </ol>
+
+  <dl class="cartoes-dados">
+    <dt>O que é um bit, como unidade de informação?</dt>
+    <dd>A informação da resposta a uma pergunta de sim ou não cujas duas respostas eram igualmente prováveis. O nome, de binary digit, foi sugerido por John Tukey e apareceu impresso pela primeira vez no artigo de Shannon de 1948.</dd>
+    <dt>Quantas perguntas de sim ou não bastam para achar um número de 1 a N?</dt>
+    <dd>⌈log₂ N⌉, cortando sempre os candidatos ao meio (busca binária). Para um milhão bastam 20, porque 2²⁰ = 1.048.576; nenhuma estratégia garante menos.</dd>
+    <dt>Por que a informação se mede com um logaritmo?</dt>
+    <dd>Porque, quando escolhas independentes se juntam, as possibilidades se multiplicam (2 × 6 = 12) e a informação deve se somar (1 + 2,58 = 3,58 bits). O logaritmo transforma produto em soma. Ralph Hartley propôs essa medida em 1928.</dd>
+    <dt>Qual é a surpresa de um acontecimento de probabilidade p?</dt>
+    <dd>−log₂ p bits. Um acontecimento certo tem surpresa 0; cara ou coroa, 1 bit; uma carta específica do baralho, 5,70 bits; acertar a Mega-Sena, cerca de 25,6 bits.</dd>
+    <dt>Um algarismo binário sempre carrega um bit de informação?</dt>
+    <dd>Não. Só quando o 0 e o 1 são igualmente prováveis. Uma resposta que já era esperada ocupa um algarismo binário, mas informa quase nada.</dd>
+    <dt>O que são o nat e o hartley?</dt>
+    <dd>Unidades de informação definidas com logaritmo na base e e na base 10. Um nat vale cerca de 1,44 bit; um hartley (ou dit), cerca de 3,32 bits. Trocar de unidade é trocar a base do logaritmo.</dd>
+    <dt>Quantos símbolos cabem no código telegráfico de 5 bits (ITA2)?</dt>
+    <dd>2⁵ = 32: as 26 letras, o espaço e cinco comandos. Algarismos e pontuação usam uma mudança de registro. É o código da fita perfurada no alto de cada capítulo deste livro.</dd>
+    <dt>Que ideia o código Morse antecipou?</dt>
+    <dd>Dar sinais curtos às letras frequentes e longos às raras, para que uma mensagem típica fique mais curta. O e e o t, as letras mais comuns do inglês, são um ponto e um traço.</dd>
+  </dl>
+</article>

@@ -220,6 +220,7 @@ function abertura() {
   };
   const desligar = aoProgresso((e) => {
     if (e.fase === "lendo") status.textContent = "· lendo Machado…";
+    else if (e.fase === "pronto") status.textContent = "";
     else if (e.fase === "contando") status.textContent = "· contando letras…";
     else if (e.fase === "erro") status.textContent = "· não consegui carregar o corpus";
   });

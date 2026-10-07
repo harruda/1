@@ -85,10 +85,10 @@ export function fmt(x, casas = 2) {
 export const fmtInt = (x) => new Intl.NumberFormat("pt-BR").format(Math.round(x));
 /** Porcentagem: fmtPct(0.123) -> "12,3%". */
 export const fmtPct = (x, casas = 1) => fmt(100 * x, casas) + "%";
-/** Bits com unidade e singular/plural: fmtBits(1) -> "1 bit", fmtBits(2.5) -> "2,50 bits". */
+/** Bits com unidade e singular/plural: fmtBits(1.5) -> "1,50 bit", fmtBits(2.5) -> "2,50 bits". */
 export function fmtBits(x, casas = 2) {
   const n = Number.isInteger(x) ? String(x) : fmt(x, casas);
-  return n + (x === 1 ? " bit" : " bits");
+  return n + (Math.abs(x) < 2 ? " bit" : " bits"); // em português, plural só a partir de 2
 }
 
 // ---------- Controles ----------
@@ -187,15 +187,18 @@ export function moldura(fig, { titulo, legenda } = {}) {
 export function avisoModelo(el) {
   const msg = h("p.aviso-modelo", { role: "status" });
   el.append(msg);
-  const desligar = aoProgresso((e) => {
+  let desligar = null, pronto = false;
+  desligar = aoProgresso((e) => {
     if (e.fase === "lendo") msg.textContent = "Lendo nove romances de Machado de Assis…";
     else if (e.fase === "contando") msg.textContent = `Contando sequências de letras… ordem ${Math.max(e.ordem + 1, 0)} de 6`;
     else if (e.fase === "erro") msg.textContent = "Não consegui carregar o corpus. Recarregue a página para tentar de novo.";
     else if (e.fase === "pronto") {
       msg.remove();
-      desligar();
+      pronto = true;
+      desligar?.();
     }
   });
+  if (pronto) desligar();
   return msg;
 }
 
