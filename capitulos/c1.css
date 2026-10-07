@@ -1,0 +1,55 @@
+/* Capítulo 1 — jogo de Shannon */
+.jogo-texto {
+  display: flex;
+  flex-wrap: wrap;
+  row-gap: 0.5rem;
+  font-size: var(--t-3);
+  min-height: 3.5rem;
+}
+.jogo-palavra { display: inline-flex; white-space: nowrap; gap: 1px; }
+.jogo-cel { display: inline-flex; flex-direction: column; align-items: center; min-width: 0.72em; }
+.jogo-letra { line-height: 1.3; padding-inline: 0.02em; }
+.jogo-num {
+  font: 500 var(--t-0) / 1.4 var(--f-dados);
+  color: var(--tinta-2);
+  min-width: 1.1em;
+  padding-inline: 1px;
+  text-align: center;
+  border-radius: 2px;
+}
+.jogo-num[data-n="1"] { color: color-mix(in srgb, var(--tinta-2) 55%, transparent); }
+.jogo-num:not([data-n="1"]):not(:empty) { background: color-mix(in srgb, var(--marca) 55%, transparent); color: var(--marca-tinta); }
+.jogo-espaco .jogo-letra { width: 0.6em; border-bottom: 1px dotted var(--regua); }
+.jogo-oculta .jogo-letra { width: 0.62em; border-bottom: 1px solid var(--regua); margin-inline: 0.04em; }
+.jogo-cursor .jogo-letra { width: 0.62em; border-bottom: 2px solid var(--sinal); margin-inline: 0.04em; animation: piscar 1s steps(2) infinite; }
+@keyframes piscar { 50% { border-bottom-color: transparent; } }
+.jogo-maquina .jogo-num:not([data-n="1"]):not(:empty) { background: var(--sinal-suave); color: var(--tinta); }
+.jogo-controles { gap: 0.6rem 1rem; }
+.jogo-entrada { width: 7rem !important; font-family: var(--f-dados) !important; font-size: var(--t-1) !important; }
+.jogo-tentadas { margin: 0; font: var(--t-1) var(--f-dados); color: var(--ruido); text-decoration: line-through; }
+.jogo-status { margin: 0; font-size: var(--t-1); color: var(--tinta-2); min-height: 1.5em; }
+.jogo-comparacao { margin-top: 0.8rem !important; }
+.jogo-resultado { border-top: 1px solid var(--regua); padding-top: 1rem; display: flex; flex-direction: column; gap: 0.6rem; }
+
+.teclado { display: flex; flex-direction: column; gap: 0.3rem; align-items: center; }
+.teclado-fileira { display: flex; gap: 0.25rem; flex-wrap: wrap; justify-content: center; }
+.tecla {
+  font: 500 var(--t-2) / 1 var(--f-texto);
+  min-width: 2.15rem;
+  height: 2.4rem;
+  border: 1px solid var(--regua);
+  background: var(--papel);
+  color: var(--tinta);
+  border-radius: var(--raio);
+  cursor: pointer;
+}
+.tecla:hover:not(:disabled) { border-color: var(--sinal); }
+.tecla:disabled { opacity: 0.3; text-decoration: line-through; cursor: default; }
+.tecla.espaco { min-width: 12rem; font: var(--t-0) var(--f-dados); text-transform: uppercase; letter-spacing: 0.1em; }
+@media (max-width: 30rem) {
+  .tecla { min-width: 1.85rem; height: 2.3rem; font-size: var(--t-1); padding: 0; }
+}
+
+.rotulo-campo { display: block; font: var(--t-0) / 1.6 var(--f-dados); color: var(--tinta-2); text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 0.3rem; }
+.gemeo-numeros { margin: 0; font-size: var(--t-1); line-height: 1.8; }
+.gemeo-saida { margin: 0; font-size: var(--t-3); min-height: 1.6em; }

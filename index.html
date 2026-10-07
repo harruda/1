@@ -1,0 +1,31 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>A Medida da Surpresa</title>
+<meta name="description" content="Um livro interativo de teoria da informação, do jogo de adivinhação de Shannon aos modelos de linguagem, com a obra de Machado de Assis como laboratório.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Literata:ital,opsz,wght@0,7..72,300..700;1,7..72,300..700&family=Martian+Mono:wdth,wght@75..112.5,300..600&family=Old+Standard+TT:ital,wght@0,400;0,700;1,400&display=swap">
+<link rel="stylesheet" href="assets/livro.css">
+</head>
+<body>
+<header class="topo">
+  <div class="topo-dentro">
+    <a class="marca-livro" href="#inicio">A Medida da <i>Surpresa</i></a>
+    <nav aria-label="Livro">
+      <button class="sumario-botao" id="sumario-botao" type="button" aria-expanded="false" aria-controls="sumario-painel">Sumário</button>
+      <button class="tema-botao" id="tema-botao" type="button" title="Alternar tema claro/escuro">Tema</button>
+    </nav>
+  </div>
+  <div class="sumario-painel" id="sumario-painel" hidden></div>
+  <div class="progresso" id="progresso"></div>
+</header>
+<main id="conteudo" tabindex="-1">
+  <p class="carregando">Abrindo o livro…</p>
+</main>
+<noscript><p style="padding:1rem">Este livro é interativo e precisa de JavaScript.</p></noscript>
+<script type="module" src="assets/app.js"></script>
+</body>
+</html>

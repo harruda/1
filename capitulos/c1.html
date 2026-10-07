@@ -1,0 +1,125 @@
+<link rel="stylesheet" href="capitulos/c1.css">
+<article class="capitulo" data-cap="1">
+  <header class="cap-cabeca">
+    <p class="cap-numero">Capítulo 1</p>
+    <h1>O jogo de adivinhação</h1>
+    <p class="cap-lead">Antes de qualquer fórmula, um experimento. Você vai tentar adivinhar uma frase de Machado de Assis letra por letra, e vai contar quantas tentativas cada letra lhe custou. Essa contagem é a primeira medida de informação deste livro.</p>
+  </header>
+
+  <section id="c1-sala">
+    <h2>Uma brincadeira de sala de estar</h2>
+    <p>Em 1948, um engenheiro de trinta e dois anos chamado Claude Shannon publicou, na revista técnica da companhia telefônica americana, um artigo de setenta e nove páginas com o título modesto de <i>Uma teoria matemática da comunicação</i>. Ali estava uma ideia que hoje sustenta cada mensagem de celular, cada arquivo compactado, cada foto enviada de uma sonda espacial: a informação pode ser medida, como se mede massa ou temperatura, e tem uma unidade, o <dfn>bit</dfn>.</p>
+    <p>Dois anos depois, Shannon quis saber quanta informação carrega, de fato, um texto escrito em inglês. Não havia fórmula que respondesse. Então ele inventou um jogo. Abria um livro num trecho qualquer, escondia o texto e pedia a uma pessoa que adivinhasse a primeira letra. Se ela errasse, tentava de novo, até acertar. Aí passava à segunda letra, já sabendo a primeira. E assim por diante. Ao lado de cada letra, Shannon anotava quantos palpites ela tinha exigido.</p>
+    <aside class="nota">
+      <p><strong>A primeira jogadora.</strong> Segundo a biografia de Shannon escrita por Jimmy Soni e Rob Goodman, a primeira pessoa a jogar foi Betty Shannon, matemática e esposa de Claude, adivinhando um trecho de um livro policial. No artigo publicado, os trechos vinham de uma biografia de Thomas Jefferson.</p>
+    </aside>
+    <p>O resultado saiu em 1951, num artigo chamado <i>Prediction and Entropy of Printed English</i>. A maioria das letras era acertada no primeiro palpite. Algumas exigiam dois ou três. Pouquíssimas exigiam muitos. E essa distribuição de números pequenos revelava algo profundo sobre a língua: quase tudo o que escrevemos já está, de certo modo, implícito no que veio antes.</p>
+    <p>Você vai jogar agora a versão em português, com frases de <i>Memorial de Aires</i>, o último romance de Machado de Assis, publicado em 1908. As regras são as de Shannon, com um alfabeto um pouco maior: as 26 letras, as 12 letras acentuadas do português e o espaço entre as palavras. Maiúsculas e pontuação foram removidas.</p>
+  </section>
+
+  <section id="c1-jogue">
+    <h2>Jogue</h2>
+    <figure class="widget" data-widget="jogo"></figure>
+    <p>Jogue pelo menos uma frase inteira antes de seguir. O resto do capítulo fala dos números que você acabou de produzir, e eles ficam guardados neste navegador para os capítulos seguintes.</p>
+  </section>
+
+  <section id="c1-numeros">
+    <h2>O que os números dizem</h2>
+    <p>Olhe para a fileira de números debaixo da frase. Ela provavelmente tem muitos <span class="dados">1</span>, salpicados de números maiores. E os números maiores não caem em lugares quaisquer: aparecem quase sempre no começo das palavras. Depois de <i>trans</i>, a letra seguinte é quase certamente um <i>f</i>, um <i>p</i>, um <i>m</i> ou um <i>a</i>. Depois de <i>transfo</i>, sobra pouca dúvida. Já a primeira letra de uma palavra nova é um território aberto.</p>
+    <p>Isso sugere uma maneira de pensar sobre informação que vai nos acompanhar pelo livro inteiro. Uma letra que você adivinhou de primeira não lhe contou nada que você já não soubesse. Uma letra que custou seis palpites contou bastante. <strong>A informação de uma mensagem está naquilo que você não conseguiria ter previsto.</strong></p>
+    <p>Essa definição é estranha à primeira vista, porque ignora inteiramente o significado. Para Shannon, a frase mais bonita de Machado e uma sequência de letras sorteadas ao acaso não diferem pelo sentido; diferem pelo grau de previsibilidade. E é exatamente por ignorar o significado que a definição funciona: ela vale para texto, voz, imagem, DNA, qualquer coisa que possa ser transmitida.</p>
+    <aside class="nota">
+      <p>O próprio Shannon foi explícito: os aspectos semânticos da comunicação, escreveu em 1948, são “irrelevantes para o problema de engenharia”. O que importa é que a mensagem foi escolhida dentre um conjunto de mensagens possíveis.</p>
+    </aside>
+  </section>
+
+  <section id="c1-gemeo">
+    <h2>O gêmeo idêntico</h2>
+    <p>Shannon percebeu uma consequência curiosa do seu jogo. Imagine que você tem um gêmeo idêntico, que pensa exatamente como você. Diante do mesmo começo de frase, ele daria os mesmos palpites, na mesma ordem.</p>
+    <p>Agora, em vez de mandar a frase para o seu gêmeo, você manda só a fileira de números. O gêmeo começa a adivinhar a primeira letra. O primeiro número diz “acertei no terceiro palpite”, então ele sabe que a letra é o seu terceiro palpite. Faz o mesmo com a segunda letra, com a terceira, e reconstrói a frase inteira sem nunca tê-la visto.</p>
+    <p>Ninguém tem um gêmeo assim, mas um programa pode ser copiado. O interativo abaixo usa um programa que leu os outros nove romances de Machado e joga o mesmo jogo. Ele transforma uma frase em números e outra cópia dele transforma os números de volta na frase.</p>
+    <figure class="widget" data-widget="gemeo"></figure>
+    <p>Repare em duas coisas. Primeiro, a sequência de números é muito mais monótona que o texto: está cheia de <span class="dados">1</span>. Uma sequência monótona assim pode ser escrita de forma muito mais curta, e esse é o princípio de todos os compressores de arquivos, como veremos no <a href="#c5">capítulo 5</a>. Segundo, quanto melhor o adivinhador, mais <span class="dados">1</span> e mais curta a mensagem. <strong>Prever bem e comprimir bem são a mesma habilidade.</strong> Essa frase resume metade deste livro.</p>
+  </section>
+
+  <section id="c1-limites">
+    <h2>De palpites para bits</h2>
+    <p>Falta transformar a fileira de números numa medida só. Shannon fez isso com duas fórmulas, uma que dá um limite superior e outra que dá um limite inferior para a informação média por letra. Ainda não temos as ferramentas para entendê-las (elas aparecerão no <a href="#c3">capítulo 3</a>), mas já dá para usá-las. Se <math><msub><mi>q</mi><mi>i</mi></msub></math> é a fração das letras que você acertou no <math><mi>i</mi></math>-ésimo palpite, então a informação média por letra, em bits, fica entre</p>
+    <div class="equacao">
+      <math display="block">
+        <mrow>
+          <munderover><mo>∑</mo><mrow><mi>i</mi><mo>=</mo><mn>1</mn></mrow><mn>39</mn></munderover>
+          <mi>i</mi><mo>⁢</mo><mo stretchy="false">(</mo><msub><mi>q</mi><mi>i</mi></msub><mo>−</mo><msub><mi>q</mi><mrow><mi>i</mi><mo>+</mo><mn>1</mn></mrow></msub><mo stretchy="false">)</mo><mo>⁢</mo><msub><mi>log</mi><mn>2</mn></msub><mo>⁡</mo><mi>i</mi>
+          <mspace width="1em"></mspace><mtext>e</mtext><mspace width="1em"></mspace>
+          <mo>−</mo>
+          <munderover><mo>∑</mo><mrow><mi>i</mi><mo>=</mo><mn>1</mn></mrow><mn>39</mn></munderover>
+          <msub><mi>q</mi><mi>i</mi></msub><mo>⁢</mo><msub><mi>log</mi><mn>2</mn></msub><mo>⁡</mo><msub><mi>q</mi><mi>i</mi></msub>
+          <mo>.</mo>
+        </mrow>
+      </math>
+    </div>
+    <p>O painel do jogo já faz essas contas. Com uma frase só, os números oscilam muito; a estimativa melhora a cada frase que você joga, porque o livro vai somando suas rodadas. Shannon, com cem trechos e um contexto de até cem letras, chegou a algo entre 0,6 e 1,3 bit por letra para o inglês. Para comparar: se todas as 39 letras do nosso alfabeto fossem igualmente prováveis e independentes umas das outras, cada uma carregaria <math><msub><mi>log</mi><mn>2</mn></msub><mo>⁡</mo><mn>39</mn><mo>≈</mo><mn>5,3</mn></math> bits.</p>
+    <figure class="widget" data-widget="placar"></figure>
+    <p>A diferença entre esses 5,3 bits e o pouco mais de um bit que um bom leitor consegue é o que se chama de <dfn>redundância</dfn>. É ela que permite ler um bilhete com letras borradas, entender uma ligação ruim, ou adivinhar o fim da frase de um amigo. O <a href="#c4">capítulo 4</a> mede essa redundância com cuidado.</p>
+  </section>
+
+  <section id="c1-caminho">
+    <h2>O caminho daqui em diante</h2>
+    <p>O jogo de adivinhação contém, em miniatura, quase todas as ideias deste livro. Nos próximos capítulos vamos dar nome e fórmula a cada uma delas.</p>
+    <ul>
+      <li>A unidade da surpresa, o bit, e por que ela usa logaritmos (<a href="#c2">capítulo 2</a>).</li>
+      <li>A surpresa média de uma fonte, chamada entropia (<a href="#c3">capítulo 3</a>).</li>
+      <li>Quanto do português é previsível, e como imitar Machado com estatística pura (<a href="#c4">capítulo 4</a>).</li>
+      <li>Por que comprimir é prever, e qual é o limite para qualquer compressor (<a href="#c5">capítulo 5</a>).</li>
+      <li>Como conversar através de um canal que erra (<a href="#c6">capítulo 6</a>).</li>
+      <li>E, por fim, como máquinas como a que escreveu este livro aprenderam a jogar o jogo de Shannon melhor do que qualquer programa antes delas (<a href="#c7">capítulo 7</a>).</li>
+    </ul>
+  </section>
+
+  <h2 class="exercicios-titulo" id="c1-exercicios">Exercícios</h2>
+  <ol class="exercicios">
+    <li>
+      <p>No jogo, o espaço entre as palavras também precisa ser adivinhado. Ele costuma ser fácil ou difícil? Em que situações ele surpreende? <span class="nivel">aquecimento</span></p>
+      <details class="solucao"><summary>Solução</summary><div>
+        <p>Em geral é fácil: depois de uma palavra completa e inequívoca, como <i>porque</i>, o espaço é quase obrigatório. Ele surpreende quando a palavra poderia continuar: depois de <i>casa</i>, pode vir espaço, mas também <i>casamento</i>, <i>casaco</i>, <i>casarão</i>. O espaço carrega a informação “a palavra acabou”, e essa informação vale muito ou pouco conforme o que veio antes.</p>
+      </div></details>
+    </li>
+    <li>
+      <p>Suponha que uma pessoa adivinhou uma frase de 80 letras e acertou todas no primeiro palpite. O que os limites de Shannon dizem? Isso significa que a frase não tinha informação nenhuma? <span class="nivel">conceito</span></p>
+      <details class="solucao"><summary>Solução</summary><div>
+        <p>Com <math><msub><mi>q</mi><mn>1</mn></msub><mo>=</mo><mn>1</mn></math> e todos os outros <math><msub><mi>q</mi><mi>i</mi></msub><mo>=</mo><mn>0</mn></math>, as duas fórmulas dão zero. Para aquela pessoa, naquele momento, a frase não trouxe nada de novo, e isso só acontece se ela já a conhecia (uma citação famosa, um provérbio). A informação não é uma propriedade da frase sozinha, e sim da frase em relação a quem a recebe e ao que essa pessoa já esperava. A mesma frase pode ser pura informação para um leitor e redundância total para outro.</p>
+      </div></details>
+    </li>
+    <li>
+      <p>O gêmeo idêntico precisa receber os números. Por que mandar a sequência <span class="dados">1 1 3 1 1 1 2 1 1 1</span> pode custar menos do que mandar as dez letras correspondentes? Dê uma ideia de como escrever essa sequência de forma curta. <span class="nivel">conceito</span></p>
+      <details class="solucao"><summary>Solução</summary><div>
+        <p>Porque os números não são igualmente frequentes: o <span class="dados">1</span> domina. Um código pode dar ao <span class="dados">1</span> uma representação curtíssima (por exemplo, o único bit <span class="dados">0</span>) e aos números raros representações mais longas (<span class="dados">10</span>, <span class="dados">110</span>, …). Assim a sequência inteira cabe em bem menos bits do que as letras originais, cada uma das quais exigiria cerca de 5,3 bits num código sem preferências. É a ideia dos códigos de comprimento variável, como o de Huffman, do capítulo 5.</p>
+      </div></details>
+    </li>
+    <li>
+      <p>Jogue uma frase tentando, de propósito, ser um mau adivinhador (por exemplo, chutando sempre <i>z</i> primeiro). O que acontece com os limites? O que isso diz sobre medir a informação de um texto com a ajuda de um adivinhador? <span class="nivel">experimento</span></p>
+      <details class="solucao"><summary>Solução</summary><div>
+        <p>Os números crescem e os limites sobem. Um adivinhador ruim superestima a informação do texto. Por isso a medida que o jogo produz é sempre “a informação do texto para este adivinhador”, e a melhor estimativa da informação do texto em si vem do melhor adivinhador disponível. Essa ideia reaparece no capítulo 7 com o nome de entropia cruzada: um modelo pior sempre paga mais bits.</p>
+      </div></details>
+    </li>
+    <li>
+      <p>Por que Shannon escolheu um livro de verdade em vez de sequências de letras inventadas por ele? <span class="nivel">reflexão</span></p>
+      <details class="solucao"><summary>Solução</summary><div>
+        <p>Porque o objetivo era medir a estrutura da língua como ela é usada: frequências de letras, palavras comuns, construções gramaticais, assuntos. Um texto inventado para o experimento carregaria os vícios de quem o escreveu. Pelo mesmo motivo, este livro usa um romance que o programa adivinhador nunca leu: se a máquina fosse testada num texto que ela memorizou, pareceria muito melhor do que é.</p>
+      </div></details>
+    </li>
+  </ol>
+
+  <dl class="cartoes-dados">
+    <dt>Qual era o jogo de adivinhação de Shannon (1951)?</dt>
+    <dd>Uma pessoa adivinha um texto letra por letra, tentando até acertar; anota-se quantos palpites cada letra exigiu. A distribuição desses números permite estimar a informação por letra da língua.</dd>
+    <dt>Na teoria de Shannon, onde está a informação de uma mensagem?</dt>
+    <dd>Naquilo que o receptor não conseguiria prever. Uma letra adivinhada de primeira traz pouca informação; uma que exige muitos palpites traz muita.</dd>
+    <dt>O que é o argumento do gêmeo idêntico?</dt>
+    <dd>Se o receptor adivinha exatamente como o emissor, basta enviar o número de palpites de cada letra para que ele reconstrua o texto. Como a sequência de números é muito previsível (cheia de 1), ela pode ser codificada de forma curta: prever bem permite comprimir bem.</dd>
+    <dt>Quantos bits por letra Shannon estimou para o inglês com contexto longo?</dt>
+    <dd>Entre cerca de 0,6 e 1,3 bit por letra, contra log₂ 27 ≈ 4,75 bits se as 27 letras (com o espaço) fossem equiprováveis e independentes.</dd>
+    <dt>O que é redundância de uma língua, em termos informais?</dt>
+    <dd>A diferença entre a capacidade máxima de um alfabeto (todas as letras equiprováveis e independentes) e a informação que o texto realmente carrega. É o que torna textos previsíveis e resistentes a erros.</dd>
+  </dl>
+</article>
