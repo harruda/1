@@ -204,7 +204,7 @@
       <p>A entropia condicional verdadeira nunca aumenta quando se acrescenta contexto. Por que, então, a curva medida pode subir na ordem 6? E o que aconteceria com a curva se a medíssemos nos próprios nove romances de treino, com ordens cada vez maiores? <span class="nivel">conceito</span></p>
       <details class="solucao"><summary>Solução</summary><div>
         <p>A curva medida não é a entropia condicional verdadeira, e sim a surpresa média de um modelo cujas probabilidades foram estimadas a partir de contagens. Com seis letras de contexto, muitos contextos foram vistos uma vez só, e as probabilidades tiradas deles são ruins. No texto novo, essas estimativas ruins custam mais do que a informação extra do contexto economiza. A subida mede a ignorância do modelo, não a da língua.</p>
-        <p>No texto de treino, a curva continuaria caindo, em direção a zero. Com contextos longos, quase todo contexto aparece uma vez só no treino, e o modelo “sabe” com certeza qual letra veio depois dele. Seria como decorar o livro. Esse é o sobreajuste, e é por isso que modelos se medem sempre em texto que não viram.</p>
+        <p>No texto de treino, um modelo de contagens puras, sem o desconto, continuaria caindo, em direção a zero. Com contextos longos, quase todo contexto aparece uma vez só no treino, e o modelo “sabe” com certeza qual letra veio depois dele. Seria como decorar o livro. Esse é o sobreajuste, e é por isso que modelos se medem sempre em texto que não viram.</p>
       </div></details>
     </li>
     <li>

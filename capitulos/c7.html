@@ -39,7 +39,7 @@
   <section id="c7-machadinho">
     <h2>O Machadinho</h2>
     <p>Para este capítulo, treinei uma rede neural pequena com os mesmos nove romances que alimentaram o modelo de contagens. Vou chamá-la de Machadinho. Ela tem a mesma arquitetura dos grandes modelos de linguagem, chamada <dfn>transformer</dfn>, em escala de brinquedo: quatro camadas, 128 dimensões, uma memória de 128 letras e <span class="dados" data-rede="parametros">820 mil</span> parâmetros. Os pesos ocupam cerca de dois megabytes e foram baixados quando você abriu este capítulo. Tudo o que você vir abaixo está sendo calculado no seu navegador, letra por letra.</p>
-    <p>Uma rede neural, para os nossos propósitos, é uma função com muitos botões de ajuste. Ela recebe as letras anteriores e devolve 39 probabilidades. No começo do treino, os botões estão em posições aleatórias e as probabilidades são lixo. O treino consiste em mostrar à rede um trecho de Machado, medir a surpresa que cada letra verdadeira lhe causou e girar cada botão um pouquinho na direção que diminuiria essa surpresa. Depois de repetir isso alguns milhões de vezes, a rede joga bem o jogo de Shannon.</p>
+    <p>Uma rede neural, para os nossos propósitos, é uma função com muitos botões de ajuste. Ela recebe as letras anteriores e devolve 39 probabilidades. No começo do treino, os botões estão em posições aleatórias e as probabilidades são lixo. O treino consiste em mostrar à rede um trecho de Machado, medir a surpresa que cada letra verdadeira lhe causou e girar cada botão um pouquinho na direção que diminuiria essa surpresa. Depois de repetir isso alguns milhares de vezes, com dezenas de trechos de cada vez, a rede joga bem o jogo de Shannon.</p>
     <p>Note o que essa descrição diz: <strong>o objetivo do treino é exatamente a entropia cruzada</strong> que acabamos de definir. A rede é ajustada, literalmente, para ser cada vez menos surpreendida pelo texto. Não há outra instrução. Ninguém lhe ensinou gramática, ortografia ou estilo.</p>
     <figure class="widget" data-widget="treino"></figure>
     <p>A curva mostra a entropia cruzada da rede, medida em <i>Memorial de Aires</i>, ao longo do treino. As linhas tracejadas são o modelo de contagens com diferentes tamanhos de memória. No primeiro registro, depois de 250 passos, a rede já supera o modelo que lembra uma letra. Logo passa o de duas, depois o de quatro, e termina abaixo do melhor modelo de contagens, coisa que nenhuma contagem consegue com esses mesmos dados.</p>
@@ -61,7 +61,7 @@
     <p>A peça que distingue o transformer de modelos anteriores chama-se <dfn>atenção</dfn>. Em cada camada, para cada letra, a rede calcula quanto peso dar a cada uma das letras anteriores ao combinar as informações delas. Ela não tem uma janela fixa de cinco letras: pode olhar para a letra imediatamente anterior, para o começo da palavra, para uma palavra de três linhas atrás, conforme for útil para prever. E aprende sozinha onde olhar.</p>
     <p>A rede tem quatro camadas com quatro “cabeças” de atenção cada, dezesseis padrões de olhar diferentes. Escolha uma letra da frase abaixo e uma cabeça, e veja em quais letras anteriores a rede se apoiou naquele momento. Algumas cabeças olham quase sempre para a letra anterior, como um modelo de contagens de uma letra. Outras procuram o espaço que marcou o início da palavra. Outras parecem rastrear coisas mais difíceis de nomear.</p>
     <figure class="widget" data-widget="atencao"></figure>
-    <p>É tentador ler intenções nesses padrões, e é bom resistir. Uma cabeça que olha para o início da palavra não “sabe” o que é uma palavra; ela encontrou um padrão que reduz a surpresa. Interpretar o que redes grandes aprenderam é hoje uma área de pesquisa inteira, e uma das difíceis.</p>
+    <p>É tentador ler intenções nesses padrões, e é bom resistir. Uma cabeça que olha para o início da palavra não “sabe” o que é uma palavra; ela encontrou um padrão que reduz a surpresa. Interpretar o que redes grandes aprenderam é hoje uma área de pesquisa inteira, e uma das mais difíceis.</p>
   </section>
 
   <section id="c7-gerar">
@@ -93,7 +93,7 @@
     <p>Uma frase pode ser pouco surpreendente e falsa. <i>A capital do Brasil é o Rio de Janeiro</i> foi uma frase previsível por quase dois séculos e deixou de ser verdadeira em 1960. Um modelo treinado para não se surpreender aprende o que é provável num texto, e o provável num texto coincide com o verdadeiro no mundo só na medida em que os textos dizem a verdade. Daí que modelos de linguagem possam afirmar, com fluência perfeita, coisas que não aconteceram.</p>
     <p>E uma frase pode ser muito surpreendente e valiosa. As melhores frases de Machado costumam ser justamente as que o leitor não previa. A ironia mora no desvio do esperado. Um escritor que minimizasse a surpresa do leitor seria um escritor de lugares-comuns.</p>
     <aside class="nota">
-      <p>Em 1956, diante do entusiasmo com que a teoria da informação estava sendo aplicada a psicologia, linguística, economia e biologia, Shannon publicou um editorial curto chamado <i>The Bandwagon</i>, pedindo cautela. A teoria, lembrava ele, foi feita para problemas de comunicação, e transplantá-la exige trabalho, não analogia.</p>
+      <p>Em 1956, diante do entusiasmo com que a teoria da informação estava sendo aplicada à psicologia, à linguística, à economia e à biologia, Shannon publicou um editorial curto chamado <i>The Bandwagon</i>, pedindo cautela. A teoria, lembrava ele, foi feita para problemas de comunicação, e transplantá-la exige trabalho, não analogia.</p>
     </aside>
   </section>
 
@@ -110,7 +110,7 @@
     <li>
       <p>Um modelo atribuiu às cinco letras de <i>olhos</i> as probabilidades 0,1; 0,5; 0,8; 0,9 e 0,6. Qual é a entropia cruzada do modelo nessa palavra, em bits por letra? E a perplexidade? <span class="nivel">cálculo</span></p>
       <details class="solucao"><summary>Solução</summary><div>
-        <p>As surpresas são <math><msub><mi>log</mi><mn>2</mn></msub><mo>⁡</mo><mo>(</mo><mn>1</mn><mo>/</mo><mi>q</mi><mo>)</mo></math>: 3,32; 1,00; 0,32; 0,15 e 0,74 bit. A soma é 5,53 bits e a média, 1,11 bit por letra. A perplexidade é <math><msup><mn>2</mn><mn>1,11</mn></msup><mo>≈</mo><mn>2,15</mn></math>: o modelo esteve, em média, tão indeciso quanto quem escolhe entre duas letras e pouco.</p>
+        <p>As surpresas são <math><msub><mi>log</mi><mn>2</mn></msub><mo>⁡</mo><mo>(</mo><mn>1</mn><mo>/</mo><mi>q</mi><mo>)</mo></math>: 3,32; 1,00; 0,32; 0,15 e 0,74 bit. A soma é 5,53 bits e a média, 1,11 bit por letra. A perplexidade é <math><msup><mn>2</mn><mn>1,11</mn></msup><mo>≈</mo><mn>2,16</mn></math>: o modelo esteve, em média, tão indeciso quanto quem escolhe entre duas letras e pouco.</p>
       </div></details>
     </li>
     <li>

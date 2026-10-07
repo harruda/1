@@ -727,7 +727,7 @@ const TITULO = "Perguntas de sim ou não";
 function telegrafo(fig) {
   const { corpo } = moldura(fig, {
     titulo: "Fita perfurada · código ITA2",
-    legenda: "Cada coluna da fita é um caractere em 5 bits: furo = 1, papel inteiro = 0, lidos de cima para baixo (os furinhos do meio só puxam a fita). As setas azuis ↑ e ↓ são as mudanças para o registro de algarismos e de volta às letras. Acentos e cedilha caem para a letra simples; caracteres sem código são ignorados. A tabela mostra as 32 combinações possíveis; toque numa letra para escrevê-la.",
+    legenda: "Cada coluna da fita é um caractere em 5 bits: furo = 1, papel inteiro = 0, lidos de cima para baixo (os furinhos menores só puxam a fita). As setas azuis ↑ e ↓ são as mudanças para o registro de algarismos e de volta às letras. Acentos e cedilha caem para a letra simples; caracteres sem código são ignorados. A tabela mostra as 32 combinações possíveis; toque numa letra para escrevê-la.",
   });
   const entrada = h("input#c2-tel-texto", { type: "text", maxlength: 60, autocomplete: "off", spellcheck: false, autocapitalize: "none", "aria-label": "Texto para perfurar" });
   entrada.value = TITULO;
@@ -762,7 +762,7 @@ function telegrafo(fig) {
   for (let v = 0; v < 32; v++) {
     const cod = v.toString(2).padStart(5, "0");
     const l = letraDe[cod], cmd = ITA2_COMANDOS[cod], alg = algDe[cod];
-    const furos = h("span.tel-mini", { "aria-hidden": "true" }, [...cod].map((b, k) => [k === 3 ? h("i.tel-mini-tracao") : null, h("i" + (b === "1" ? ".on" : ""))]));
+    const furos = h("span.tel-mini", { "aria-hidden": "true" }, [...cod].map((b, k) => [k === 2 ? h("i.tel-mini-tracao") : null, h("i" + (b === "1" ? ".on" : ""))]));
     const corpoCel = [furos, h("span.tel-cel-letra", l ?? cmd.curto), h("span.tel-cel-cod", cod), alg ? h("span.tel-cel-alg", alg) : h("span.tel-cel-alg", " ")];
     const titulo = l ? `${l} · ${cod}${alg ? ` · no registro de algarismos: ${alg}` : ""}` : `${cmd.nome} · ${cod}`;
     const cel = l || cod === ESPACO_ITA2
@@ -793,7 +793,7 @@ function telegrafo(fig) {
       const cx = P / 2 + i * P + P / 2;
       const g = s("g", { class: "tel-col" + (col.tipo === "registro" ? " registro" : "") + (animar && i >= comum ? " nova" : ""), style: `--d:${(i - comum) * 70}ms` });
       g.append(s("title", {}, `${col.tipo === "registro" ? ITA2_COMANDOS[col.cod].nome : col.rotulo} · ${col.cod}`));
-      const linhas = [col.cod[0], col.cod[1], col.cod[2], "t", col.cod[3], col.cod[4]];
+      const linhas = [col.cod[0], col.cod[1], "t", col.cod[2], col.cod[3], col.cod[4]];
       linhas.forEach((b, k) => {
         const cy = 12 + k * 16;
         if (b === "t") g.append(s("circle", { cx, cy, r: 2, class: "tel-tracao" }));
@@ -874,7 +874,7 @@ function morse(fig) {
       const glifo =
         modo === "morse"
           ? h("span.morse-glifo", { "aria-label": MORSE[l].replace(/\./g, "ponto ").replace(/-/g, "traço ").trim() }, [...MORSE[l]].map((c) => h(c === "." ? "i.ponto" : "i.traco")))
-          : h("span.morse-glifo.furos", { "aria-label": ITA2_LETRAS[l] }, [...ITA2_LETRAS[l]].map((b, k) => [k === 3 ? h("i.tracao") : null, h("i.furo" + (b === "1" ? ".on" : ""))]));
+          : h("span.morse-glifo.furos", { "aria-label": ITA2_LETRAS[l] }, [...ITA2_LETRAS[l]].map((b, k) => [k === 2 ? h("i.tracao") : null, h("i.furo" + (b === "1" ? ".on" : ""))]));
       return h(
         "div.morse-linha",
         { role: "row" },

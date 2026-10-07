@@ -333,7 +333,7 @@ export function baudot(texto) {
   return out;
 }
 
-/** Desenha uma fita perfurada com o texto em ITA2. Linha de tração entre o 3º e o 4º furo. */
+/** Desenha uma fita perfurada com o texto em ITA2. Linha de tração entre o 2º e o 3º furo, como na fita de cinco canais. */
 export function fita(texto, { titulo } = {}) {
   const cols = baudot(texto);
   const passo = 12, alt = 7 * passo;
@@ -341,7 +341,7 @@ export function fita(texto, { titulo } = {}) {
   svg.append(s("title", {}, `“${texto}” perfurado em código Baudot–Murray (ITA2): cada coluna é uma letra, cada furo um bit 1.`));
   cols.forEach((cod, i) => {
     const cx = passo / 2 + i * passo + passo / 2;
-    const linhas = [cod[0], cod[1], cod[2], "t", cod[3], cod[4]];
+    const linhas = [cod[0], cod[1], "t", cod[2], cod[3], cod[4]];
     linhas.forEach((b, k) => {
       const cy = passo * 0.75 + k * passo;
       if (b === "t") svg.append(s("circle", { cx, cy, r: 1.6, class: "furo-tracao" }));
